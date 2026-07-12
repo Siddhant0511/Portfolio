@@ -44,7 +44,7 @@
     }
 
     .container {
-      max-width: 1280px;
+      max-width: none;
       margin: 0 auto;
       padding: 0 clamp(20px, 4vw, 48px);
     }
@@ -292,13 +292,6 @@
       color: var(--ink);
       margin-bottom: 16px;
       text-align: justify;
-      max-width: 65ch;
-    }
-
-    @media (min-width: 1200px) {
-      .about-text p {
-        max-width: 55ch;
-      }
     }
 
     .about-text p:last-child {
