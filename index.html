@@ -1,0 +1,2052 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Siddhant Morye | PGDM · Analytics &amp; Operations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --paper: #F5F4F0;
+      --ink: #171A1C;
+      --graphite: #5B6570;
+      --amber: #D98A2B;
+      --steel: #2E4457;
+      --hairline: #DAD6CC;
+      --display: 'Fraunces', serif;
+      --body: 'Inter', system-ui, -apple-system, sans-serif;
+      --mono: 'IBM Plex Mono', monospace;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.55;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    .container {
+      max-width: none;
+      margin: 0 auto;
+      padding: 0 clamp(20px, 4vw, 48px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+
+
+
+    /* ─── Section rhythm ─── */
+    .section {
+      padding: clamp(24px, 4vw, 40px) 0;
+      content-visibility: auto;
+      contain-intrinsic-size: 400px;
+    }
+
+    .section:first-of-type {
+      content-visibility: visible;
+    }
+
+    .section-label {
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--graphite);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--hairline);
+    }
+
+    /* ─── Header Navigation ─── */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(245, 244, 240, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--hairline);
+      height: 64px;
+      display: flex;
+      align-items: center;
+    }
+
+    .header-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header .brand {
+      font-family: var(--body);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .header .nav {
+      display: flex;
+      align-items: center;
+      gap: clamp(12px, 2.5vw, 24px);
+    }
+
+    .header .nav a {
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--graphite);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .header .nav a:hover {
+      color: var(--amber);
+    }
+
+    @media (max-width: 735px) {
+      .header .brand {
+        display: none;
+      }
+      .header-container {
+        justify-content: center;
+      }
+      .header .nav {
+        display: flex;
+        justify-content: center;
+        gap: clamp(12px, 4vw, 20px);
+        width: 100%;
+        padding: 0;
+      }
+      .header .nav .sec-nav {
+        display: none;
+      }
+      .header .nav a {
+        font-size: 13px;
+        padding: 8px 4px;
+        flex-shrink: 0;
+      }
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      padding: clamp(32px, 5vw, 56px) 0 clamp(24px, 3vw, 40px);
+      text-align: center;
+      position: relative;
+    }
+
+    @media (max-width: 735px) {
+      .hero .hero-content-wrapper {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .hero .hero-photo {
+        width: 110px;
+        height: 110px;
+      }
+    }
+
+    .hero .hero-content-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(16px, 3vw, 28px);
+      margin-bottom: clamp(24px, 3vw, 36px);
+    }
+
+    .hero .hero-text-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero .hero-photo {
+      width: clamp(110px, 14vw, 160px);
+      height: clamp(110px, 14vw, 160px);
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+      border: 2px solid var(--hairline);
+      flex-shrink: 0;
+      box-shadow: 0 4px 20px rgba(23, 26, 28, 0.06);
+    }
+
+    .hero h1 {
+      font-family: var(--display);
+      font-size: clamp(34px, 5vw, 58px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin-bottom: 6px;
+    }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-meta .sub {
+      font-family: var(--body);
+      font-size: clamp(14px, 1.8vw, 16px);
+      font-weight: 500;
+      color: var(--graphite);
+    }
+
+    .hero-meta .sep {
+      color: var(--hairline);
+      font-weight: 300;
+      flex-shrink: 0;
+    }
+
+    .hero-meta .cred {
+      font-family: var(--body);
+      font-size: clamp(14px, 1.8vw, 16px);
+      font-weight: 500;
+      color: var(--graphite);
+    }
+
+    .hero .scroll-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--steel);
+      text-decoration: none;
+      border-bottom: 1px solid var(--hairline);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .hero .scroll-link:hover {
+      color: var(--amber);
+      border-color: var(--amber);
+    }
+
+    /* ─── About Grid ─── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+
+    @media (max-width: 735px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .about-grid {
+        gap: 80px;
+      }
+    }
+
+    .about-text p {
+      font-size: 15px;
+      color: var(--ink);
+      margin-bottom: 16px;
+      text-align: justify;
+      max-width: 65ch;
+    }
+
+    @media (min-width: 1200px) {
+      .about-text p {
+        max-width: 55ch;
+      }
+    }
+
+    .about-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .academic-block {
+      border: 1px solid var(--hairline);
+      border-radius: 2px;
+      padding: 28px 24px;
+      background: rgba(46, 68, 87, 0.025);
+    }
+
+    .academic-block .school {
+      font-family: var(--body);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--steel);
+      margin-bottom: 6px;
+    }
+
+    .academic-block h3 {
+      font-family: var(--display);
+      font-size: clamp(18px, 2.5vw, 24px);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+
+    @media (min-width: 736px) {
+      .academic-block h3 {
+        white-space: nowrap;
+      }
+    }
+
+    .academic-block .date {
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--graphite);
+      letter-spacing: 0.04em;
+    }
+
+    .academic-block .course-list {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    @media (max-width: 480px) {
+      .academic-block .course-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .academic-block .course-list span {
+      font-family: var(--body);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--steel);
+      background: rgba(46, 68, 87, 0.025);
+      border: 1px solid var(--hairline);
+      border-radius: 2px;
+      padding: 6px 8px;
+      letter-spacing: 0.02em;
+      text-align: center;
+      display: block;
+    }
+
+    .meta-strip {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--hairline);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--graphite);
+      letter-spacing: 0.02em;
+    }
+
+    .meta-strip strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* ─── Timeline ─── */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .timeline-item {
+      border: 1px solid var(--hairline);
+      border-left: 3px solid var(--steel);
+      border-radius: 2px;
+      padding: 24px 24px 24px 22px;
+      background: rgba(46, 68, 87, 0.015);
+      transition: box-shadow 0.15s, translate 0.15s, background 0.15s;
+    }
+
+    .timeline-item:hover {
+      box-shadow: 4px 4px 0 rgba(23, 26, 28, 0.12);
+      translate: -1px -1px;
+      background: rgba(46, 68, 87, 0.035);
+    }
+
+    .timeline-item .meta {
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--graphite);
+      letter-spacing: 0.02em;
+      margin-bottom: 2px;
+    }
+
+    .timeline-item h3 {
+      font-family: var(--display);
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+
+    .timeline-item .company {
+      font-family: var(--body);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--steel);
+      margin-bottom: 12px;
+    }
+
+    .timeline-item p {
+      font-size: 14px;
+      color: var(--graphite);
+      line-height: 1.5;
+      text-align: justify;
+    }
+
+    @media (min-width: 1200px) {
+      .timeline-item p,
+      .timeline-item ul {
+        max-width: none;
+      }
+    }
+
+    .timeline-item ul {
+      list-style: none;
+      margin-top: 8px;
+    }
+
+    .timeline-item ul li {
+      font-size: 14px;
+      color: var(--graphite);
+      line-height: 1.5;
+      padding-left: 16px;
+      position: relative;
+      margin-bottom: 4px;
+      text-align: justify;
+    }
+
+    .timeline-item ul li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--hairline);
+    }
+
+    .timeline-item .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .timeline-item .tags span {
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--steel);
+      border: 1px solid var(--hairline);
+      border-radius: 2px;
+      padding: 3px 10px;
+      letter-spacing: 0.02em;
+      background: rgba(46, 68, 87, 0.02);
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .timeline-item .tags span:hover {
+      border-color: var(--steel);
+      background: rgba(46, 68, 87, 0.06);
+    }
+
+    /* ─── Case Files Grid ─── */
+    .case-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 735px) {
+      .case-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .case-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+    }
+
+    .case-card {
+      border: 1px solid var(--hairline);
+      border-radius: 2px;
+      padding: 32px 24px;
+      cursor: pointer;
+      transition: translate 0.2s, box-shadow 0.2s, border-color 0.2s, background 0.2s;
+      background: rgba(217, 138, 43, 0.015);
+      position: relative;
+      will-change: transform;
+    }
+
+    .case-card:hover {
+      box-shadow: 6px 6px 0 rgba(217, 138, 43, 0.12);
+      translate: -2px -2px;
+      border-color: var(--amber);
+      background: rgba(217, 138, 43, 0.035);
+    }
+
+    .case-card:active {
+      translate: 0 0;
+      box-shadow: 2px 2px 0 rgba(217, 138, 43, 0.12);
+      scale: 0.98;
+    }
+
+    .case-card .file-id {
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--graphite);
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+      transition: color 0.15s, text-decoration 0.15s;
+    }
+
+    .case-card:hover .file-id {
+      color: var(--amber);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .case-card h3 {
+      font-family: var(--display);
+      font-size: clamp(17px, 2.2vw, 20px);
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .case-card .scope {
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--graphite);
+      letter-spacing: 0.02em;
+    }
+
+    /* ─── Qualifications Table ─── */
+    .quals-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .quals-table th,
+    .quals-table td {
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .quals-table th {
+      color: var(--graphite);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+
+    .quals-table td {
+      color: var(--ink);
+    }
+
+    .quals-table th:last-child,
+    .quals-table td:last-child {
+      text-align: right;
+    }
+
+    .quals-table td:last-child {
+      color: var(--graphite);
+    }
+
+    .quals-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    @media (max-width: 600px) {
+      .quals-table thead {
+        display: none;
+      }
+      .quals-table, 
+      .quals-table tbody, 
+      .quals-table tr, 
+      .quals-table td {
+        display: block;
+        width: 100%;
+      }
+      .quals-table tr {
+        border-bottom: 1px solid var(--hairline);
+        padding: 16px 0;
+      }
+      .quals-table tr:last-child {
+        border-bottom: none;
+      }
+      .quals-table td {
+        border: none;
+        padding: 4px 0;
+        text-align: left !important;
+        font-size: 14px;
+      }
+      .quals-table td:first-child {
+        font-family: var(--display);
+        font-size: 17px;
+        font-weight: 600;
+        color: var(--ink);
+      }
+      .quals-table td:nth-child(2) {
+        color: var(--steel);
+        font-weight: 500;
+      }
+      .quals-table td:nth-child(3)::before {
+        content: "Score: ";
+        color: var(--graphite);
+        font-weight: 400;
+      }
+      .quals-table td:last-child {
+        color: var(--graphite);
+        font-size: 12px;
+        margin-top: 4px;
+      }
+    }
+
+    /* ─── Awards / Positions Grid ─── */
+    .awards-list,
+    .positions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .award-item,
+    .position-item {
+      border: 1px solid var(--hairline);
+      border-radius: 2px;
+      padding: 16px 20px;
+      background: rgba(91, 101, 112, 0.01);
+      transition: box-shadow 0.15s, translate 0.15s, background 0.15s;
+    }
+
+    .award-item:hover,
+    .position-item:hover {
+      box-shadow: 4px 4px 0 rgba(23, 26, 28, 0.12);
+      translate: -1px -1px;
+      background: rgba(91, 101, 112, 0.03);
+    }
+
+    .recognition-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 735px) {
+      .recognition-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .recognition-grid {
+        gap: 48px;
+      }
+    }
+
+    .award-item .title,
+    .position-item .title {
+      font-family: var(--body);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+
+    .award-item .detail,
+    .position-item .detail {
+      font-family: var(--body);
+      font-size: 12px;
+      color: var(--graphite);
+    }
+
+    .award-item .detail .accent,
+    .position-item .detail .accent {
+      color: var(--steel);
+    }
+
+    /* ─── Capabilities Grid ─── */
+    .caps-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 735px) {
+      .caps-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (min-width: 736px) and (max-width: 900px) {
+      .caps-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (min-width: 1400px) {
+      .caps-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .cap-card {
+      border: 1px solid var(--hairline);
+      border-radius: 2px;
+      padding: 24px;
+      background: rgba(91, 101, 112, 0.015);
+      transition: box-shadow 0.15s, translate 0.15s, background 0.15s;
+    }
+
+    .cap-card:hover {
+      box-shadow: 4px 4px 0 rgba(23, 26, 28, 0.08);
+      translate: -1px -1px;
+      background: rgba(91, 101, 112, 0.035);
+    }
+
+    .cap-card h4 {
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 500;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--steel);
+      margin-bottom: 12px;
+    }
+
+    .cap-card .items {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .cap-card .items span {
+      font-size: 14px;
+      color: var(--graphite);
+    }
+
+    .cap-card .items .primary {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* ─── Contact ─── */
+    .contact-block {
+      border: 1px solid var(--hairline);
+      border-radius: 2px;
+      padding: 48px 24px;
+      text-align: center;
+    }
+
+    .contact-block h3 {
+      font-family: var(--display);
+      font-size: clamp(26px, 4.2vw, 40px);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+
+    .contact-block p {
+      font-size: 16px;
+      color: var(--graphite);
+      margin-bottom: 32px;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .contact-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--steel);
+      text-decoration: none;
+      border: 1px solid var(--hairline);
+      border-radius: 2px;
+      padding: 10px 20px;
+      transition: translate 0.15s, box-shadow 0.15s;
+    }
+
+    .contact-links a:hover {
+      box-shadow: 4px 4px 0 rgba(23, 26, 28, 0.12);
+      translate: -1px -1px;
+    }
+
+    /* ─── Footer ─── */
+    .footer {
+      padding: 32px 0;
+      text-align: center;
+      border-top: 1px solid var(--hairline);
+    }
+
+    .footer p {
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--graphite);
+      letter-spacing: 0.02em;
+    }
+
+    /* ─── Scroll Reveal (compositor-only properties) ─── */
+    .fade-in {
+      opacity: 0;
+      translate: 0 4px;
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                  translate 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      translate: 0 0;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 735px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .case-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .caps-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ─── Case Study Modal Morph & Layout ─── */
+    .case-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      overflow-y: auto;
+    }
+
+    .case-modal-overlay.active {
+      display: flex;
+    }
+
+    .case-modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(23, 26, 28, 0.65);
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      transition: opacity 450ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .case-modal-overlay.active .case-modal-backdrop {
+      opacity: 1;
+    }
+
+    .case-modal-container {
+      position: relative;
+      background: var(--ink);
+      color: var(--paper);
+      width: 100%;
+      max-width: 900px;
+      margin: auto;
+      border: 1px solid var(--steel);
+      border-radius: 2px;
+      box-shadow: 8px 8px 0 rgba(23, 26, 28, 0.35);
+      padding: 48px;
+      opacity: 0;
+      scale: 0.96;
+      transition: opacity 450ms cubic-bezier(0.16, 1, 0.3, 1),
+                  scale 450ms cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1001;
+      overflow-y: auto;
+      max-height: 85vh;
+      contain: content;
+    }
+
+    .case-modal-overlay.active .case-modal-container {
+      opacity: 1;
+      scale: 1;
+    }
+
+    /* Temporary Morph Block — uses transform for GPU-composited FLIP */
+    .morph-card {
+      position: fixed;
+      z-index: 999;
+      pointer-events: none;
+      background: var(--paper);
+      border: 1px solid var(--hairline);
+      border-radius: 2px;
+      transform-origin: 0 0;
+      transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1),
+                  background 450ms cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 450ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Close Button */
+    .modal-close-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245, 244, 240, 0.08);
+      border: 1px solid rgba(245, 244, 240, 0.25);
+      border-radius: 2px;
+      color: var(--paper);
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      padding: 8px 14px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      z-index: 10;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(217, 138, 43, 0.15);
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    .modal-close-btn:focus-visible {
+      outline: 2px solid var(--amber);
+      outline-offset: 2px;
+    }
+
+    /* Manifest Header inside expanded card */
+    .manifest-header {
+      border-bottom: 1px solid rgba(245, 244, 240, 0.15);
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+    }
+
+    .manifest-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--amber);
+      letter-spacing: 0.06em;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .manifest-title {
+      font-family: var(--display);
+      font-size: clamp(24px, 3.8vw, 36px);
+      font-weight: 600;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      color: var(--paper);
+    }
+
+    .manifest-meta {
+      font-family: var(--body);
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(245, 244, 240, 0.6);
+      letter-spacing: 0.02em;
+    }
+
+    /* Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .metric-card {
+      border: 1px solid rgba(245, 244, 240, 0.15);
+      border-radius: 2px;
+      padding: 16px 20px;
+      background: rgba(245, 244, 240, 0.02);
+    }
+
+    .metric-num {
+      display: block;
+      font-family: var(--mono);
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--paper);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .metric-label {
+      font-family: var(--body);
+      font-size: 12px;
+      color: rgba(245, 244, 240, 0.6);
+    }
+
+    /* Process Flow */
+    .process-flow {
+      margin-bottom: 40px;
+      border: 1px solid rgba(245, 244, 240, 0.1);
+      padding: 20px;
+      border-radius: 2px;
+      background: rgba(245, 244, 240, 0.01);
+    }
+
+    .flow-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: rgba(245, 244, 240, 0.4);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .flow-svg {
+      width: 100%;
+      height: auto;
+      margin-bottom: 8px;
+    }
+
+    .flow-track {
+      stroke: rgba(245, 244, 240, 0.1);
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .flow-path {
+      stroke: var(--steel);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-dasharray: 600;
+      stroke-dashoffset: 600;
+      transition: stroke-dashoffset 900ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .case-modal-overlay.active .flow-path {
+      stroke: var(--amber);
+      stroke-dashoffset: 0;
+      transition-delay: 350ms;
+    }
+
+    .flow-dot {
+      fill: var(--ink);
+      stroke: rgba(245, 244, 240, 0.2);
+      stroke-width: 2;
+      transition: fill 200ms, stroke 200ms;
+    }
+
+    .case-modal-overlay.active .flow-dot {
+      fill: var(--amber);
+      stroke: var(--amber);
+    }
+
+    .case-modal-overlay.active .flow-dot.dot-1 {
+      transition-delay: 350ms;
+    }
+
+    .case-modal-overlay.active .flow-dot.dot-2 {
+      transition-delay: 800ms;
+    }
+
+    .case-modal-overlay.active .flow-dot.dot-3 {
+      transition-delay: 1250ms;
+    }
+
+    .flow-labels {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(245, 244, 240, 0.5);
+    }
+
+    .flow-labels span {
+      width: 33%;
+    }
+
+    .flow-labels span:nth-child(2) {
+      text-align: center;
+    }
+
+    .flow-labels span:nth-child(3) {
+      text-align: right;
+    }
+
+    /* Dossier Narrative Grid */
+    .dossier-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .dossier-col h4 {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--amber);
+      margin-bottom: 12px;
+    }
+
+    .dossier-col p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: rgba(245, 244, 240, 0.85);
+    }
+
+    /* Staggered Animations (compositor-only) */
+    .stagger-in {
+      opacity: 0;
+      translate: 0 12px;
+      transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1),
+                  translate 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .case-modal-overlay.active .stagger-in {
+      opacity: 1;
+      translate: 0 0;
+    }
+
+    .case-modal-overlay.active .stagger-delay-1 {
+      transition-delay: 150ms;
+    }
+
+    .case-modal-overlay.active .stagger-delay-2 {
+      transition-delay: 300ms;
+    }
+
+    .case-modal-overlay.active .stagger-delay-3 {
+      transition-delay: 450ms;
+    }
+
+    .case-modal-overlay.active .stagger-delay-4 {
+      transition-delay: 550ms;
+    }
+
+    .case-modal-overlay.active .stagger-delay-5 {
+      transition-delay: 650ms;
+    }
+
+    .dossier-col {
+      opacity: 0;
+      translate: 16px 0;
+      transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1),
+                  translate 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .case-modal-overlay.active .dossier-col {
+      opacity: 1;
+      translate: 0 0;
+    }
+
+    .case-modal-overlay.active .dossier-col:nth-child(1) {
+      transition-delay: 450ms;
+    }
+
+    .case-modal-overlay.active .dossier-col:nth-child(2) {
+      transition-delay: 550ms;
+    }
+
+    .case-modal-overlay.active .dossier-col:nth-child(3) {
+      transition-delay: 650ms;
+    }
+
+    /* Responsive modifications for modal */
+    @media (max-width: 735px) {
+      .case-modal-overlay {
+        padding: 0;
+      }
+
+      .case-modal-container {
+        padding: 32px 20px;
+        min-height: 100vh;
+        max-height: 100vh;
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+        overflow-y: auto;
+      }
+
+      .manifest-title {
+        font-size: 28px;
+        margin-top: 24px;
+      }
+
+      .metrics-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .metric-card {
+        padding: 12px 16px;
+      }
+
+      .metric-num {
+        font-size: 28px;
+      }
+
+      .dossier-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .modal-close-btn {
+        top: 16px;
+        right: 16px;
+        padding: 6px 10px;
+        font-size: 11px;
+      }
+
+      .modal-close-btn svg {
+        width: 14px;
+        height: 14px;
+      }
+    }
+
+    /* Accessibility focus states */
+    .case-card {
+      outline: none;
+    }
+
+    .case-card:focus-visible {
+      outline: 2px solid var(--amber);
+      outline-offset: 4px;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <div class="container header-container">
+      <a href="#" class="brand">Siddhant Morye</a>
+      <nav class="nav">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#qualifications" class="sec-nav">Qualifications</a>
+        <a href="#case-files">Case Files</a>
+        <a href="#capabilities" class="sec-nav">Capabilities</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content-wrapper fade-in" style="transition-delay:0ms">
+        <img src="img/photo.jpg" alt="" class="hero-photo" width="120" height="120">
+        <div class="hero-text-block">
+          <h1>Siddhant Morye</h1>
+          <div class="hero-meta fade-in" style="transition-delay:160ms">
+            <span class="sub">Analytics &amp; Operations, GLIM &rsquo;27</span>
+            <span class="sep">|</span>
+            <span class="cred">Ashok Leyland SIP</span>
+          </div>
+        </div>
+      </div>
+      <a href="#case-files" class="scroll-link fade-in" style="transition-delay:280ms">view case files</a>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <div class="container">
+      <div class="section-label fade-in">ABOUT / ACADEMICS</div>
+      <div class="about-grid fade-in">
+        <div class="about-text">
+          <p>
+            Management professional with an architecture background, skilled in structured
+            data analysis, translating user and market data into actionable insights, and
+            delivering insight-driven reports and dashboards for informed decision-making.
+          </p>
+          <p>
+            I bring a designer&rsquo;s eye for structure to analytical problems, whether
+            it&rsquo;s building regression models for pricing optimisation, segmenting
+            financial inclusion data, or coordinating cross-functional teams on large-scale
+            projects. My goal is to sit at the intersection of data and strategy, making
+            complex information clear and useful.
+          </p>
+        </div>
+        <div class="academic-block">
+          <div class="school">Great Lakes Institute of Management, Gurgaon</div>
+          <h3>PGDM | Analytics &amp; Operations</h3>
+          <div class="date">2025 – 2027</div>
+          <div class="course-list">
+            <span>Business Analytics</span>
+            <span>Data Visualisation</span>
+            <span>Statistical Modeling</span>
+            <span>Machine Learning</span>
+            <span>Marketing Analytics</span>
+            <span>Financial Analytics</span>
+          </div>
+        </div>
+      </div>
+      <div class="meta-strip fade-in">
+        <span><strong>Location:</strong> Gurgaon / Navi Mumbai</span>
+        <span><strong>Focus:</strong> Data Analysis · Insight Reporting · Research</span>
+        <span><strong>Prior:</strong> B.Arch | Pillai College of Architecture</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience" class="section">
+    <div class="container">
+      <div class="section-label fade-in">EXPERIENCE</div>
+      <div class="timeline fade-in">
+        <div class="timeline-item">
+          <div class="meta">Apr 2026 – Jun 2026</div>
+          <h3>HR Analytics &amp; Operations Intern</h3>
+          <div class="company">Ashok Leyland</div>
+          <p>Led <strong>data-driven process optimization</strong> workstreams at the commercial vehicle manufacturing facility, bridging
+            industrial plant operations with <strong>predictive analytics</strong>.</p>
+          <ul>
+            <li><strong>Grievance Platform:</strong> Digitized the employee request feedback loop, building structured
+              tracking metrics to reduce <strong>resolution cycle times</strong>.</li>
+            <li><strong>Contractor Absenteeism:</strong> Conducted <strong>regression analysis</strong> on shift attendance logs,
+              identifying seasonal/demographic <strong>drivers of labor variance</strong> to improve <strong>resource planning</strong>.</li>
+            <li><strong>Time Office Rectification:</strong> Analyzed shift-register reconciliation and gate-pass
+              latency, streamlining verification steps to optimize daily <strong>administrative throughput</strong>.</li>
+            <li><strong>AL-TICS Analytics:</strong> Collaborated on deploying <strong>telemetry tracking</strong> alerts,
+              consolidating system sensor logs to isolate <strong>vehicle inspection bottlenecks</strong>.</li>
+          </ul>
+          <div class="tags">
+            <span>Operations Analytics</span>
+            <span>Regression Analysis</span>
+            <span>Process Optimization</span>
+            <span>Data Modeling</span>
+            <span>SQL &amp; Python</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="meta">Nov 2022 – May 2023</div>
+          <h3>Architectural Intern</h3>
+          <div class="company">Kembhavi Architecture Foundation</div>
+          <p>Contributed to large-scale airport and commercial projects with a focus on <strong>research</strong>, <strong>cross-functional
+            coordination</strong>, and <strong>insight-driven reporting</strong>.</p>
+          <ul>
+            <li>Conducted <strong>structured research</strong> and gathered <strong>stakeholder requirements</strong> to support informed design decisions
+            </li>
+            <li>Analysed inputs from structural, MEP, and landscape teams | consolidated feedback into prioritised
+              <strong>action trackers</strong> improving <strong>execution efficiency</strong></li>
+            <li>Developed analytical <strong>client presentation decks</strong> summarising insights, recommendations, and next steps |
+              enabling quicker approvals and reduced <strong>review cycles</strong></li>
+            <li>Coordinated <strong>cross-functional alignment</strong> across teams and maintained organised project information to
+              ensure smooth progress</li>
+          </ul>
+          <div class="tags">
+            <span>Research</span>
+            <span>Stakeholder Management</span>
+            <span>Cross-functional Coordination</span>
+            <span>Presentation Design</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="qualifications" class="section">
+    <div class="container">
+      <div class="section-label fade-in">QUALIFICATIONS</div>
+      <div class="quals-table fade-in">
+        <table style="width:100%">
+          <thead>
+            <tr>
+              <th>Degree</th>
+              <th>Institute</th>
+              <th>%/CGPA</th>
+              <th>Year</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>PGDM</td>
+              <td>Great Lakes Institute of Management, Gurgaon</td>
+              <td>Pursuing</td>
+              <td>2027</td>
+            </tr>
+            <tr>
+              <td>B.Arch</td>
+              <td>Pillai College of Architecture, Navi Mumbai</td>
+              <td>7.82 / 10</td>
+              <td>2024</td>
+            </tr>
+            <tr>
+              <td>12<sup>th</sup></td>
+              <td>St. Mary&rsquo;s Junior College, Navi Mumbai</td>
+              <td>71.38%</td>
+              <td>2019</td>
+            </tr>
+            <tr>
+              <td>10<sup>th</sup></td>
+              <td>St. Joseph&rsquo;s High School, Mumbai</td>
+              <td>87.00%</td>
+              <td>2017</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="case-files" class="section">
+    <div class="container">
+      <div class="section-label fade-in">CASE FILES</div>
+      <div class="case-grid fade-in">
+        <div class="case-card" data-file-id="FILE-01">
+          <div class="file-id">FILE-01</div>
+          <h3>Parametric Design for Corporate Offices</h3>
+          <div class="scope">Thesis · Workplace research · Mumbai</div>
+
+          <template class="case-template">
+            <div class="manifest-header stagger-in">
+              <span class="manifest-tag">MANIFEST-01 // B.ARCH THESIS</span>
+              <h2 class="manifest-title">Parametric Design for Corporate Offices</h2>
+              <div class="manifest-meta">Role: Lead Researcher &amp; Designer &middot; Location: Mumbai &middot; Year:
+                2024</div>
+            </div>
+
+            <div class="metrics-grid stagger-in stagger-delay-1">
+              <div class="metric-card">
+                <span class="metric-num" data-target="22">+0%</span>
+                <span class="metric-label">Spatial Efficiency</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-num" data-target="35">+0%</span>
+                <span class="metric-label">Natural Daylight</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-num" data-target="-18">-0%</span>
+                <span class="metric-label">Material Waste</span>
+              </div>
+            </div>
+
+            <div class="process-flow stagger-in stagger-delay-2">
+              <div class="flow-title">OPTIMIZATION FLOWLINE</div>
+              <svg class="flow-svg" viewBox="0 0 600 40">
+                <path class="flow-track" d="M20 20 H580" />
+                <path class="flow-path" d="M20 20 H580" />
+                <circle class="flow-dot dot-1" cx="20" cy="20" r="5" />
+                <circle class="flow-dot dot-2" cx="300" cy="20" r="5" />
+                <circle class="flow-dot dot-3" cx="580" cy="20" r="5" />
+              </svg>
+              <div class="flow-labels">
+                <span>Traditional Envelopes</span>
+                <span>Generative Iterations</span>
+                <span>Optimized Desk Layout</span>
+              </div>
+            </div>
+
+            <div class="dossier-grid">
+              <div class="dossier-col stagger-in stagger-delay-3">
+                <h4>01 // THE PROBLEM</h4>
+                <p>Conventional office design processes rely on static layouts that fail to respond dynamically to solar
+                  exposure and structural load vectors, yielding underutilized areas and high cooling overheads in
+                  Mumbai's climate.</p>
+              </div>
+              <div class="dossier-col stagger-in stagger-delay-4">
+                <h4>02 // THE APPROACH</h4>
+                <p>Developed an algorithmic script in Grasshopper (Rhino) integrating environmental parameters and
+                  spatial occupancy data. Modeled 120+ generative variations, running Galapagos genetic solvers to
+                  balance structural weight margins against desk distribution ratios.</p>
+              </div>
+              <div class="dossier-col stagger-in stagger-delay-5">
+                <h4>03 // THE OUTCOME</h4>
+                <p>Generated layout solutions that boosted spatial efficiency by 22% and natural daylight access by 35%,
+                  while cutting structural material waste by 18%. The thesis set a new benchmark for combining
+                  computational modeling with commercial architectural practice.</p>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <div class="case-card" data-file-id="FILE-02">
+          <div class="file-id">FILE-02</div>
+          <h3>Pricing Analysis &amp; Profit Optimisation</h3>
+          <div class="scope">Regression analysis · Micro-enterprise</div>
+
+          <template class="case-template">
+            <div class="manifest-header stagger-in">
+              <span class="manifest-tag">MANIFEST-02 // ANALYTICS BRIEF</span>
+              <h2 class="manifest-title">Pricing Analysis &amp; Profit Optimisation</h2>
+              <div class="manifest-meta">Role: Analyst &middot; Target: Micro-Enterprise &middot; Year: 2025</div>
+            </div>
+
+            <div class="metrics-grid stagger-in stagger-delay-1">
+              <div class="metric-card">
+                <span class="metric-num" data-target="14">+0%</span>
+                <span class="metric-label">Profit Increase</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-num" data-target="-20">-0%</span>
+                <span class="metric-label">Customer Churn</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-num" data-target="-25">-0%</span>
+                <span class="metric-label">Pricing Variance</span>
+              </div>
+            </div>
+
+            <div class="process-flow stagger-in stagger-delay-2">
+              <div class="flow-title">OPTIMIZATION FLOWLINE</div>
+              <svg class="flow-svg" viewBox="0 0 600 40">
+                <path class="flow-track" d="M20 20 H580" />
+                <path class="flow-path" d="M20 20 H580" />
+                <circle class="flow-dot dot-1" cx="20" cy="20" r="5" />
+                <circle class="flow-dot dot-2" cx="300" cy="20" r="5" />
+                <circle class="flow-dot dot-3" cx="580" cy="20" r="5" />
+              </svg>
+              <div class="flow-labels">
+                <span>Transactional Raw Data</span>
+                <span>Elasticity Curve Fitting</span>
+                <span>Optimal Price Tiers</span>
+              </div>
+            </div>
+
+            <div class="dossier-grid">
+              <div class="dossier-col stagger-in stagger-delay-3">
+                <h4>01 // THE PROBLEM</h4>
+                <p>A growing micro-enterprise suffered stagnant bottom-line margins due to subjective, ad-hoc pricing
+                  schemes that ignored elasticity variations across product categories and customer segments.</p>
+              </div>
+              <div class="dossier-col stagger-in stagger-delay-4">
+                <h4>02 // THE APPROACH</h4>
+                <p>Cleaned and aggregated 18 months of purchase transactions using Python and pandas. Built an Ordinary
+                  Least Squares (OLS) regression model to measure price elasticity of demand, identifying distinct
+                  customer willingness-to-pay margins.</p>
+              </div>
+              <div class="dossier-col stagger-in stagger-delay-5">
+                <h4>03 // THE OUTCOME</h4>
+                <p>Formulated a structured, dynamic tiered pricing strategy that increased projected net profit margins
+                  by 14% while retaining high-frequency accounts (minimizing drop-off variance by 25%).</p>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <div class="case-card" data-file-id="FILE-03">
+          <div class="file-id">FILE-03</div>
+          <h3>Financial Inclusion Modeling &amp; Segmentation</h3>
+          <div class="scope">Logistic regression · K-Means · Global data</div>
+
+          <template class="case-template">
+            <div class="manifest-header stagger-in">
+              <span class="manifest-tag">MANIFEST-03 // DECISION LOG</span>
+              <h2 class="manifest-title">Financial Inclusion Modeling &amp; Segmentation</h2>
+              <div class="manifest-meta">Role: Data Modeler &middot; Dataset: Global FINDEX &middot; Year: 2025</div>
+            </div>
+
+            <div class="metrics-grid stagger-in stagger-delay-1">
+              <div class="metric-card">
+                <span class="metric-num" data-target="95">0%</span>
+                <span class="metric-label">Model AUC Accuracy</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-num" data-target="4">0</span>
+                <span class="metric-label">Target Personas</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-num" data-target="30">+0%</span>
+                <span class="metric-label">Marketing Reach</span>
+              </div>
+            </div>
+
+            <div class="process-flow stagger-in stagger-delay-2">
+              <div class="flow-title">OPTIMIZATION FLOWLINE</div>
+              <svg class="flow-svg" viewBox="0 0 600 40">
+                <path class="flow-track" d="M20 20 H580" />
+                <path class="flow-path" d="M20 20 H580" />
+                <circle class="flow-dot dot-1" cx="20" cy="20" r="5" />
+                <circle class="flow-dot dot-2" cx="300" cy="20" r="5" />
+                <circle class="flow-dot dot-3" cx="580" cy="20" r="5" />
+              </svg>
+              <div class="flow-labels">
+                <span>Demographic Variables</span>
+                <span>Predictive Logistic Fit</span>
+                <span>Targeted Program Launch</span>
+              </div>
+            </div>
+
+            <div class="dossier-grid">
+              <div class="dossier-col stagger-in stagger-delay-3">
+                <h4>01 // THE PROBLEM</h4>
+                <p>Traditional credit and banking frameworks struggle to identify and acquire digitally capable,
+                  underbanked populations in developing economies, leading to high user acquisition overheads.</p>
+              </div>
+              <div class="dossier-col stagger-in stagger-delay-4">
+                <h4>02 // THE APPROACH</h4>
+                <p>Analyzed global financial inclusion data (FINDEX). Built a logistic regression classifier in Python
+                  to predict mobile money account ownership, achieving a 95% AUC. Applied K-Means clustering to
+                  partition the target cohort based on income stability and mobile access.</p>
+              </div>
+              <div class="dossier-col stagger-in stagger-delay-5">
+                <h4>03 // THE OUTCOME</h4>
+                <p>Identified 4 distinct actionable user segments, establishing a targeted operational strategy that
+                  increases marketing reach efficiency by 30% for localized microfinance programs.</p>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-label fade-in">RECOGNITION</div>
+      <div class="recognition-grid fade-in">
+        <div>
+          <div class="awards-list">
+            <div class="award-item">
+              <div class="title">3rd Place | Business Decoded Case Competition</div>
+              <div class="detail">Great Lakes Institute of Management <span class="accent">· 2025</span></div>
+            </div>
+            <div class="award-item">
+              <div class="title">Finalist | The Quantum Trial</div>
+              <div class="detail">Analytics Case Competition, GLIM <span class="accent">· 2025</span></div>
+            </div>
+            <div class="award-item">
+              <div class="title">1st Place | 8th Mumbai District Junior Wushu Championship</div>
+              <div class="detail">Mumbai <span class="accent">· 2017</span></div>
+            </div>
+            <div class="award-item">
+              <div class="title">2nd Place | 14th Maharashtra State Junior Wushu Championship</div>
+              <div class="detail">Maharashtra <span class="accent">· 2017</span></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="positions-list">
+            <div class="position-item">
+              <div class="title">Member, Harmony (HR Club)</div>
+              <div class="detail">Great Lakes Institute of Management <span class="accent">· 2025</span></div>
+            </div>
+            <div class="position-item">
+              <div class="title">Graphical-Publication Head</div>
+              <div class="detail">Pillai College of Architecture <span class="accent">· 2023</span></div>
+            </div>
+            <div class="position-item">
+              <div class="title">Sponsorship &amp; Partnership Lead</div>
+              <div class="detail">Pillai College of Architecture | Magazine funding via alumni outreach, brand ads,
+                corporate tie-ups <span class="accent">· 2023</span></div>
+            </div>
+            <div class="position-item">
+              <div class="title">Student Council Member</div>
+              <div class="detail">Pillai College of Architecture | 10+ major events, budget compliance, logistics <span
+                  class="accent">· 2023</span></div>
+            </div>
+            <div class="position-item">
+              <div class="title">Volunteer | Talavs of Panvel</div>
+              <div class="detail">Wetland Conservation Exhibition with Panvel Municipal Corp. <span class="accent">·
+                  2022</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="capabilities" class="section">
+    <div class="container">
+      <div class="section-label fade-in">CAPABILITIES</div>
+      <div class="caps-grid fade-in">
+        <div class="cap-card">
+          <h4>Analysis &amp; Research</h4>
+          <div class="items">
+            <span class="primary">Structured data analysis</span>
+            <span>Market &amp; user research</span>
+            <span>Insight reporting &amp; dashboards</span>
+            <span>Regression &amp; segmentation</span>
+          </div>
+        </div>
+        <div class="cap-card">
+          <h4>Tools &amp; Tech</h4>
+          <div class="items">
+            <span class="primary">SQL · Python</span>
+            <span>Power BI</span>
+            <span>Excel / Sheets</span>
+            <span>Presentation design</span>
+          </div>
+        </div>
+        <div class="cap-card">
+          <h4>Management</h4>
+          <div class="items">
+            <span class="primary">Stakeholder management</span>
+            <span>Cross-functional coordination</span>
+            <span>Project documentation</span>
+            <span>Action tracking &amp; execution</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <div class="container">
+      <div class="section-label fade-in">CONTACT</div>
+      <div class="contact-block fade-in">
+        <h3>Let&rsquo;s connect</h3>
+        <div class="contact-links">
+          <a href="mailto:siddhantmorye05@gmail.com">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="M22 7l-10 7L2 7" />
+            </svg>
+            siddhantmorye05@gmail.com
+          </a>
+          <a href="https://www.linkedin.com/in/siddhant-morye-67a0761b3/" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z" />
+              <rect x="2" y="9" width="4" height="12" />
+              <circle cx="4" cy="4" r="2" />
+            </svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Siddhant Morye</p>
+    </div>
+  </footer>
+
+  <!-- Case File Modal Overlay -->
+  <div class="case-modal-overlay" id="caseModalOverlay" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="case-modal-backdrop" id="caseModalBackdrop"></div>
+    <div class="case-modal-container" id="caseModalContainer" tabindex="-1">
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close case study">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+        Close
+      </button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // ─── Scroll Reveal Observer ───
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        } else {
+          entry.target.classList.remove('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px 40px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ─── Case Study Modal Morph & Transitions ───
+    const overlay = document.getElementById('caseModalOverlay');
+    const container = document.getElementById('caseModalContainer');
+    const closeBtn = document.getElementById('modalCloseBtn');
+    const modalContent = document.getElementById('modalContent');
+
+    let lastActiveElement = null;
+    let currentActiveCard = null;
+
+    // Setup cards for focus and interaction
+    document.querySelectorAll('.case-card').forEach(card => {
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-haspopup', 'dialog');
+
+      card.addEventListener('click', () => openCard(card));
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openCard(card);
+        }
+      });
+    });
+
+    function openCard(card) {
+      lastActiveElement = document.activeElement;
+      currentActiveCard = card;
+
+      const template = card.querySelector('.case-template');
+      if (!template) return;
+
+      // Populate cloning layout
+      const clone = template.content.cloneNode(true);
+      modalContent.innerHTML = '';
+      modalContent.appendChild(clone);
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (prefersReducedMotion) {
+        // Instant display
+        overlay.style.display = 'flex';
+        overlay.offsetHeight;
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        overlay.querySelectorAll('.metric-num').forEach(m => {
+          m.textContent = m.getAttribute('data-target');
+        });
+        container.focus();
+      } else {
+        // Shared Element FLIP morphing sequence (transform-based, GPU composited)
+        const cardRect = card.getBoundingClientRect();
+
+        // Temporarily render overlay to get target container rect
+        overlay.style.display = 'flex';
+        overlay.style.visibility = 'hidden';
+        const containerRect = container.getBoundingClientRect();
+        overlay.style.display = 'none';
+        overlay.style.visibility = 'visible';
+
+        // Calculate inverse transform: place morph at target size/position,
+        // then scale+translate to appear at the card's original location
+        const scaleX = cardRect.width / containerRect.width;
+        const scaleY = cardRect.height / containerRect.height;
+        const deltaX = cardRect.left - containerRect.left;
+        const deltaY = cardRect.top - containerRect.top;
+
+        // Create morph at target (container) position
+        const morph = document.createElement('div');
+        morph.className = 'morph-card';
+        morph.style.top = containerRect.top + 'px';
+        morph.style.left = containerRect.left + 'px';
+        morph.style.width = containerRect.width + 'px';
+        morph.style.height = containerRect.height + 'px';
+        // Apply inverse transform so it looks like it's still at the card
+        morph.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`;
+        document.body.appendChild(morph);
+
+        document.body.style.overflow = 'hidden';
+        morph.offsetHeight; // Force reflow
+
+        // Animate to identity transform + color swap
+        requestAnimationFrame(() => {
+          morph.style.transform = 'none';
+          morph.style.background = 'var(--ink)';
+          morph.style.borderColor = 'var(--steel)';
+        });
+
+        morph.addEventListener('transitionend', function morphEnd(e) {
+          if (e.propertyName === 'transform') {
+            morph.removeEventListener('transitionend', morphEnd);
+            morph.remove();
+            overlay.style.display = 'flex';
+            overlay.offsetHeight;
+            overlay.classList.add('active');
+
+            animateMetrics(container);
+            container.focus();
+          }
+        });
+      }
+    }
+
+    function closeCard() {
+      if (!currentActiveCard) return;
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (prefersReducedMotion) {
+        overlay.classList.remove('active');
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+        if (lastActiveElement) lastActiveElement.focus();
+        currentActiveCard = null;
+      } else {
+        const containerRect = container.getBoundingClientRect();
+        const cardRect = currentActiveCard.getBoundingClientRect();
+
+        overlay.classList.remove('active');
+        overlay.style.display = 'none';
+
+        const scaleX = cardRect.width / containerRect.width;
+        const scaleY = cardRect.height / containerRect.height;
+        const deltaX = cardRect.left - containerRect.left;
+        const deltaY = cardRect.top - containerRect.top;
+
+        // Place morph at the container (current) position with dark styling
+        const morph = document.createElement('div');
+        morph.className = 'morph-card';
+        morph.style.top = containerRect.top + 'px';
+        morph.style.left = containerRect.left + 'px';
+        morph.style.width = containerRect.width + 'px';
+        morph.style.height = containerRect.height + 'px';
+        morph.style.background = 'var(--ink)';
+        morph.style.borderColor = 'var(--steel)';
+        morph.style.transform = 'none';
+        document.body.appendChild(morph);
+
+        morph.offsetHeight;
+
+        // Animate back to card position with light styling
+        requestAnimationFrame(() => {
+          morph.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`;
+          morph.style.background = 'var(--paper)';
+          morph.style.borderColor = 'var(--hairline)';
+        });
+
+        morph.addEventListener('transitionend', function morphCloseEnd(e) {
+          if (e.propertyName === 'transform') {
+            morph.removeEventListener('transitionend', morphCloseEnd);
+            morph.remove();
+            document.body.style.overflow = '';
+            if (lastActiveElement) lastActiveElement.focus();
+            currentActiveCard = null;
+          }
+        });
+      }
+    }
+
+    function animateMetrics(parent) {
+      const elements = parent.querySelectorAll('.metric-num');
+      elements.forEach(el => {
+        const targetVal = el.getAttribute('data-target');
+        const target = parseInt(targetVal, 10);
+        const isNegative = targetVal.startsWith('-');
+        const isPercent = targetVal.includes('%') || targetVal === '22' || targetVal === '35' || targetVal === '-18' || targetVal === '14' || targetVal === '-20' || targetVal === '-25' || targetVal === '30';
+        const prefix = isNegative ? '-' : (targetVal.startsWith('+') ? '+' : '');
+        const suffix = (isPercent && targetVal !== '4') ? '%' : '';
+
+        let start = 0;
+        const absTarget = Math.abs(target);
+        const duration = 850;
+        const startTime = performance.now();
+
+        function step(timestamp) {
+          const elapsed = timestamp - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const ease = progress * (2 - progress); // quadratic ease-out
+          const current = Math.floor(ease * absTarget);
+          el.textContent = `${prefix}${current}${suffix}`;
+
+          if (progress < 1) {
+            requestAnimationFrame(step);
+          } else {
+            el.textContent = targetVal;
+          }
+        }
+        requestAnimationFrame(step);
+      });
+    }
+
+    closeBtn.addEventListener('click', closeCard);
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay || e.target === document.getElementById('caseModalBackdrop')) {
+        closeCard();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.classList.contains('active')) {
+        closeCard();
+      }
+    });
+
+    // Trap focus inside modal overlay
+    container.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
+        const focusables = container.querySelectorAll('button, [tabindex="0"]');
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            last.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === last) {
+            first.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+
+</html>
