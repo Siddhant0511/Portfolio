@@ -27,7 +27,7 @@ Single-page portfolio for **Siddhant Morye** (PGDM Candidate, Analytics & Operat
 - **Mobile Stack Cards**: Collapses the qualifications table below `600px` into vertical profile cards, hiding headers and formatting grades/years cleanly.
 
 ### 4. Case Files (Interactive Dossiers)
-- **Real SIP Projects & Light Theme**: Replaced placeholder cases with the 4 actual Ashok Leyland SIP workstreams. Case files expand inside a clean light-themed modal. All 4 projects are fully visualized with flowcharts, triage boards, smartphone/poster mockups, feature importances, payday patterns, streak blocks, RCA diagnostic boards, handheld camera CV viewports, and comparative audits.
+- **Real SIP Projects & Light Theme**: Replaced placeholder cases with the 4 actual Ashok Leyland SIP workstreams. Case files expand inside a clean light-themed modal. Redesigned all 4 project dossiers into high-fidelity dashboards inside the modal, introducing circular SLA countdowns, inline SVG network blueprints, a GitHub-style attendance streak heatmap, linear-gradient filled line charts, and active IT diagnostic status telemetry boards.
 - **Balanced 2x2 Layout**: Updated desktop CSS layout to `repeat(2, 1fr)` to accommodate 4 cards symmetrically.
 - **Dynamic Metrics Parser**: Refactored JavaScript to dynamically parse any custom numbers, decimals (e.g. `1.05M+`), prefixes (e.g. `~`, `<`, `₹`), and suffixes (e.g. `s`, `%`) without hardcoded value conditions.
 - **FLIP Expansion**: Shared-element modal transition. Clicking a card scales it to fill 100% of the viewport width and height on both mobile and laptop screens, with a fixed close button anchored at the top right. Honors `prefers-reduced-motion`.
