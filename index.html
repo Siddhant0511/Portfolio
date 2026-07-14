@@ -912,8 +912,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(23, 26, 28, 0.65);
-      backdrop-filter: blur(8px);
+      background: rgba(23, 26, 28, 0.75);
       opacity: 0;
       transition: opacity 450ms cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -937,6 +936,7 @@
       border-radius: 0;
       box-shadow: none;
       padding: 60px 48px 48px;
+      will-change: opacity;
       opacity: 0;
       transition: opacity 450ms cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 1001;
@@ -3272,76 +3272,73 @@
       const template = card.querySelector('.case-template');
       if (!template) return;
 
-      // Populate cloning layout
-      const clone = template.content.cloneNode(true);
-      modalContent.innerHTML = '';
-      modalContent.appendChild(clone);
-
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      if (prefersReducedMotion) {
-        // Instant display
-        overlay.style.display = 'flex';
-        overlay.offsetHeight;
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
+      // Capture card rect BEFORE any DOM mutations
+      const cardRect = card.getBoundingClientRect();
 
-        overlay.querySelectorAll('.metric-num').forEach(m => {
-          m.textContent = m.getAttribute('data-target');
-        });
-        container.focus();
-      } else {
-        // Shared Element FLIP morphing sequence (transform-based, GPU composited)
-        const cardRect = card.getBoundingClientRect();
+      // Defer heavy template cloning to next frame so click handler returns fast
+      requestAnimationFrame(() => {
+        const clone = template.content.cloneNode(true);
+        modalContent.innerHTML = '';
+        modalContent.appendChild(clone);
 
-        // Temporarily render overlay to get target container rect
-        overlay.style.display = 'flex';
-        overlay.style.visibility = 'hidden';
-        const containerRect = container.getBoundingClientRect();
-        overlay.style.display = 'none';
-        overlay.style.visibility = 'visible';
+        if (prefersReducedMotion) {
+          overlay.style.display = 'flex';
+          overlay.offsetHeight;
+          overlay.classList.add('active');
+          document.body.style.overflow = 'hidden';
 
-        // Calculate inverse transform: place morph at target size/position,
-        // then scale+translate to appear at the card's original location
-        const scaleX = cardRect.width / containerRect.width;
-        const scaleY = cardRect.height / containerRect.height;
-        const deltaX = cardRect.left - containerRect.left;
-        const deltaY = cardRect.top - containerRect.top;
+          overlay.querySelectorAll('.metric-num').forEach(m => {
+            m.textContent = m.getAttribute('data-target');
+          });
+          container.focus();
+        } else {
+          // Temporarily render overlay to get target container rect
+          overlay.style.display = 'flex';
+          overlay.style.visibility = 'hidden';
+          const containerRect = container.getBoundingClientRect();
+          overlay.style.display = 'none';
+          overlay.style.visibility = 'visible';
 
-        // Create morph at target (container) position
-        const morph = document.createElement('div');
-        morph.className = 'morph-card';
-        morph.style.top = containerRect.top + 'px';
-        morph.style.left = containerRect.left + 'px';
-        morph.style.width = containerRect.width + 'px';
-        morph.style.height = containerRect.height + 'px';
-        // Apply inverse transform so it looks like it's still at the card
-        morph.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`;
-        document.body.appendChild(morph);
+          const scaleX = cardRect.width / containerRect.width;
+          const scaleY = cardRect.height / containerRect.height;
+          const deltaX = cardRect.left - containerRect.left;
+          const deltaY = cardRect.top - containerRect.top;
 
-        document.body.style.overflow = 'hidden';
-        morph.offsetHeight; // Force reflow
+          const morph = document.createElement('div');
+          morph.className = 'morph-card';
+          morph.style.top = containerRect.top + 'px';
+          morph.style.left = containerRect.left + 'px';
+          morph.style.width = containerRect.width + 'px';
+          morph.style.height = containerRect.height + 'px';
+          morph.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`;
+          document.body.appendChild(morph);
 
-        // Animate to identity transform + color swap
-        requestAnimationFrame(() => {
-          morph.style.transform = 'none';
-          morph.style.background = 'var(--paper)';
-          morph.style.borderColor = 'var(--steel)';
-        });
+          document.body.style.overflow = 'hidden';
+          morph.offsetHeight;
 
-        morph.addEventListener('transitionend', function morphEnd(e) {
-          if (e.propertyName === 'transform') {
-            morph.removeEventListener('transitionend', morphEnd);
-            morph.remove();
-            overlay.style.display = 'flex';
-            overlay.offsetHeight;
-            overlay.classList.add('active');
+          requestAnimationFrame(() => {
+            morph.style.transform = 'none';
+            morph.style.background = 'var(--paper)';
+            morph.style.borderColor = 'var(--steel)';
+          });
 
-            animateMetrics(container);
-            container.focus();
-          }
-        });
-      }
+          morph.addEventListener('transitionend', function morphEnd(e) {
+            if (e.propertyName === 'transform') {
+              morph.removeEventListener('transitionend', morphEnd);
+              morph.remove();
+              overlay.style.display = 'flex';
+              overlay.offsetHeight;
+              overlay.classList.add('active');
+
+              // Delay counter animations so they don't compete with CSS transitions
+              setTimeout(() => animateMetrics(container), 400);
+              container.focus();
+            }
+          });
+        }
+      });
     }
 
     function closeCard() {
