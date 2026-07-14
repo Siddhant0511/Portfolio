@@ -40,7 +40,13 @@ Introduced subtle background tints (`rgba` < 4%) to layout panels to break the f
 - **Signal Amber**: Case cards (`rgba(217, 138, 43, 0.015)`) deepening on hover.
 - **Muted Graphite**: Recognition items and capability cards.
 
+### 7. Standalone HTML Architecture & GitHub Pages
+- **Astro Boilerplate Purge**: Reverted all Astro integrations and modules to restore a clean, serverless local workspace consisting solely of HTML, CSS, and vanilla JS. Removed the local Astro skill.
+- **GitHub Pages Deploy**: Renamed the entry page to `index.html` and configured remote origin tracking for `https://github.com/Siddhant0511/Portfolio.git` on the `main` branch to host the static portfolio live at `https://siddhant0511.github.io/Portfolio/`.
+- **Full Viewport Optimization**: Removed the page container max-width limit and paragraph width constraints in the About segment, ensuring the page content scales to fully utilize widescreen displays without empty side margins.
+
 ## Active Rules & Guidelines
 1. **Never** use em-dashes (`—`) in text copy; use pipes (`|`), commas, or hyphens.
 2. Maintain single color accent (Amber `#D98A2B`) and strict corner radius (2px) throughout.
 3. Every button or text block must maintain a minimum WCAG AA contrast ratio against background panels.
+
