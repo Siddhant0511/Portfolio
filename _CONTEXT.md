@@ -27,8 +27,10 @@ Single-page portfolio for **Siddhant Morye** (PGDM Candidate, Analytics & Operat
 - **Mobile Stack Cards**: Collapses the qualifications table below `600px` into vertical profile cards, hiding headers and formatting grades/years cleanly.
 
 ### 4. Case Files (Interactive Dossiers)
-- **FLIP Expansion**: Shared-element modal transition. Clicking a manifest card scales the box to fill the viewport, fading backgrounds to Ink and displaying a dark dossier overlay.
-- **Staggered Content**: Counts metrics from 0, draws SVG process flowlines (left-to-right), traps focus, and closes via ESC/Close keys. Honors `prefers-reduced-motion`.
+- **Real SIP Projects & Light Theme**: Replaced placeholder cases with the 4 actual Ashok Leyland SIP workstreams. Case files expand inside a clean light-themed modal. All 4 projects are fully visualized with flowcharts, triage boards, smartphone/poster mockups, feature importances, payday patterns, streak blocks, RCA diagnostic boards, handheld camera CV viewports, and comparative audits.
+- **Balanced 2x2 Layout**: Updated desktop CSS layout to `repeat(2, 1fr)` to accommodate 4 cards symmetrically.
+- **Dynamic Metrics Parser**: Refactored JavaScript to dynamically parse any custom numbers, decimals (e.g. `1.05M+`), prefixes (e.g. `~`, `<`, `₹`), and suffixes (e.g. `s`, `%`) without hardcoded value conditions.
+- **FLIP Expansion**: Shared-element modal transition. Clicking a card scales it to fill 100% of the viewport width and height on both mobile and laptop screens, with a fixed close button anchored at the top right. Honors `prefers-reduced-motion`.
 
 ### 5. Academic Block & Course Grid
 - **Single-Line Title**: Locked `PGDM | Analytics & Operations` to a single line on desktop/tablet (`white-space: nowrap`) with matching fluid text size.
