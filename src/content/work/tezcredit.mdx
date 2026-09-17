@@ -16,9 +16,106 @@ tags: [Fintech, Product, Credit risk]
 metrics:
   - { value: 50, suffix: '%', label: 'FOIR ceiling that sizes every approval' }
   - { value: 3, label: 'decision paths: approve, reduce and review, decline' }
-  - { value: 6, label: 'India Stack rails in one journey' }
+  - { value: 5, label: 'India Stack rails in one journey' }
 cover: ../../assets/work/tezcredit/splash.png
 coverAlt: TezCredit app splash screen inside a phone frame
 links:
   - { label: Open the prototype, href: 'demos/tezcredit.html' }
 ---
+
+import Figure from '@/components/case/Figure.astro';
+import Flow from '@/components/case/Flow.astro';
+import Gallery from '@/components/case/Gallery.astro';
+import DataTable from '@/components/case/DataTable.astro';
+import Tiers from '@/components/case/Tiers.astro';
+import Callout from '@/components/case/Callout.astro';
+import home from '@/assets/work/tezcredit/home.jpg';
+import lenders from '@/assets/work/tezcredit/lenders.jpg';
+import agreement from '@/assets/work/tezcredit/agreement.jpg';
+import dashboard from '@/assets/work/tezcredit/dashboard.jpg';
+import approved from '@/assets/work/tezcredit/decision-prime.jpg';
+import reduced from '@/assets/work/tezcredit/decision-review.jpg';
+import declined from '@/assets/work/tezcredit/decision-decline.jpg';
+
+## The brief
+
+For the Fintech course, our group built **TezCredit**: a working, clickable prototype of how an Indian digital lender gives someone an unsecured personal loan of ₹1.5 lakh, fully online, in about five minutes. No branch, no paperwork.
+
+Any lender has to do four jobs: prove who you are, check whether you can repay, decide and price the loan, and move the money. TezCredit does all four on top of India's public digital infrastructure. Each of the five team members owned one layer of the product: the journey, the experience, the integrations, the credit decision and compliance.
+
+The prototype runs in the browser. Everything below comes from the real screens; no real Aadhaar, bank, bureau or money is involved.
+
+## The journey
+
+<Figure title="Six steps from phone number to money in the account">
+  <Flow
+    steps={[
+      { title: 'Onboard', detail: 'Name, mobile number and one clear consent, then an OTP', meta: 'Ask for the minimum' },
+      { title: 'Verify', detail: 'Aadhaar e-KYC and PAN, with a name match between them', meta: 'Know the borrower' },
+      { title: 'Understand', detail: 'DigiLocker documents and six months of bank data via the Account Aggregator', meta: 'Consent-based' },
+      { title: 'Decide', detail: 'Credit score, FOIR and risk-based pricing across partner lenders', meta: 'Sized to repay' },
+      { title: 'Sign', detail: 'Key Fact Statement, then Aadhaar eSign', meta: 'RBI 2025 rules' },
+      { title: 'Disburse', detail: 'UPI or IMPS to the borrower, with UPI Autopay or eNACH for EMIs', meta: 'Straight to their account', emphasis: true },
+    ]}
+  />
+</Figure>
+
+<Gallery
+  variant="phones"
+  images={[
+    { src: home, alt: 'TezCredit home screen showing a safe-to-borrow limit and the EMIs the user already pays', caption: 'Home leads with an honest "safe to borrow" number' },
+    { src: lenders, alt: 'Lender comparison screen with indicative rates, tenure and fees for NBFCs', caption: 'Lenders price the same loan differently' },
+    { src: agreement, alt: 'Key Fact Statement listing loan amount, rate, EMI, processing fee and APR', caption: 'The Key Fact Statement, APR included' },
+    { src: dashboard, alt: 'Loan dashboard with outstanding balance, EMI, next due date and repayment schedule', caption: 'After disbursal: a dashboard to repay' },
+  ]}
+/>
+
+## The decision engine
+
+This is where a lender makes or loses money. The engine rests on two ideas: the **credit score**, and **FOIR**, the fixed obligations to income ratio: all of a borrower's EMIs, including the new one, divided by their income.
+
+The policy ceiling is 50%. The engine does not simply say yes or no; if the full amount would push FOIR past 50%, it offers the largest amount that keeps the borrower inside the line.
+
+<Gallery
+  cols={3}
+  images={[
+    { src: approved, alt: 'Decision screen: approved for the full 1,50,000 at 12.5% with FOIR 27%', caption: 'Approved in full: FOIR stays at 27%' },
+    { src: reduced, alt: 'Decision screen: requested amount would push FOIR to 73%, approved for 55,000 at 15.5%', caption: 'Reduced: full amount means 73% FOIR, so ₹55,000 is offered' },
+    { src: declined, alt: 'Decision screen: not approved because FOIR is already 95%', caption: 'Declined: existing EMIs already take 95% of income' },
+  ]}
+/>
+
+<DataTable
+  caption="Three borrowers, three outcomes"
+  head={['Borrower', 'Profile', 'Bureau score', 'FOIR', 'Outcome']}
+  rows={[
+    ['Arjun', 'Salaried software engineer', '786', '27% after the loan', 'Full ₹1,50,000 at 12.5%, EMI ₹13,362'],
+    ['Ramesh', 'Delivery partner, variable income', '720', '73% at full amount', '₹55,000 at 15.5%, holding FOIR at 50%'],
+    ['Vikram', 'Shop owner, recent defaults', '610', '95% before the loan', 'Declined, with ways to improve'],
+  ]}
+/>
+
+<Callout>Responsible lending means being able to say no, and explaining why on the same screen.</Callout>
+
+Pricing follows risk: a safer borrower gets a lower rate from the same lender panel, because the price of a loan is really the price of its risk. Every decision screen shows the reasons, score, FOIR and verified income, so there is no black box.
+
+## Compliance built in, not bolted on
+
+<Tiers
+  cols={2}
+  items={[
+    { kicker: 'RBI Digital Lending Directions, 2025', title: 'Key Fact Statement', body: 'Before signing, one honest summary: amount, tenure, EMI, every fee, and the APR that folds interest and fees into a single yearly cost.' },
+    { kicker: 'Borrower rights', title: 'Cooling-off period', body: 'The borrower can exit within a few days by repaying principal and a little interest, with no penalty. It is stated on screen.' },
+    { kicker: 'Money flow', title: 'Direct disbursal', body: 'Funds go straight to the borrower’s own bank account, never through a pooled intermediary account.' },
+    { kicker: 'DPDP Act, 2023', title: 'Consent and roles', body: 'Data is shared only with explicit, time-bound consent. The regulated NBFC lends; the app acts as the lending service provider.' },
+  ]}
+/>
+
+## Designed for real Indian users
+
+- **One step at a time.** Each screen says exactly what to do next, such as "Finish KYC".
+- **Honest numbers.** The safe-to-borrow figure stays greyed out until identity is verified: no flashy "you've won ₹5 lakh".
+- **Language and access.** The whole app switches to Hindi, Tamil, Telugu or Malayalam, and runs comfortably on a low-cost phone.
+- **Plain-language permissions.** Settings explain why a lender would ever ask for camera or location access.
+
+The takeaway from building it: modern lending in India is not magic. It is public digital infrastructure, sound credit judgement and strict consumer protection, stitched into one calm screen.

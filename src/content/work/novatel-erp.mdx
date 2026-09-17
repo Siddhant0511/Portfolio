@@ -20,3 +20,127 @@ metrics:
 cover: ../../assets/work/novatel-erp/2-procure-to-pay-network.png
 coverAlt: Bizagi BPMN swimlane for network equipment procure-to-pay
 ---
+
+import Figure from '@/components/case/Figure.astro';
+import Flow from '@/components/case/Flow.astro';
+import Tabs from '@/components/case/Tabs.astro';
+import Gallery from '@/components/case/Gallery.astro';
+import Tiers from '@/components/case/Tiers.astro';
+import Callout from '@/components/case/Callout.astro';
+import DataTable from '@/components/case/DataTable.astro';
+import Compare from '@/components/case/Compare.astro';
+import onboarding from '@/assets/work/novatel-erp/1-subscriber-onboarding.png';
+import p2p from '@/assets/work/novatel-erp/2-procure-to-pay-network.png';
+import ticket from '@/assets/work/novatel-erp/3-trouble-ticket-resolution.png';
+import capex from '@/assets/work/novatel-erp/4-capex-approval-workflow.png';
+
+## The company
+
+**NovaTel Communications** is a mid-sized telecom operator, the company in the assignment, holding unified access licences across five circles and offering 4G and 5G mobile, fibre broadband and enterprise connectivity to 2,800+ employees' worth of operations.
+
+Its systems were islands: standalone billing servers, manual spreadsheets and a separate ticketing portal. The results were billing disputes, budget overruns and slow subscriber onboarding. The assignment was to design the ERP that would replace them.
+
+<Callout>In telecom, no department creates value alone. Onboarding a subscriber touches sales, CRM, the network and finance; building a tower touches planning, procurement, QA and payables.</Callout>
+
+## Modules and why each matters
+
+<DataTable
+  caption="Required ERP modules ranked by criticality"
+  head={['Module', 'Process family', 'Why it matters for NovaTel']}
+  rows={[
+    ['CRM', 'Order to cash', 'Customer 360 view, KYC, renewals and complaints; weak CRM means churn and regulatory penalties'],
+    ['Finance and controlling', 'Record to report', 'General ledger, receivables and payables, revenue recognition and GST'],
+    ['Sales and order management', 'Order to cash', 'Retail POS, SIM allocation and provisioning triggers, with no leakage into billing'],
+    ['Procurement and supply chain', 'Procure to pay', 'Tower leasing, RF equipment RFQs, vendor scorecards and three-way matching'],
+    ['Human resources', 'Hire to retire', 'Payroll, attendance and role-based access for 2,800+ employees'],
+    ['Inventory and spares', 'Procure to pay', 'Serialised SIMs, ONTs, routers and battery banks, to avoid downtime from shortages'],
+    ['Reporting and analytics', 'Business intelligence', 'ARPU, churn and circle profitability for capital allocation'],
+  ]}
+/>
+
+## Master data: garbage in, garbage out
+
+Every transaction references master data, so a defect there cascades everywhere downstream. I specified the key fields for each entity and what breaks if they are missing.
+
+<Tiers
+  cols={3}
+  items={[
+    { kicker: 'Customer master', title: 'No SIM, no bill', body: 'Without subscriber ID, KYC reference and circle code, a SIM cannot be provisioned and bills cannot be generated.' },
+    { kicker: 'Vendor master', title: 'Payments at risk', body: 'Without GSTIN, PAN and verified bank details, POs cannot issue and payments may reach unverified accounts.' },
+    { kicker: 'Service plan master', title: 'Wrong tariffs', body: 'Without plan code, rental, data cap and FUP speed, the billing engine charges subscribers incorrectly.' },
+  ]}
+/>
+
+## Four processes in BPMN 2.0
+
+I modelled each process as a Bizagi swimlane diagram with explicit tasks, decision gateways and system touchpoints.
+
+<Tabs label="Process model" labels={['Subscriber onboarding', 'Network P2P', 'Trouble tickets', 'CapEx approval']}>
+  <div slot="panel-0">
+    <Flow
+      steps={[
+        { title: 'KYC at the store', detail: 'Details and documents captured, request logged in CRM' },
+        { title: 'Verify and bind', detail: 'CRM validates, issues a customer ID and links the plan' },
+        { title: 'Allocate and provision', detail: 'A serialised SIM is issued and the network HLR activates service' },
+        { title: 'First bill', detail: 'Subscription ledger created, first invoice posted to receivables', emphasis: true },
+      ]}
+    />
+    <Gallery variant="single" zoom images={[{ src: onboarding, alt: 'BPMN model: subscriber onboarding across retail store, CRM, NOC and finance swimlanes' }]} />
+  </div>
+  <div slot="panel-1">
+    <Flow
+      steps={[
+        { title: 'Requisition', detail: 'Network planning raises a PR with a bill of materials' },
+        { title: 'Quote and order', detail: 'Procurement evaluates bids and issues the PO' },
+        { title: 'Receive and inspect', detail: 'Goods receipt logged; QA signs the inspection certificate' },
+        { title: 'Match and pay', detail: 'PO, GRN and invoice matched; paid on Net 45', emphasis: true },
+      ]}
+    />
+    <Gallery variant="single" zoom images={[{ src: p2p, alt: 'BPMN model: network equipment procure to pay across five swimlanes with a three-way match' }]} />
+  </div>
+  <div slot="panel-2">
+    <Flow
+      steps={[
+        { title: 'Log the fault', detail: 'Call centre raises a ticket linked to the customer record' },
+        { title: 'Remote diagnostics', detail: 'L1 runs line tests; physical faults escalate with an SLA clock' },
+        { title: 'Field fix', detail: 'Technician repairs; the NOC verifies optical power and closes the work order' },
+        { title: 'Confirm and close', detail: 'Customer confirms by OTP; the ticket closes with an SLA record', emphasis: true },
+      ]}
+    />
+    <Gallery variant="single" zoom images={[{ src: ticket, alt: 'BPMN model: trouble ticket resolution across call centre, L1 support, field operations and QA' }]} />
+  </div>
+  <div slot="panel-3">
+    <Gallery variant="single" zoom images={[{ src: capex, alt: 'BPMN model: multi-tier CapEx approval with dynamic thresholds' }]} />
+  </div>
+</Tabs>
+
+## CapEx governance
+
+Telecom capital spending runs into tens of crores per circle, so the approval workflow is a rule engine, not an email chain. It enforces segregation of duties and routes requests by value.
+
+<DataTable
+  caption="CapEx approval workflow"
+  head={['Step', 'Approver', 'Rule the system enforces']}
+  rows={[
+    ['1', 'Circle planning manager', 'Cannot submit without RF survey, lease, 3-year ROI and linked material codes'],
+    ['2', 'Regional technical head', 'Endorse or reject with remarks; auto-reminder after 48 hours'],
+    ['3', 'Circle finance controller', 'Hard stop: auto-reject if the request exceeds remaining circle budget by more than 15%'],
+    ['4', 'VP, network operations', 'Skipped up to ₹10 lakh; mandatory above ₹10 lakh'],
+    ['5', 'Chief financial officer', 'Mandatory only above ₹50 lakh'],
+  ]}
+/>
+
+Every approval, rejection comment and timestamp is written to an immutable audit trail for statutory audits, TRAI filings and board oversight.
+
+## What breaks without integration
+
+<Compare
+  beforeLabel="Integration point"
+  afterLabel="If it fails"
+  rows={[
+    { k: 'CRM to billing', before: 'A plan upgrade must update the rating engine in real time', after: 'Subscribers keep paying the old tariff: disputes, complaints, TRAI penalties and churn' },
+    { k: 'Procurement to finance', before: 'An approved PO must freeze the budget line immediately', after: 'Circles keep approving spend they no longer have; invoices 45 days later trigger a liquidity crunch' },
+  ]}
+/>
+
+The blueprint's argument is that ERP is the operator's nervous system: clean master data, cross-functional workflows and embedded controls that let NovaTel scale across circles without losing financial discipline.

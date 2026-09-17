@@ -14,7 +14,7 @@ const { xLabel, yLabel, quadrants, items } = Astro.props;
     <span class="label -rotate-90 whitespace-nowrap">{yLabel} &uarr;</span>
   </div>
   <div class="min-w-0 flex-1">
-    <div class="relative grid aspect-[4/3] grid-cols-2 grid-rows-2 gap-px border border-line-strong bg-line-strong sm:aspect-[16/10]">
+    <div class="relative grid aspect-[4/3] grid-cols-2 grid-rows-2 gap-px border border-line-strong bg-line-strong">
       {
         quadrants.map((q) => (
           <div class="bg-bg p-3 sm:p-4">
@@ -24,7 +24,7 @@ const { xLabel, yLabel, quadrants, items } = Astro.props;
       }
       {
         items.map((it) => (
-          <div class="absolute -translate-x-1/2 -translate-y-1/2" style={`left:${it.x}%; top:${100 - it.y}%`}>
+          <div class="absolute -translate-x-1/2 -translate-y-[7px]" style={`left:${it.x}%; top:${100 - it.y}%`}>
             <div class:list={['flex max-w-[11rem] flex-col items-center text-center']}>
               <span class:list={['size-3.5 rotate-45', it.highlight ? 'bg-accent' : 'bg-ink']} />
               <span class="mt-2 text-xs leading-tight font-medium sm:text-sm">{it.label}</span>

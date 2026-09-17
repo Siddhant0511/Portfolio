@@ -11,7 +11,7 @@ const { labels, label } = Astro.props;
 const id = `tabs-${Math.random().toString(36).slice(2, 8)}`;
 ---
 
-<div class="tabs" data-tabs>
+<div class="case-block tabs" data-tabs>
   <div role="tablist" aria-label={label} class="mb-5 hidden flex-wrap gap-1 border-b border-line pb-3 [.js_&]:flex">
     {
       labels.map((l, i) => (
@@ -37,6 +37,13 @@ const id = `tabs-${Math.random().toString(36).slice(2, 8)}`;
     ))
   }
 </div>
+
+<style>
+  /* Space out stacked content (e.g. a flow followed by its BPMN diagram) inside one panel. */
+  [data-tab-panel] > :global(*) > :global(* + *) {
+    margin-top: 1.5rem;
+  }
+</style>
 
 <script>
   function setupTabs() {

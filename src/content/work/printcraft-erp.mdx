@@ -20,3 +20,176 @@ metrics:
 cover: ../../assets/work/printcraft-erp/odoo-sales-order.jpg
 coverAlt: Odoo sales quotation for a custom marketing brochure order
 ---
+
+import Figure from '@/components/case/Figure.astro';
+import Flow from '@/components/case/Flow.astro';
+import Tabs from '@/components/case/Tabs.astro';
+import Gallery from '@/components/case/Gallery.astro';
+import Stats from '@/components/case/Stats.astro';
+import Tiers from '@/components/case/Tiers.astro';
+import Steps from '@/components/case/Steps.astro';
+import Callout from '@/components/case/Callout.astro';
+import DataTable from '@/components/case/DataTable.astro';
+import bpmnO2c from '@/assets/work/printcraft-erp/bpmn-o2c.png';
+import bpmnP2p from '@/assets/work/printcraft-erp/bpmn-p2p.png';
+import bpmnMto from '@/assets/work/printcraft-erp/bpmn-mto.png';
+import odooSales from '@/assets/work/printcraft-erp/odoo-sales-order.jpg';
+import odooWorkCenters from '@/assets/work/printcraft-erp/odoo-work-centers.jpg';
+import odooProducts from '@/assets/work/printcraft-erp/odoo-products.jpg';
+import odooEmployees from '@/assets/work/printcraft-erp/odoo-employees.jpg';
+
+## The engagement
+
+The ERP capstone cast each group as a consulting firm implementing Odoo for a client. Ours was **PrintCraft Solutions**, a commercial printing and packaging manufacturer. The brief ran end to end: understand the business, model its processes, design the solution, configure Odoo, run a full business cycle live, and recommend what comes after ERP.
+
+<DataTable
+  caption="PrintCraft operating profile"
+  head={['Attribute', 'Profile']}
+  rows={[
+    ['Business', 'Commercial printing, paperboard and packaging'],
+    ['Facility', '25,000 sq ft plant with offset presses, digital lines and die-cutters'],
+    ['Operations', 'Two 8-hour shifts'],
+    ['Production mix', '60% custom make-to-order, 40% catalogue make-to-stock'],
+    ['Workforce', '120+ people across 7 departments'],
+    ['Product lines', 'Marketing collateral, custom packaging, large-format signage, finishing and fulfilment'],
+  ]}
+/>
+
+## Diagnosis
+
+<Stats
+  items={[
+    { value: 8, suffix: '%', label: 'of revenue lost to defects, colour mismatches and emergency reruns' },
+    { value: 82, suffix: '%', label: 'on-time delivery, against a 98% industry benchmark' },
+    { display: '3x', label: 'redundant data entry across quotes, shop orders and ledgers' },
+  ]}
+/>
+
+<Tiers
+  items={[
+    { kicker: 'Margin leakage', title: 'Job costing from static spreadsheets', body: 'Estimates ignored machine setup and substrate scrap, so custom packaging contracts leaked margin.', meta: 'Fix: multi-level BOM costing, live work-centre rates' },
+    { kicker: 'Late deliveries', title: 'Press scheduling conflicts', body: 'Sales promised dates without seeing press queues, causing constant changeovers and bottlenecks.', meta: 'Fix: visual MRP scheduling by work centre' },
+    { kicker: 'Line stoppages', title: 'Reactive material buying', body: 'Paperboard and specialty inks were ordered too late, bringing freight surcharges and shutdowns.', meta: 'Fix: min/max rules with lead-time triggers' },
+  ]}
+/>
+
+The target: **30% more factory throughput without expanding the facility**, through integrated MRP scheduling and automated procurement.
+
+## Solution blueprint
+
+<DataTable
+  caption="Odoo modules and their role"
+  head={['Module', 'What it does for PrintCraft']}
+  rows={[
+    ['Sales and CRM', 'Client accounts, packaging price-matrix quotes, sales orders linked to capacity'],
+    ['Manufacturing', 'Multi-level bills of materials and routing across offset and digital press work centres'],
+    ['Inventory', 'Lot tracking for paperboard and ink, scrap logging, work-in-progress valuation'],
+    ['Purchasing', 'Automatic RFQs when stock breaches safety levels, vendor lead-time tracking'],
+    ['Accounting', 'Three-way matching of vendor bills, invoicing on delivery, actual vs standard COGS'],
+    ['Quality', 'Client proof sign-off before press, caliper checks at receipt, pre-shipment QC'],
+  ]}
+/>
+
+## Three core processes
+
+We modelled each process in BPMN 2.0 swimlanes, then configured Odoo so the hand-offs happen automatically.
+
+<Tabs label="Process" labels={['Order to cash', 'Procure to pay', 'Make to order']}>
+  <div slot="panel-0">
+    <Flow
+      steps={[
+        { title: 'Inquiry and quote', detail: 'Log requirements, apply the price matrix, issue a quote' },
+        { title: 'Sales order', detail: 'Client confirms; delivery milestones locked, stock reserved' },
+        { title: 'Allocate', detail: 'Verify catalogue stock and queue pick and pack' },
+        { title: 'Ship', detail: 'Pack, generate the delivery slip, dispatch' },
+        { title: 'Invoice and collect', detail: 'Invoice drafted on delivery, payment reconciled', emphasis: true },
+      ]}
+    />
+  </div>
+  <div slot="panel-1">
+    <Flow
+      steps={[
+        { title: 'Stock alert', detail: 'Paper or ink crosses its minimum; a draft RFQ is created' },
+        { title: 'RFQ', detail: 'Vendors quote price and lead time' },
+        { title: 'Purchase order', detail: 'Buyer approves the bid and confirms the PO' },
+        { title: 'Receive and inspect', detail: 'Rolls and ink received, batch quality and caliper checked' },
+        { title: 'Match and pay', detail: 'PO, receipt and bill matched, then paid', emphasis: true },
+      ]}
+    />
+  </div>
+  <div slot="panel-2">
+    <Flow
+      steps={[
+        { title: 'Job spec', detail: 'Artwork proof approved, dimensions locked, order on the MTO route' },
+        { title: 'BOM', detail: 'Job-specific bill of materials with paper and ink needs' },
+        { title: 'Press', detail: 'Offset or digital run, machine time and labour logged' },
+        { title: 'Finish', detail: 'Die-cut, laminate or UV coat, bind and collate' },
+        { title: 'QC and stock', detail: 'Final colour and count check, then staged for delivery', emphasis: true },
+      ]}
+    />
+  </div>
+</Tabs>
+
+<Gallery
+  cols={3}
+  zoom
+  images={[
+    { src: bpmnO2c, alt: 'BPMN swimlane diagram for PrintCraft order to cash', caption: 'Order to cash, BPMN 2.0' },
+    { src: bpmnP2p, alt: 'BPMN swimlane diagram for PrintCraft procure to pay', caption: 'Procure to pay, BPMN 2.0' },
+    { src: bpmnMto, alt: 'BPMN swimlane diagram for PrintCraft make-to-order manufacturing', caption: 'Make to order, BPMN 2.0' },
+  ]}
+/>
+
+## How the modules talk
+
+<Figure title="One transaction, five departments" note="Each arrow is an automatic hand-off configured in Odoo, replacing a manual re-entry.">
+  <Flow
+    steps={[
+      { title: 'Sales', detail: 'Confirming an MTO order creates a manufacturing order with the exact BOM' },
+      { title: 'Manufacturing', detail: 'Completing work centres consumes paper, ink and packaging' },
+      { title: 'Inventory', detail: 'Stock below reorder point creates draft RFQs' },
+      { title: 'Purchasing', detail: 'Validated receipts stage vendor bills for matching' },
+      { title: 'Finance', detail: 'Validated deliveries generate customer invoices', emphasis: true },
+    ]}
+  />
+</Figure>
+
+<Callout>ERP's value is not the software screens. It is that confirming one sales order can set production, purchasing and invoicing in motion without anyone re-typing it.</Callout>
+
+## The live Odoo build
+
+We configured the company, users, customers, suppliers, products, work centres and accounting in Odoo, then demonstrated four scenarios live: a custom brochure order that auto-creates a manufacturing order, routing it through press and bindery, automatic material depletion triggering an RFQ, and delivery through to a matched invoice.
+
+<Gallery
+  cols={2}
+  zoom
+  images={[
+    { src: odooSales, alt: 'Odoo quotation for a custom marketing brochure, make-to-order', caption: 'A custom brochure quotation on the MTO route' },
+    { src: odooWorkCenters, alt: 'Odoo work centres: press centre, finishing and bindery, QC and staging', caption: 'Work centres for press, finishing and QC' },
+    { src: odooProducts, alt: 'Odoo product catalogue with paperboard roll, brochure, die-cutting film and CMYK ink', caption: 'Raw materials and finished goods' },
+    { src: odooEmployees, alt: 'Odoo employee directory for the PrintCraft team', caption: 'Users and roles configured' },
+  ]}
+/>
+
+## Dashboards and what comes next
+
+<Tiers
+  cols={4}
+  items={[
+    { kicker: 'CEO', title: 'Enterprise overview', body: 'Gross margin by category, revenue against budget, on-time in-full delivery, press OEE.' },
+    { kicker: 'Sales', title: 'Pipeline', body: 'Weighted pipeline, win rate by rep, customer concentration, order value by MTS and MTO.' },
+    { kicker: 'Operations', title: 'Shop floor and stock', body: 'Days of inventory, WIP queue by work centre, scrap per press run, supplier lead times.' },
+    { kicker: 'Finance', title: 'Margin control', body: 'Receivables ageing, payables schedule, quoted vs actual job margin, WIP valuation.' },
+  ]}
+/>
+
+The roadmap beyond go-live, framed as proposals for the client:
+
+<Steps
+  items={[
+    { title: 'Press telemetry', body: 'IoT sensors on presses feeding exact machine hours and downtime into Odoo MRP.', meta: 'Months 1-6' },
+    { title: 'RFID warehouse', body: 'Tagged paper rolls and pallets update inventory as they move through work centres.', meta: 'Months 6-12' },
+    { title: 'Digital twin scheduling', body: 'Simulate press changeovers and queues against live Odoo data.', meta: 'Months 12-18' },
+    { title: 'AI use cases', body: 'Substrate demand forecasting, vibration-based predictive maintenance and generative packaging quotes.', meta: 'Alongside' },
+  ]}
+/>

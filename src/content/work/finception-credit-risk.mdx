@@ -19,3 +19,140 @@ metrics:
 cover: ../../assets/work/finception-credit-risk/dashboard.png
 coverAlt: Power BI summary dashboard for the loan portfolio
 ---
+
+import Figure from '@/components/case/Figure.astro';
+import Bars from '@/components/case/Bars.astro';
+import Columns from '@/components/case/Columns.astro';
+import Dumbbell from '@/components/case/Dumbbell.astro';
+import Heatmap from '@/components/case/Heatmap.astro';
+import Stats from '@/components/case/Stats.astro';
+import Steps from '@/components/case/Steps.astro';
+import Callout from '@/components/case/Callout.astro';
+import Gallery from '@/components/case/Gallery.astro';
+import fin from '@/data/finception.json';
+import dashboard from '@/assets/work/finception-credit-risk/dashboard.png';
+
+export const label = (p) => p.replace(/_/g, ' ').replace(/^\w/, (c) => c.toUpperCase());
+
+## The brief
+
+India's digital lending market has grown fast by reaching small-ticket and new-to-credit borrowers. That growth brings real vulnerabilities: unstable incomes, thin or missing bureau files, uneven verification, and rising regulatory scrutiny of unsecured lending.
+
+The competition handed us a loan-level book and a simple question dressed up as a hard one: **where is this portfolio actually losing money, and what should the lender change?**
+
+## The portfolio at a glance
+
+<Stats
+  items={[
+    { value: 855969, label: 'loans in the book' },
+    { value: 5.43, decimals: 2, suffix: '%', label: 'overall default rate' },
+    { value: 13.19, decimals: 2, suffix: '%', label: 'average interest rate' },
+    { value: 88.37, decimals: 2, suffix: '%', label: 'of loans are small-ticket, under ₹30,000' },
+  ]}
+/>
+
+A 5.43% default rate looks moderate. The point of the analysis was to show it is an average over very different books: most segments are fine, and a few are badly underpriced.
+
+## Risk 1: purpose mispricing
+
+The sharpest finding came from putting each loan purpose's default rate next to the interest it earns. For a healthy segment, interest sits comfortably above default. For three purposes, it does not.
+
+<Figure title="Interest earned vs default rate, by loan purpose" note="Where the orange dot sits close to, or past, the black one, expected loss eats most of the interest income." source="Cleaned loan-level data, 855,969 loans">
+  <Dumbbell
+    aLabel="Average interest rate"
+    bLabel="Default rate"
+    max={20}
+    suffix="%"
+    decimals={2}
+    labelWidth="10rem"
+    rows={fin.purpose.map((p) => ({ label: label(p.x), a: p.interest, b: p.rate, highlight: ['educational', 'small_business', 'wedding'].includes(p.x) }))}
+  />
+</Figure>
+
+<Callout>Educational loans defaulted at 17.18% while charging 11.65% interest. The segment loses money before any operating cost.</Callout>
+
+- **Educational:** 17.18% default against 11.65% interest; the team's expected-loss view put its net yield at about 1.34%
+- **Small business:** 14.21% default against 16.15% interest, almost no margin for loss given default or costs
+- **Wedding:** 11.62% default overall, rising to **22.37%** for ₹25,000 to ₹50,000 loans, a red-flag segment
+
+## Risk 2: small-ticket concentration
+
+88% of the book sits in loans under ₹30,000. That is the core of digital lending's inclusion story, and also its volatility: small loans go to cash-flow-sensitive borrowers, and the riskiest purposes cluster in exactly these ranges.
+
+<Figure title="Default rate by purpose and loan size" note="Darker cells default more. n/a: no loans in that cell." source="Team Power BI dashboard">
+  <Heatmap
+    caption="Default rate by loan purpose and loan amount bucket"
+    rowHeader="Purpose"
+    cols={['₹0-10k', '₹10-20k', '₹20-30k', '₹30-40k']}
+    max={26}
+    decimals={2}
+    threshold={14}
+    rows={['Educational', 'Wedding', 'Small business', 'Renewable energy', 'Moving', 'House', 'Medical', 'Other', 'Vacation', 'Debt consolidation', 'Major purchase', 'Car', 'Home improvement', 'Credit card']}
+    values={[
+      [16.3, 18.75, 37.5, null],
+      [10.42, 12.78, 14.29, 26.32],
+      [12.35, 14.88, 15.59, 16.94],
+      [8.86, 10.88, 12.2, 18.18],
+      [8.39, 8.16, 11.79, 5.88],
+      [7.97, 8.22, 10.53, 5.75],
+      [7.19, 6.47, 7.71, 13.16],
+      [7.17, 7.57, 7.92, 7.47],
+      [5.86, 7.36, 11.54, 3.57],
+      [5.63, 5.64, 5.56, 5.55],
+      [5.05, 6.03, 5.03, 6.11],
+      [5.25, 5.29, 6.85, 4.82],
+      [4.39, 4.29, 5.4, 6.25],
+      [4.21, 4.1, 3.69, 3.43],
+    ]}
+  />
+</Figure>
+
+The heatmap makes the second insight visible: risk is not a property of purpose or size alone, but of **specific purpose and size combinations**. Some of the worst cells rest on small numbers of loans, which is itself a reason for caution when pricing them.
+
+## Risk 3: grade and tenor tail risk
+
+Credit grades did their job, sharply. Grade G loans defaulted nine times as often as grade A. Longer tenors added risk on top: lenders stretch tenors to make EMIs affordable, and lifetime default probability rises with them.
+
+<div class="case-block grid gap-6 lg:grid-cols-[1.6fr_1fr]">
+  <Figure title="Default rate by credit grade">
+    <Columns
+      suffix="%"
+      decimals={1}
+      height="13rem"
+      items={fin.grade.map((g) => ({ label: `Grade ${g.x}`, value: g.rate, highlight: g.x === 'F' || g.x === 'G' }))}
+    />
+  </Figure>
+  <Figure title="Default rate by tenor">
+    <Columns
+      suffix="%"
+      decimals={2}
+      height="13rem"
+      max={8}
+      items={[
+        { label: '36 months', value: fin.term[0].rate },
+        { label: '60 months', value: fin.term[1].rate, highlight: true },
+      ]}
+    />
+  </Figure>
+</div>
+
+Grades F and G on 60-month tenors are where expected loss concentrates most.
+
+## What we recommended
+
+<Steps
+  items={[
+    { title: 'Reprice', body: 'Set rates from expected loss plus target margin by purpose and grade, starting with educational, small business and wedding loans.' },
+    { title: 'Cap exposure', body: 'Limit exposure to the worst purpose and size combinations, and to F and G grades on long tenors.' },
+    { title: 'Tighten underwriting', body: 'Stricter verification for high-risk purposes and additional data sources for thin-file borrowers.' },
+    { title: 'Collect earlier', body: 'Use the same segmentation to flag likely problem loans before they fall due.' },
+  ]}
+/>
+
+## The dashboard
+
+<Gallery
+  variant="single"
+  zoom
+  images={[{ src: dashboard, alt: 'Power BI summary dashboard with key metrics, default rate by bucket, grade and tenor, purpose matrix and key insights' }]}
+/>

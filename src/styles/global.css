@@ -211,6 +211,24 @@
   .case-body > ol:not(.case-block) { padding-left: 1.25rem; list-style: decimal; }
   .case-body > ol:not(.case-block) > li + li { margin-top: 0.6em; }
   .case-body > ol:not(.case-block) > li::marker { font-family: var(--font-mono); color: var(--muted); font-size: 0.85em; }
+  .case-body > pre {
+    margin-top: 2rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--line);
+    background: var(--surface) !important;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    overflow-x: auto;
+  }
+  .case-body code:not(pre code) {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    padding: 0.1em 0.35em;
+    background: var(--surface-2);
+  }
+  .astro-code span { color: var(--shiki-light); }
+  [data-theme="dark"] .astro-code span { color: var(--shiki-dark); }
   .case-body > .case-block { margin-top: 2.5rem; }
   .case-body > h2 + .case-block { margin-top: 2rem; }
   .case-body > .case-block + .case-block { margin-top: 3rem; }

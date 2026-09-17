@@ -18,3 +18,137 @@ metrics:
   - { value: 1420, label: 'active SKUs, target around 600' }
   - { value: 62, suffix: '%', label: 'of spend with just two suppliers' }
 ---
+
+import Figure from '@/components/case/Figure.astro';
+import Matrix from '@/components/case/Matrix.astro';
+import Tiers from '@/components/case/Tiers.astro';
+import Stats from '@/components/case/Stats.astro';
+import Steps from '@/components/case/Steps.astro';
+import Compare from '@/components/case/Compare.astro';
+import Callout from '@/components/case/Callout.astro';
+import DataTable from '@/components/case/DataTable.astro';
+
+## The brief
+
+**Aquila Projects**, the company in the course case, needed a category strategy for **butterfly valves**, part of its pipes, valves and fittings spend, covering FY2027 to FY2029 and sponsored by its Chief Procurement Officer.
+
+The category was chosen as a pilot not for its size, but because it exposes every structural weakness in how the company buys. The deliverable was not a sourcing event. It was a strategy: what to lock in, where to standardise, and which trade-offs to accept consciously for three years.
+
+## One category, two personalities
+
+The first finding reframed everything else. What was managed as one category behaved like two, bundled together by habit.
+
+<Tiers
+  cols={2}
+  items={[
+    {
+      kicker: 'About 65% of volume',
+      title: 'Standard utility valves',
+      body: '80-300 mm, PN10 or PN16, cast or ductile iron bodies, manual or gear-operated. Many capable suppliers and low complexity.',
+      meta: 'Behaves like a leverage category',
+    },
+    {
+      kicker: 'About 35% of volume, outsized risk',
+      title: 'Engineered critical valves',
+      body: '300-1,200 mm, PN25 and higher duty, carbon steel bodies, electric or pneumatic actuation. Few certified suppliers, casting and actuator constraints.',
+      meta: 'Behaves like a strategic category',
+    },
+  ]}
+/>
+
+Different design codes, legacy vendor preferences and inconsistent ERP naming across business units meant the "one category" had no shared logic at all. The decision: split it formally into two sub-segments with separate playbooks, and unify naming and design codes.
+
+## Where the money leaks
+
+<Stats
+  items={[
+    { value: 1420, label: 'active SKUs' },
+    { value: 210, label: 'SKUs carrying about 80% of spend' },
+    { value: 62, suffix: '%', label: 'of spend with just two suppliers' },
+    { display: '15-25%', label: 'price variance for identical specs' },
+  ]}
+/>
+
+- **SKU proliferation on a small core.** A standardisation opportunity hiding in plain sight.
+- **An informal duopoly with no structure.** Spend was already concentrated, but without long-term agreements or consistent pricing, even from the same supplier.
+- **Behavioural pricing.** Prices tracked urgency, lot size and negotiation timing more than steel prices; the 150 mm diameter showed price growth that no specification change explained.
+- **Predictable "emergencies".** Emergency orders spiked every Q3 and Q4, driven by late engineering freezes and budget deadlines. Internal audits confirmed it was a pattern, not an exception.
+- **Over-specification.** Marginal "project-specific" differences such as SS304 against SS316 or coating thickness inflated cost, and engineering often named suppliers before procurement was involved.
+
+<Callout>Supplier power here was largely self-inflicted: internal fragmentation, not the market, was handing suppliers the leverage.</Callout>
+
+## Reading the market
+
+<div class="case-block grid gap-8 lg:grid-cols-2">
+  <Figure title="Kraljic positioning">
+    <Matrix
+      xLabel="Profit impact"
+      yLabel="Supply risk"
+      quadrants={['Bottleneck', 'Strategic', 'Non-critical', 'Leverage']}
+      items={[
+        { label: 'Standard utility valves', detail: 'Compete hard, consolidate', x: 74, y: 30 },
+        { label: 'Engineered critical valves', detail: 'Partner, dual-source', x: 74, y: 76, highlight: true },
+      ]}
+    />
+  </Figure>
+  <Figure title="Porter's Five Forces for Aquila">
+    <DataTable
+      caption="Five forces assessment"
+      head={['Force', 'Strength']}
+      highlightRow={0}
+      rows={[
+        ['Supplier power', 'High, and self-inflicted'],
+        ['Buyer power (Aquila)', 'Low, but latent'],
+        ['Industry rivalry', 'Moderate to high in standard valves'],
+        ['New entrants', 'Low to moderate'],
+        ['Substitutes', 'Low'],
+      ]}
+    />
+  </Figure>
+</div>
+
+The supply market has three tiers: global OEMs with deep capability and premium prices, large Indian manufacturers that can serve both segments, and regional fabricators that compete hard on standard valves but lack critical-duty certification. Capacity runs at 75-85%, moderately tight rather than short, and several suppliers have announced Indian expansions, which opens a window to lock in agreements before the balance shifts.
+
+The structure-conduct-performance view pointed the same way: the market structure favours Aquila more than its results suggest, so the fix is governance and price transparency, not waiting for the market.
+
+## The strategy
+
+<Steps
+  items={[
+    { title: 'Segment and standardise', body: 'Split standard and critical valves, use spec templates with a deviation-justification process, and rationalise SKUs from 1,420 toward about 600.' },
+    { title: 'Aggregate demand', body: 'A rolling quarterly forecast across projects; plan the Q3-Q4 surge with pre-negotiated capacity.' },
+    { title: 'Consolidate and contract', body: '2-3 strategic long-term agreements for critical valves; a competitive panel with index-linked pricing for standard valves.' },
+    { title: 'Govern with should-cost', body: 'Procurement signs off before vendor names freeze, suppliers’ cost claims face should-cost checks, and performance is tracked in a database.' },
+    { title: 'Manage risk', body: 'Dual-source critical and large-diameter valves, and secure capacity ahead of the 2027 expansions.' },
+  ]}
+/>
+
+<DataTable
+  caption="Implementation roadmap"
+  head={['Year', 'Focus']}
+  rows={[
+    ['Year 1', 'Validate demand, finalise spec templates, run SKU rationalisation, RFP and negotiate strategic LTAs, launch sign-off governance'],
+    ['Year 2', 'Execute LTAs, run demand aggregation fully, launch the supplier performance database and should-cost model'],
+    ['Year 3', 'Continuous improvement, extend aggregation to all pipes, valves and fittings, renegotiate on performance, re-baseline spend'],
+  ]}
+/>
+
+## Targets and trade-offs
+
+<Compare
+  beforeLabel="Baseline"
+  afterLabel="FY2029 target"
+  rows={[
+    { k: 'Price variance, identical specs', before: '15-25%', after: 'Under 5%' },
+    { k: 'Active SKUs', before: '1,420', after: 'About 600' },
+    { k: 'Suppliers on long-term agreements', before: 'None', after: '2-3 strategic partners' },
+    { k: 'Emergency orders', before: 'A recurring Q3-Q4 spike', after: 'Planned and forecast-covered' },
+  ]}
+/>
+
+The trade-offs were stated openly: less project-level customisation, slower and more deliberate supplier switching, and fewer but larger commitments to strategic suppliers, in exchange for removing avoidable price variance and urgency premiums. The CEO's closing test for the strategy was what Aquila would consciously **stop** doing:
+
+- Letting engineering freeze vendor names before procurement is involved
+- Treating the Q3-Q4 surge as an exception instead of a plannable pattern
+- Letting marginal spec differences drive separate sourcing for each project
+- Negotiating each project in isolation instead of as one demand stream

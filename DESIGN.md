@@ -1,143 +1,138 @@
-# Portfolio Design Doc — Siddhant Morye
+# Portfolio Design Doc | Siddhant Morye (v2)
 
-**Type:** Single-page HTML portfolio, linked via QR code on CV
-**Audience:** Recruiters / interview panels, mostly opening on a phone right after scanning a printed QR
-**Job the page has to do:** In under 5 seconds, read as *credible MBA candidate* — then reward a slower read with evidence of real analytical + technical depth (Ops & Analytics specialization, Ashok Leyland SIP, self-built AI tooling).
+**Type:** Multi-page portfolio (home + one page per case file), linked by QR code from the CV
+**Audience:** Recruiters and interview panels, often on a phone right after scanning a printed QR
+**Job of the site:** In five seconds, read as a credible Analytics & Operations candidate. On a slower read, prove depth with real data, real artefacts and clear reasoning.
 
 ---
 
 ## 1. Creative direction
 
-MBA portfolios default to one of two clichés: the "consulting deck" (navy, serif logo-mark, generic stock icons) or the "developer portfolio" (dark mode, terminal font, neon accent). You're neither — you're an Ops & Analytics candidate who happens to build real software (dashboards, RAG pipelines, CNN classifiers) as a strategic edge, not as a hobby flex. The design should read that tension honestly: **boardroom discipline, shop-floor precision.**
+**Minimal, but not bland.** An architect turned analyst: the site borrows the discipline of a drawing sheet (hairline rules, title blocks, registration marks, mono labels) and pairs it with a confident grotesk display face and one warm signal colour.
 
-The grounding metaphor: your internship lived inside *plant documentation* — work orders, shift registers, gate passes, a plant literally called "Plant 2004." That world already has a visual language: manifest numbers, stamped headers, tight tabular data, hairline rules. We borrow that vernacular — quietly, not literally (no fake rubber-stamp textures) — and pair it with clean editorial typography so it still reads as *personal brand*, not *cosplay industrial.*
+Design read used for every decision: *personal portfolio for recruiters, editorial-industrial language, Astro + Tailwind v4 + Motion islands, restrained motion, real artefacts.*
 
-**Signature element:** Projects are shown as compact **case-file cards** (like a manifest index). Clicking one doesn't navigate to a new page — it *opens the file*: the card expands in place into a full case study, contents staggering in like a dossier being pulled and unfolded (metrics count up, a process line draws itself, sections slide in from the card's edge). This is where your one motion "risk" lives — everywhere else stays quiet and disciplined.
+Dials (taste skill): `DESIGN_VARIANCE 6`, `MOTION_INTENSITY 5`, `VISUAL_DENSITY 4`.
+
+Rules that hold everywhere:
+- Real material over decoration: screenshots, photos and charts come from the actual projects. No stock images, no div-based fake UIs.
+- Every number traces to a source document or dataset. Projections are labelled as targets or estimates.
+- One accent colour, used to mark the single most important thing in a view.
+- No em dashes or en dashes in visible copy. Use commas, colons, periods or hyphens.
 
 ---
 
-## 2. Design tokens
+## 2. Tokens
 
-### Color
-| Name | Hex | Use |
-|---|---|---|
-| Paper | `#F5F4F0` | Page background — warm off-white, not cream-terracotta cliché |
-| Ink | `#171A1C` | Primary text, dark surfaces (case-file expanded view) |
-| Graphite | `#5B6570` | Secondary text, captions, meta |
-| Signal Amber | `#D98A2B` | Single accent — used like a hazard-stripe / gauge-needle, never decorative |
-| Steel | `#2E4457` | Secondary accent — data, charts, links |
-| Hairline | `#DAD6CC` | Borders, dividers, table rules |
+Defined as CSS variables in `src/styles/global.css` and exposed to Tailwind through `@theme inline`, so every utility (`bg-surface`, `text-muted`, `border-line`) switches with the theme.
 
-Rule: Amber only ever marks *one thing per screen* (an active state, a key metric, the hovered card). If two elements are amber at once, dial one back to Steel.
+### Colour
+| Token | Light | Dark | Use |
+|---|---|---|---|
+| `bg` | `#f4f4f1` | `#0e0f11` | Page background |
+| `surface` | `#fbfbf9` | `#15161a` | Cards, figures, bands |
+| `surface-2` | `#eaeae6` | `#1c1e22` | Image wells, subtle fills |
+| `ink` | `#121315` | `#ecece8` | Primary text, emphasis blocks |
+| `ink-2` | `#393c41` | `#c4c6ca` | Body copy |
+| `muted` | `#62666d` | `#8f939a` | Captions, labels |
+| `line` / `line-strong` | `#dcdcd6` / `#bdbdb6` | `#25272b` / `#3a3d42` | Hairlines, neutral chart marks |
+| `accent` | `#e4561b` | `#ff6a2c` | Signal orange: highlights, key bars, markers |
+| `accent-ink` | `#b0400b` | `#ff8a57` | Accent for small text (contrast safe) |
+
+Theme: follows `prefers-color-scheme`, with a manual toggle saved to `localStorage`. The contact band pins `data-theme="dark"` so it stays a dark closing panel in both modes.
+
+Charts are monochrome plus the accent: neutral marks in `line-strong`, the point of the chart in `accent`.
 
 ### Type
-| Role | Typeface | Notes |
+| Role | Face | Notes |
 |---|---|---|
-| Display | **Fraunces** (serif, weight 500–600, slight optical sizing) | Headlines, name, section titles — gives editorial warmth against the industrial data language |
-| Body | **Inter** | All running text, 16–18px base, 1.55 line-height |
-| Data / Labels | **IBM Plex Mono** | Manifest IDs, dates, metrics, tags, nav labels — small caps, letter-spacing 0.04em |
+| Display | **Bricolage Grotesque** (variable, `opsz` 96) | Headlines, names, big numbers. Tracking -0.03 to -0.04em |
+| Body | **Geist** | Running text 16-17px, line-height 1.6-1.75 |
+| Data / labels | **Geist Mono** | Metrics, file IDs, axis labels, `.label` (uppercase, 0.08em tracking) |
 
-Type scale (base 16px): 12 / 14 / 16 / 20 / 28 / 40 / 64 — display headline only ever uses 40 or 64.
+Fonts are self-hosted through Astro's font API (`local` provider pointing at the installed Fontsource files) with preloads and metric-matched fallbacks.
 
-### Spacing & shape
-- 8px base unit, section rhythm on 96px (desktop) / 56px (mobile)
-- Radius: 2px everywhere (cards, buttons) — sharp enough to feel like a printed card, not a soft app
-- Shadows: none by default; on hover/expand use a single hard offset shadow (`4px 4px 0 rgba(23,26,28,0.12)`) — reads as a card lifting off a stack, not a generic drop-shadow
-
----
-
-## 3. Page structure (wireframe)
-
-```
-┌───────────────────────────────────────────┐
-│ MORYE, S.        [PGDM · OPS & ANALYTICS]  │  ← sticky micro-header, mono
-├───────────────────────────────────────────┤
-│                                             │
-│   Siddhant Morye                           │  ← Fraunces 64
-│   Operations & Analytics · GLIM '27        │
-│   [Ashok Leyland SIP — Alwar Plant 2004]   │  ← one-line credibility stamp
-│                                             │
-│   [view case files ↓]                      │
-├───────────────────────────────────────────┤
-│  ABOUT / ACADEMICS                         │
-│  ─ short profile paragraph                 │
-│  ─ academic record: PGDM specialization,   │
-│    coursework highlights, GLIM             │
-│  ─ meta strip: location, focus areas       │
-├───────────────────────────────────────────┤
-│  EXPERIENCE                                │
-│  ─ Ashok Leyland SIP — role, dates, scope  │
-│  ─ (any prior internship/work if relevant) │
-├───────────────────────────────────────────┤
-│  CASE FILES (projects)                     │
-│  ┌──────────┐ ┌──────────┐                 │
-│  │ FILE-01  │ │ FILE-02  │  ← manifest grid │
-│  │ Grievance│ │Contractor│                 │
-│  └──────────┘ └──────────┘                 │
-│  ┌──────────┐ ┌──────────┐                 │
-│  │ FILE-03  │ │ FILE-04  │                 │
-│  │Time Office│ │ AL-TICS │                 │
-│  └──────────┘ └──────────┘                 │
-│  (click → full-screen expansion, see §4)   │
-├───────────────────────────────────────────┤
-│  CAPABILITIES                              │
-│  ─ ops/analytics tools, AI-build stack,    │
-│    a quiet nod to the "strategic + technical│
-│    bridge" positioning                     │
-├───────────────────────────────────────────┤
-│  CONTACT                                   │
-│  ─ email / phone / LinkedIn, resume link   │
-└───────────────────────────────────────────┘
-```
-
-Numbering note: "FILE-01…04" is earned here, not decorative — your four SIP workstreams really were run and reported as discrete numbered project chapters, so a manifest ID is honest structure, not template dressing.
+### Shape and space
+- Corners are square. Containers, buttons and chips use no rounding.
+- Hairline borders separate content; shadows only on floating elements (hover preview, phone screenshots).
+- Container: `max-w-88rem`, gutters 16 / 24 / 40px. Sections breathe at 80-112px vertically.
+- A fixed, non-interactive film-grain layer adds texture at 3.5-5% opacity.
 
 ---
 
-## 4. Motion system
+## 3. Page structure
 
-Two tiers only — ambient (quiet, everywhere) and the signature interaction (bold, one place).
+### Home (`src/pages/index.astro`)
+1. **Hero**: eyebrow, name in display type with an accent full stop, 19-word lead, two CTAs (magnetic primary). Portrait inside a "drawing sheet" frame with registration marks and a four-cell title block.
+2. **Proof strip**: four animated numbers (rows engineered, loans profiled, plant systems, case files).
+3. **Four systems for one truck plant**: bento of the Ashok Leyland case files, each tile with a different real visual (phone screens, tenure chart, sync timeline, tyre photos).
+4. **More case files**: filterable index (All / Case competitions / Academic). On desktop a preview card follows the cursor with the project's headline metric.
+5. **Experience**: sticky heading, scroll-drawn timeline, internship entry links to its four case files.
+6. **About**: editorial statement, capabilities, academic record, the page's only marquee (tools).
+7. **Beyond the classroom**: awards and leadership ledger.
+8. **Contact**: dark closing band, large email with copy button, LinkedIn.
 
-**Ambient (quiet, restrained):**
-- Page load: micro-header and headline fade/rise 12px, staggered 80ms — under 500ms total, never a showy intro
-- Scroll reveals: sections fade/rise once, 4px, no bounce, no repeat-on-rescroll
-- Hover on case-file cards: card lifts 2px, hard shadow appears, manifest ID underlines in amber — all under 150ms
+### Case file (`src/pages/work/[slug].astro`)
+Header (file ID, group, title, summary, role / context / team / when) → key-numbers band → two columns: sticky "On this page" contents with tools and live links on the left, the MDX body on the right → previous / next.
 
-**Signature — opening a case file (this is where the motion budget goes):**
-1. Click on a card → card's bounding box begins scaling/morphing to fill the viewport (shared-element transition, ~450ms ease)
-2. Background dims to Ink, rest of grid recedes
-3. Once expanded, contents stagger in over ~350ms:
-   - Manifest header (project name, role, timeframe) slides in first
-   - Key metrics count up from 0 (e.g. absenteeism % reduced, cycle time cut) — numbers only, no icons
-   - A single process/flow line draws itself left-to-right under the metrics (stroke-dashoffset animation) — represents the actual before→after workflow, not decoration
-   - Body sections (problem / approach / outcome) slide in from the right edge, one after another, 60ms stagger
-4. Close (X or Esc) reverses the same transition back to the grid — never a hard cut
+A 2px accent reading-progress bar sits under the header (CSS scroll-driven animation).
 
-Keep this sequence identical across all four case files so it reads as a system, not four one-off effects.
-
-**Reduced motion:** All of the above degrades to instant opacity crossfades if `prefers-reduced-motion` is set — no exceptions.
+Case bodies follow a narrative: problem → approach → what the data showed → recommendation → impact.
 
 ---
 
-## 5. Content notes
-- About section: 2–3 sentences max, written in plain first-person, no "results-driven professional" language. Say what you actually do (ops + analytics, building AI tools as a strategic lens).
-- Each case file needs: one-line problem, your specific role, method/tools used, and a real outcome metric wherever you have one — recruiters skim for the metric.
-- Capabilities section is the one place to mention the self-built tooling (local LLMs, RAG, dashboards) — framed as *why an MBA who can also build* is useful, not as a developer resume.
+## 4. Motion
+
+Two tiers, all disabled or reduced under `prefers-reduced-motion`.
+
+**Ambient**
+- Hero lines rise from a mask on load (CSS), supporting elements fade up in sequence.
+- `[data-reveal]` elements fade and rise 14px once when they enter the viewport (IntersectionObserver).
+- Bars, columns and dumbbell gaps grow from zero on reveal; line charts draw left to right via `clip-path`.
+- Number tickers count up once when visible.
+
+**Interactive**
+- Magnetic primary CTA, bento tiles lift on hover, tyre photos go from grayscale to colour with a scan line.
+- Work index: filter pill slides between options (`layoutId`), rows re-flow, cursor-following preview.
+- Astro view transitions morph a case title from its tile into the case page header.
 
 ---
 
-## 6. Build plan (part by part, as requested)
+## 5. Component kit
 
-1. **Shell + tokens** — HTML structure, CSS variables for the token system above, type loaded, sticky micro-header, base layout for all sections (no motion yet)
-2. **Hero + About/Academics** — static, responsive, content in
-3. **Case-file component (built once)** — the card + expansion system fully working end-to-end with placeholder content for a single file, motion tuned and confirmed
-4. **Populate remaining case files** — one at a time, reusing the confirmed component: FILE-01 → 02 → 03 → 04
-5. **Experience + Capabilities + Contact** — static sections, consistent styling
-6. **Polish pass** — mobile check (QR-scan-on-phone is the primary path), keyboard focus states, reduced-motion fallback, final self-critique against §1
+`src/components/case/` (server-rendered Astro, zero client JS unless noted):
+
+| Component | Use |
+|---|---|
+| `Figure` | Titled, captioned frame with optional source line |
+| `Bars` | Horizontal bars, no background tracks, optional dashed reference |
+| `Columns` | Vertical columns with direct labels and reference line |
+| `LineChart` | Stretchable SVG plot, HTML labels, bands, refs, points, fill-to-average |
+| `Dumbbell` | Two values per row (train vs test, group A vs B) |
+| `Heatmap` | Rate matrix, accent tint plus printed values |
+| `Flow` | Process or system flow, horizontal on desktop, vertical on phones, failure edges |
+| `Tiers` | Graded cards (triage levels, root-cause layers) |
+| `Steps` | Numbered frameworks and roadmaps |
+| `Compare` | Before / after by dimension |
+| `Stats`, `MetricValue` | Supporting numbers with tickers and screen-reader values |
+| `DataTable`, `Matrix`, `Callout` | Tables, 2x2 positioning, one key insight |
+| `Gallery` | Real screenshots and photos, phone layout, click-to-zoom dialog |
+| `Tabs` | Accessible tabs (arrow keys), all panels visible without JS |
+
+`src/components/ui/` holds components pulled from Magic UI and motion-primitives (the libraries 21st.dev lists), adapted to the tokens and reduced motion: `number-ticker` (all animated metrics), `marquee` (tools band), `magnetic` (hero CTA). `text-effect` is installed but not yet used.
 
 ---
 
-## 7. Open assumptions (flag if wrong)
-- Four case files = the four SIP workstreams (Grievance Platform, Contractor Absenteeism, Time Office Rectification, AL-TICS). Swap in different projects if you'd rather feature something else.
-- Single scrolling page, no router — matches QR/CV use case (one link, fast load, no dead ends).
-- No photo in hero by default — type-led per the direction above; easy to add a small photo in the micro-header if you want a face attached to the name.
+## 6. Content rules
+
+- Case files live in `src/content/work/*.mdx`; frontmatter (schema in `src/content.config.ts`) drives cards, the index and page headers.
+- Each case needs: one-line problem, specific role, method and tools, and an outcome metric.
+- Group roles that are not documented are stated as "group member"; confirm and sharpen them before sharing widely.
+- Chart data comes from `src/data/*.json`, computed from the original datasets, or from numbers stated in the project documents.
+- About copy is first person, plain, and free of "results-driven" language.
+
+---
+
+## 7. Stack
+
+Astro 7, React 19 islands, Tailwind CSS v4 (Vite plugin), Motion 13, MDX, Phosphor icons, sitemap. Deployed to GitHub Pages under `/Portfolio` by `.github/workflows/deploy.yml`. The previous single-file site is kept in `legacy/`.

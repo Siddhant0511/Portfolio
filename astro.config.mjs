@@ -11,6 +11,13 @@ export default defineConfig({
   base: '/Portfolio',
   trailingSlash: 'ignore',
   integrations: [react(), mdx(), sitemap()],
+  markdown: {
+    shikiConfig: {
+      themes: { light: 'github-light', dark: 'github-dark' },
+      defaultColor: false,
+      wrap: true,
+    },
+  },
   vite: {
     plugins: [tailwindcss()],
   },

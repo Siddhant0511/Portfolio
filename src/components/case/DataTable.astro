@@ -11,7 +11,7 @@ const { head, rows, numeric = [], highlightRow, caption } = Astro.props;
 ---
 
 <div class="case-block overflow-x-auto" data-reveal>
-  <table class="w-full min-w-[34rem] border-collapse text-left text-sm">
+  <table class:list={['w-full border-collapse text-left text-sm', head.length > 2 && 'min-w-[34rem]']}>
     <caption class="sr-only">{caption}</caption>
     <thead>
       <tr class="border-b border-ink/30">

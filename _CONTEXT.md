@@ -1,54 +1,40 @@
-# Portfolio Project — Siddhant Morye
+# Portfolio Project | Siddhant Morye
 
-Single-page portfolio for **Siddhant Morye** (PGDM Candidate, Analytics & Operations, Great Lakes Institute of Management, Gurgaon). Architect-turned-analyst. Matches `DESIGN.md` (boardroom discipline + shop-floor precision).
+Handoff context for the v2 redesign (September 2026). Design system: `DESIGN.md`. Setup and structure: `README.md`.
 
-## File Registry
-- `index.html` — Core unified single-page portfolio
-- `DESIGN.md` — Active design tokens, typography scale, and layout guidelines
-- `_CONTEXT.md` — Active handoff context and token-efficient history
-- `Siddhant_Morye_Resume.pdf` — Resume asset
-- `img/photo.jpg` — Face avatar image
+## What changed from v1
+- Rebuilt from a single hand-written `index.html` (now in `legacy/`) into Astro 7 + React islands + Tailwind v4 + Motion.
+- New visual language: drawing-sheet details, Bricolage Grotesque / Geist / Geist Mono, signal-orange accent, light and dark themes.
+- Case files moved from modal dossiers to dedicated pages, one per project, written in MDX.
+- Expanded from 4 internship projects to 13 case files: 4 Ashok Leyland workstreams, 3 case competitions, 6 academic projects.
+- Charts are drawn from the source data (NLDC SCADA, StreamMax, credit dataset) or from figures stated in the reports. Several v1 numbers that did not appear in the SIP report were removed.
+- TezCredit and VitalChain prototypes are hosted in `public/demos/`, with screenshots captured from the running apps.
 
-## Implemented Architecture & Milestones
+## Case files
+| ID | Slug | Source material |
+|---|---|---|
+| AL-01 | grievance-platform | SIP report and presentation |
+| AL-02 | contractor-absenteeism | SIP report, presentation, report figures |
+| AL-03 | time-office | SIP report and presentation |
+| AL-04 | al-tics | SIP report, presentation, tyre images |
+| CC-01 | vguard-bess | Executive summary, NLDC SCADA CSVs, BESS charts, SBU model inputs |
+| CC-02 | quantum-trial | Crest Analytics deck and script |
+| CC-03 | finception-credit-risk | Deck, Power BI export, cleaned credit dataset |
+| AC-01 | streammax-fatigue | Power BI dashboard, deck, dataset |
+| AC-02 | tezcredit | Prototype and presentation script |
+| AC-03 | vitalchain | Prototype and presentation script |
+| AC-04 | butterfly-valves | SSP deck |
+| AC-05 | printcraft-erp | Capstone presentation, Odoo audit screenshots, BPMN swimlanes |
+| AC-06 | novatel-erp | Individual ERP design report and Bizagi models |
 
-### 1. Hero & Navigation
-- **Sticky Frosted Header**: Added a sticky navigation header (`backdrop-filter: blur(12px)`) with anchor links (`#about`, `#experience`, `#qualifications`, `#case-files`, `#capabilities`, `#contact`). 
-- **Header Mobile Adaptation**: Centers navigation links and hides secondary links (`Qualifications`, `Capabilities`) on viewports under `736px` to fit 4 primary tabs on a single line with **zero wrapping or horizontal scrolling**.
-- **Hero Metadata**: Grouped avatar photo, name, and meta details into a vertical flex stack, center-aligned to the full name. Replaced bullet divider dot with a thin pipe (`|`) and removed down-scroll arrow icons.
+## Open items to confirm
+- Exact personal role in group projects (Finception, StreamMax, TezCredit, VitalChain, SSP, PrintCraft) and in V-Guard; currently worded conservatively.
+- V-Guard competition result, if any, to add as an award badge.
+- An updated résumé PDF that includes the Ashok Leyland internship, to enable the résumé button.
+- First-person About copy should be read and adjusted to Siddhant's own voice.
 
-### 2. Experience Timeline (Ashok Leyland & Kembhavi)
-- **Role Update**: Kembhavi Architecture Foundation entry corrected to *Architectural Intern*.
-- **Text Justification**: Set all text copy (timeline paragraphs and bullet lists) to `text-align: justify` without horizontal character width limits (`max-width`) to fill cards.
-- **Bullet Elements**: Custom list markers updated from hyphens (`-`) to standard round bullets (`•`).
-
-### 3. Qualifications (Swapped Position)
-- **Visual Swap**: Re-ordered Qualifications section directly above the Case Files section.
-- **Table Alignment**: Right-aligned both the "Year" table header (`th:last-child`) and row cells to prevent misalignment.
-- **Mobile Stack Cards**: Collapses the qualifications table below `600px` into vertical profile cards, hiding headers and formatting grades/years cleanly.
-
-### 4. Case Files (Interactive Dossiers)
-- **Real SIP Projects & Light Theme**: Replaced placeholder cases with the 4 actual Ashok Leyland SIP workstreams. Case files expand inside a clean light-themed modal. Redesigned all 4 project dossiers into high-fidelity dashboards inside the modal, introducing circular SLA countdowns, inline SVG network blueprints, a GitHub-style attendance streak heatmap, linear-gradient filled line charts, and active IT diagnostic status telemetry boards.
-- **Balanced 2x2 Layout**: Updated desktop CSS layout to `repeat(2, 1fr)` to accommodate 4 cards symmetrically.
-- **Dynamic Metrics Parser**: Refactored JavaScript to dynamically parse any custom numbers, decimals (e.g. `1.05M+`), prefixes (e.g. `~`, `<`, `₹`), and suffixes (e.g. `s`, `%`) without hardcoded value conditions.
-- **FLIP Expansion**: Shared-element modal transition. Clicking a card scales it to fill 100% of the viewport width and height on both mobile and laptop screens, with a fixed close button anchored at the top right. Honors `prefers-reduced-motion`.
-
-### 5. Academic Block & Course Grid
-- **Single-Line Title**: Locked `PGDM | Analytics & Operations` to a single line on desktop/tablet (`white-space: nowrap`) with matching fluid text size.
-- **Course Grid**: Restructured courses flexbox into a uniform 2-column grid layout (collapsing to single-column under `480px`).
-
-### 6. Minimal Accent Panel Coloration
-Introduced subtle background tints (`rgba` < 4%) to layout panels to break the flat grey blandness:
-- **Steel Blue**: Academics (`rgba(46, 68, 87, 0.025)`), timeline items, and tags.
-- **Signal Amber**: Case cards (`rgba(217, 138, 43, 0.015)`) deepening on hover.
-- **Muted Graphite**: Recognition items and capability cards.
-
-### 7. Standalone HTML Architecture & GitHub Pages
-- **Astro Boilerplate Purge**: Reverted all Astro integrations and modules to restore a clean, serverless local workspace consisting solely of HTML, CSS, and vanilla JS. Removed the local Astro skill.
-- **GitHub Pages Deploy**: Renamed the entry page to `index.html` and configured remote origin tracking for `https://github.com/Siddhant0511/Portfolio.git` on the `main` branch to host the static portfolio live at `https://siddhant0511.github.io/Portfolio/`.
-- **Full Viewport Optimization**: Removed the page container max-width limit and paragraph width constraints in the About segment, ensuring the page content scales to fully utilize widescreen displays without empty side margins.
-
-## Active Rules & Guidelines
-1. **Never** use em-dashes (`—`) in text copy; use pipes (`|`), commas, or hyphens.
-2. Maintain single color accent (Amber `#D98A2B`) and strict corner radius (2px) throughout.
-3. Every button or text block must maintain a minimum WCAG AA contrast ratio against background panels.
-
+## Rules
+1. No em dashes or en dashes in visible copy.
+2. One accent colour; charts are neutral plus accent.
+3. Every metric traces to a source; projections are labelled.
+4. WCAG AA contrast, visible focus, reduced-motion fallbacks.

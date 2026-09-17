@@ -22,3 +22,89 @@ coverAlt: VitalChain dashboard showing blocks, certificates and chain health
 links:
   - { label: Open the prototype, href: 'demos/vitalchain.html' }
 ---
+
+import Figure from '@/components/case/Figure.astro';
+import Flow from '@/components/case/Flow.astro';
+import Gallery from '@/components/case/Gallery.astro';
+import Compare from '@/components/case/Compare.astro';
+import Callout from '@/components/case/Callout.astro';
+import Stats from '@/components/case/Stats.astro';
+import Tiers from '@/components/case/Tiers.astro';
+import hashLab from '@/assets/work/vitalchain/hash.png';
+import tampered from '@/assets/work/vitalchain/chain-tampered.png';
+import consensus from '@/assets/work/vitalchain/consensus.png';
+
+## The problem
+
+India's vital records, the births, marriages and deaths that decide who gets an identity, a pension or an inheritance, still live largely on paper, in separate offices, under the control of individual clerks.
+
+<Stats
+  items={[
+    { display: '2.5 Cr', label: 'births registered every year' },
+    { value: 30, suffix: '%', label: 'of rural births estimated to go unregistered' },
+    { display: '₹10,000 Cr+', label: 'estimated yearly loss to pension and benefit fraud from unreported deaths' },
+  ]}
+/>
+
+The team's opening scenario made it concrete. A 78-year-old pensioner dies in a Delhi hospital. His family bribes a clerk ₹5,000 to delay the death certificate and keeps drawing his ₹15,000 monthly pension for three years. By the time an audit catches it, ₹5.4 lakh is gone and nobody is accountable. One bribe, one missing file, and the system fails.
+
+## What VitalChain does
+
+We built a working prototype, in a single HTML file, that puts vital records on a hash chain shared by the authorities that need them. It uses the browser's real **Web Crypto SHA-256** and a real proof-of-work mining step; only the peer-to-peer network is simulated inside the page.
+
+<Compare
+  beforeLabel="Paper records"
+  afterLabel="VitalChain"
+  rows={[
+    { k: 'Registering a death', before: 'A clerk files it, eventually', after: 'The hospital node writes it to the chain immediately' },
+    { k: 'Who finds out', before: 'Only the office that holds the file', after: 'Registrar, UIDAI and the pension authority, within seconds' },
+    { k: 'Pension', before: 'Keeps paying until an audit', after: 'Flagged and stopped automatically' },
+    { k: 'Tampering', before: 'Bribe one clerk', after: 'Would have to compromise a majority of independent authorities' },
+  ]}
+/>
+
+## How it holds together
+
+<Figure title="Three ideas the prototype demonstrates, in order">
+  <Flow
+    steps={[
+      { title: 'Hash', detail: 'Every record gets a SHA-256 fingerprint. Change one letter and the fingerprint changes completely.' },
+      { title: 'Chain', detail: 'Each block stores the previous block’s hash, so editing an old record breaks every block after it.' },
+      { title: 'Consensus', detail: 'Hospital, Registrar and UIDAI each hold a copy. The majority decides which record is true.', emphasis: true },
+    ]}
+  />
+</Figure>
+
+### The avalanche effect
+
+In the Hash Lab, changing a single letter of a birth record, "Kumar" to "Kunar", changes 60 of the 64 characters in its hash. There is no such thing as a small edit. And because hashing only works one way, seeing a hash does not reveal the certificate behind it.
+
+<Gallery variant="single" zoom images={[{ src: hashLab, alt: 'Hash Lab: one letter changed in a birth record changes 60 of 64 hash characters' }]} />
+
+### Breaking the chain
+
+After issuing a birth, a marriage and a death certificate, we edit the name on the birth record to "FAKE PERSON". The block is flagged as tampered immediately, and every later block breaks, because each one still points at the original hash.
+
+<Gallery variant="single" zoom images={[{ src: tampered, alt: 'Certificate registry with Block 1 flagged as tampered after its name was changed to FAKE PERSON' }]} />
+
+### Majority rules
+
+A single copy can still be altered by whoever holds it. So the network gives three authorities their own copy. When the hospital's copy is tampered with, the Registrar and UIDAI still hold the original, and the vote rejects the fake: two honest nodes against one.
+
+<Gallery variant="single" zoom images={[{ src: consensus, alt: 'Nodes and consensus view: hospital node tampered, registrar and UIDAI honest, consensus vote rejects the fake record' }]} />
+
+<Callout>These are not technology problems. They are trust problems, and a blockchain is a way to spread trust across institutions.</Callout>
+
+## From prototype to production
+
+The Q&A prepared for the presentation covered what a real system would change.
+
+<Tiers
+  cols={2}
+  items={[
+    { kicker: 'Scale', title: 'Permissioned, not proof of work', body: 'A national system would use a permissioned chain such as Hyperledger Fabric, where trusted nodes validate directly, without mining.' },
+    { kicker: 'Privacy', title: 'Hashes on-chain, data off-chain', body: 'Certificate details stay encrypted off-chain; the chain holds only hashes that prove a record exists and is unaltered.' },
+    { kicker: 'Security', title: 'Many more nodes', body: 'Three nodes keep the demo simple. Hundreds across ministries and states make capturing a majority practically impossible.' },
+    { kicker: 'Why not a database', title: 'Protection from insiders', body: 'A database has an administrator who can change records. A shared chain removes that single point of trust.' },
+  ]}
+/>

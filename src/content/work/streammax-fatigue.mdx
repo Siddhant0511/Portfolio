@@ -20,3 +20,195 @@ metrics:
 cover: ../../assets/work/streammax-fatigue/dashboard-overview.png
 coverAlt: Power BI overview page showing fatigue rate by subscription tier
 ---
+
+import Figure from '@/components/case/Figure.astro';
+import Bars from '@/components/case/Bars.astro';
+import Columns from '@/components/case/Columns.astro';
+import Dumbbell from '@/components/case/Dumbbell.astro';
+import Stats from '@/components/case/Stats.astro';
+import Steps from '@/components/case/Steps.astro';
+import Tiers from '@/components/case/Tiers.astro';
+import Callout from '@/components/case/Callout.astro';
+import Gallery from '@/components/case/Gallery.astro';
+import sm from '@/data/streammax.json';
+import overview from '@/assets/work/streammax-fatigue/dashboard-overview.png';
+import engagement from '@/assets/work/streammax-fatigue/dashboard-engagement.png';
+
+export const F = sm['Fatigue'];
+export const N = sm['No Fatigue'];
+
+## The brief
+
+**StreamMax** is a fast-growing streaming platform in a crowded market. Like every subscription business, it loses users, and its churn model only notices after they have stopped watching entirely. By then, winning them back is slow and costly.
+
+The business wanted to move from reactive to proactive retention: spot **engagement fatigue**, the gradual slide in how people use the platform, while an intervention can still work.
+
+## Choosing the lens
+
+We framed four possible problem statements before building anything, then picked the one the data could answer best.
+
+<Tiers
+  cols={4}
+  items={[
+    { kicker: 'Selected', title: 'Time decay', body: 'Does a drop in last-7-day viewing, compared with the 30-day habit, signal fatigue early?' },
+    { kicker: 'Selected', title: 'Routine and habit', body: 'Is churn driven more by fewer minutes, or by broken login routines?' },
+    { kicker: 'Considered', title: 'Content strategy', body: 'Do heavy viewers of StreamMax Originals stay longer than recommendation-led viewers?' },
+    { kicker: 'Considered', title: 'Zombie viewers', body: 'Are users who binge but rarely finish both costly and quietly fatigued?' },
+  ]}
+/>
+
+We combined the first two into one question: **what are the exact behavioural thresholds of fatigue**, in watch-time ratios and login disruptions, that should trigger an automated intervention?
+
+## How big the problem is
+
+<Stats
+  items={[
+    { value: 8000, label: 'users across Basic, Standard and Premium' },
+    { value: 2831, label: 'users already labelled fatigued' },
+    { value: 35.39, decimals: 2, suffix: '%', label: 'overall fatigue rate' },
+    { value: 38.2, decimals: 1, suffix: '%', label: 'fatigue in the Basic tier, the highest' },
+  ]}
+/>
+
+More than a third of the base was already disengaging. Basic subscribers fatigued most (38.2%) and Premium least (31.1%), but the **Standard tier** mattered most in absolute terms: it holds about half of all users, so even its moderate 35.5% rate produces the largest group of fatigued users.
+
+## What fatigue looks like
+
+Fatigued users do less of everything, and the gap shows up in the last week as clearly as over the month.
+
+<div class="case-block grid gap-6 lg:grid-cols-2">
+  <Figure title="Daily viewing minutes">
+    <Dumbbell
+      aLabel="Not fatigued"
+      bLabel="Fatigued"
+      max={80}
+      decimals={0}
+      suffix=" min"
+      labelWidth="7rem"
+      rows={[
+        { label: 'Last 30 days', a: N['AVG DAILY MINUTES LAST 30D'], b: F['AVG DAILY MINUTES LAST 30D'] },
+        { label: 'Last 7 days', a: N['AVG DAILY MINUTES LAST 7D'], b: F['AVG DAILY MINUTES LAST 7D'], highlight: true },
+      ]}
+    />
+  </Figure>
+  <Figure title="Content engagement">
+    <Dumbbell
+      aLabel="Not fatigued"
+      bLabel="Fatigued"
+      max={50}
+      decimals={1}
+      suffix="%"
+      labelWidth="7rem"
+      rows={[
+        { label: 'Completion rate', a: N['AVG COMPLETION RATE'] * 100, b: F['AVG COMPLETION RATE'] * 100 },
+        { label: 'Recommendation clicks', a: N['RECOMMENDATION CLICK RATE'] * 100, b: F['RECOMMENDATION CLICK RATE'] * 100, highlight: true },
+      ]}
+    />
+  </Figure>
+</div>
+
+Fatigued users also came back less often, with an average gap of **2.79 days** since their last session against 1.44 days, and binged less (1.11 sessions a month against 1.81). The low recommendation click rate suggested personalisation was failing precisely the users who most needed it.
+
+## Recency is the loudest signal
+
+<Figure title="Fatigue rate by days since last session" note="Nearly four in five users who have been away 10 days or more are fatigued." source="Dataset of 8,000 users">
+  <Columns
+    height="14rem"
+    items={sm.daysSince.map((d) => ({ label: d.x === 10 ? '10+' : String(d.x), value: d.rate, highlight: d.x >= 6 }))}
+    xTitle="Days since last session"
+  />
+</Figure>
+
+<Callout>Once a user has been away for six days, the fatigue rate jumps past 65%. The habit breaks fast.</Callout>
+
+Two behaviours protected against fatigue: breadth and depth. Users who explored more genres and binged more were markedly less likely to be fatigued.
+
+<div class="case-block grid gap-6 lg:grid-cols-2">
+  <Figure title="By genres watched in 30 days">
+    <Columns
+      height="11rem"
+      decimals={0}
+      items={sm.genres.map((d) => ({ label: d.x === 10 ? '10+' : String(d.x), value: d.rate, highlight: d.x <= 2 }))}
+    />
+  </Figure>
+  <Figure title="By binge sessions in 30 days">
+    <Columns
+      height="11rem"
+      decimals={0}
+      items={sm.binge.map((d) => ({ label: d.x === 6 ? '6+' : String(d.x), value: d.rate, highlight: d.x === 0 }))}
+    />
+  </Figure>
+</div>
+
+## Measuring engagement in DAX
+
+We built the model in Power BI and wrote DAX measures that turn raw behaviour into scores. The main one weights recent sessions highest, because recent usage frequency is the strongest indicator of active engagement.
+
+```text
+Engagement Score =
+    0.35 * DIVIDE ( 'StreamMax'[SESSIONS LAST 7D], 21 )
+  + 0.25 * DIVIDE ( 'StreamMax'[BINGE SESSIONS LAST 30D], 30 )
+  + 0.25 * DIVIDE ( 'StreamMax'[UNIQUE GENRES WATCHED 30D], 15 )
+  + 0.15 * ( 1 - DIVIDE ( 'StreamMax'[DAYS SINCE LAST SESSION], 30 ) )
+
+Recency_Weighted =
+    0.7 * DIVIDE ( 'StreamMax'[AVG DAILY MINUTES LAST 7D], 300 )
+  + 0.3 * DIVIDE ( 'StreamMax'[AVG DAILY MINUTES LAST 30D], 300 )
+
+Completion_Engagement =
+    'StreamMax'[AVG COMPLETION RATE] * 'StreamMax'[AVG DAILY MINUTES LAST 7D]
+```
+
+Fatigue fell steadily as each score rose. Most users sat in the 0.20 to 0.30 engagement band: moderately engaged, and the most important group to watch.
+
+## Letting the model find segments
+
+To avoid confirming our own assumptions, we ran Power BI's **Key Influencers** visual against the fatigue label. It ranked drivers across every column and found that low recommendation click rates and falling session frequency each raise the likelihood of fatigue more than threefold. It also surfaced six high-risk segments.
+
+<Figure title="Top segments found by Key Influencers" note="Share of each segment that is fatigued, with segment size.">
+  <Bars
+    suffix="%"
+    labelWidth="7rem"
+    reference={{ value: 35.39, label: 'Overall 35.4%' }}
+    items={[
+      { label: 'Segment 1', value: 86.4, highlight: true, note: '435 users' },
+      { label: 'Segment 2', value: 74.8, highlight: true, note: '503 users' },
+      { label: 'Segment 3', value: 64.3, note: '589 users' },
+      { label: 'Segment 4', value: 50.5, note: '406 users' },
+      { label: 'Segment 5', value: 42.0, note: '424 users' },
+      { label: 'Segment 6', value: 41.3, note: '409 users' },
+    ]}
+  />
+</Figure>
+
+## Turning thresholds into interventions
+
+<Steps
+  items={[
+    {
+      title: 'Engagement score trigger',
+      body: 'Flag users who fall below a healthy score. Respond with "what to watch next" campaigns, binge-friendly series and personalised nudges.',
+      meta: 'Goal: early risk detection',
+    },
+    {
+      title: 'Recency recovery',
+      body: 'When recent viewing drops, notify within 3-5 days: continue-watching reminders and new episodes of series they already follow.',
+      meta: 'Goal: rebuild the viewing routine',
+    },
+    {
+      title: 'Completion repair',
+      body: 'Users who start but do not finish need better matches: highly rated titles similar to ones they completed, curated collections and playlists.',
+      meta: 'Goal: more content finished',
+    },
+  ]}
+/>
+
+## The dashboard
+
+<Gallery
+  zoom
+  images={[
+    { src: overview, alt: 'Power BI overview: total users, fatigued users, fatigue rate by subscription tier', caption: 'Overview: size of the problem by tier' },
+    { src: engagement, alt: 'Power BI page: fatigue rate by engagement score bins with the DAX formula and weight logic', caption: 'Engagement score against fatigue rate' },
+  ]}
+/>

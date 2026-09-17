@@ -27,15 +27,16 @@ Reference: https://vercel.com/design
 - `prefers-reduced-motion` fallback for all animations
 - Keyboard-focusable interactive elements (buttons, links, cards)
 - `aria-label` on icon-only controls
-- Sufficient color contrast (Ink on Paper = 12.5:1 ✓)
+- Sufficient color contrast in both light and dark themes
 - `alt` text on all images
 
 ## Typography Rules
 
-- Fraunces for display headlines only (40px or 64px)
-- Inter for body text (16px base, 1.55 line-height)
-- IBM Plex Mono for data/labels, uppercase + 0.04em letter-spacing
+- Bricolage Grotesque for display headlines and large numbers
+- Geist for body text (16-17px, 1.6-1.75 line-height)
+- Geist Mono for data and labels (`.label`: uppercase, 0.08em letter-spacing)
 - Never mix more than 2 typefaces in one component
+- Full token set lives in DESIGN.md (v2)
 
 ## This Project
 
