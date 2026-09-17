@@ -1,0 +1,261 @@
+---
+title: V-Guard Battery Storage Business Plan
+fileId: CC-01
+order: 5
+group: competition
+org: V-Guard Big Idea 2026
+context: Business plan competition
+period: '2026'
+year: '2026'
+role: Grid data analysis, storage sizing and the SBU financial case
+team: Team Tac Tic Toe
+summary: A phased entry plan for V-Guard into battery energy storage, sized from 15-minute national grid data and backed by a 15-year SBU model.
+problem: Should a power-electronics company enter battery storage, where should it start, and does the money work once round-trip losses are counted?
+tools: [Python, NLDC SCADA data, Financial modelling, Business Model Canvas]
+tags: [Strategy, Energy, Financial modelling]
+metrics:
+  - { value: 34.6, decimals: 1, suffix: '%', label: 'levered equity IRR over 15 years' }
+  - { display: '₹1,615 Cr', label: 'NPV at a 12% cost of equity' }
+  - { display: '152-156 GWh', label: 'daily storage to flatten thermal, in every quarter' }
+---
+
+import Figure from '@/components/case/Figure.astro';
+import LineChart from '@/components/case/LineChart.astro';
+import Tabs from '@/components/case/Tabs.astro';
+import Bars from '@/components/case/Bars.astro';
+import Columns from '@/components/case/Columns.astro';
+import Stats from '@/components/case/Stats.astro';
+import Steps from '@/components/case/Steps.astro';
+import Compare from '@/components/case/Compare.astro';
+import Callout from '@/components/case/Callout.astro';
+import Tiers from '@/components/case/Tiers.astro';
+import DataTable from '@/components/case/DataTable.astro';
+import nldc from '@/data/vguard-nldc.json';
+
+export const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+export const hours = [
+  { at: 0, label: '00:00' },
+  { at: 24, label: '06:00' },
+  { at: 48, label: '12:00' },
+  { at: 72, label: '18:00' },
+  { at: 95, label: '24:00' },
+];
+
+## The brief
+
+The V-Guard Big Idea competition asked teams to propose a new business for **V-Guard Industries**, a company built on voltage stabilisers, inverters and power electronics. Our team, Tac Tic Toe, proposed **battery energy storage systems (BESS)**.
+
+A business plan like this is easy to write with market-size slides. We wanted the case to rest on the grid itself, so the plan started with data: **15-minute generation records from India's National Load Despatch Centre (NLDC)** for four representative days across a full year.
+
+## Reading the grid
+
+The four days show a grid that never sits still. Demand, solar and thermal all move differently by season, which means no storage plan sized for one quarter works for the other three.
+
+<Figure title="Four days, four different grids" note="All-India generation by source, in GW, every 15 minutes. Pick a quarter." source="NLDC SCADA data, cleaned to 15-minute intervals">
+  <Tabs label="Quarter" labels={quarters.map((q) => `${q}, ${nldc[q].date}`)}>
+    {quarters.map((q, i) => (
+      <div slot={`panel-${i}`}>
+        <LineChart
+          ariaLabel={`Generation by source on ${nldc[q].date}. Total peaks at ${nldc[q].peakTotal} GW; solar peaks at ${nldc[q].peakSolar} GW.`}
+          series={[
+            { name: 'Total generation', values: nldc[q].total, tone: 'ink', width: 2.25 },
+            { name: 'Thermal', values: nldc[q].thermal, tone: 'muted', width: 1.75 },
+            { name: 'Solar', values: nldc[q].solar, tone: 'accent', width: 2.25 },
+            { name: 'Wind', values: nldc[q].wind, tone: 'faint', width: 1.5, dashed: true },
+          ]}
+          yMin={0}
+          yMax={260}
+          yTicks={[0, 50, 100, 150, 200, 250]}
+          xLabels={hours}
+          height="20rem"
+        />
+      </div>
+    ))}
+  </Tabs>
+</Figure>
+
+<Stats
+  items={[
+    { display: '157.6 GW', label: 'average thermal baseload, peak summer (Q1)' },
+    { display: '131.9 GW', label: 'seasonal low, winter onset (Q3)' },
+    { display: '~78 GW', label: 'record midday solar infeed, February (Q4)' },
+    { display: '~125 GW', label: 'duck-curve swing in a single day (Q4)' },
+  ]}
+/>
+
+## Sizing storage from the curve
+
+The grid's highest-leverage move is to flatten thermal generation into a constant line. That means batteries **absorb the midday solar surplus** and **discharge it into the morning and evening peaks**. We measured the energy that has to move for each quarter.
+
+<Figure title="What flattening thermal would take" note="Thermal generation against its daily average. Shaded above the line: energy storage must discharge. Below: energy it charges." source="NLDC SCADA data; team analysis">
+  <Tabs label="Quarter" labels={quarters.map((q) => `${q}, ${nldc[q].date}`)}>
+    {quarters.map((q, i) => (
+      <div slot={`panel-${i}`}>
+        <LineChart
+          ariaLabel={`Thermal generation on ${nldc[q].date} ranges from ${nldc[q].minThermal} to ${nldc[q].maxThermal} GW around a ${nldc[q].thermalMean} GW average.`}
+          series={[{ name: 'Thermal generation', values: nldc[q].thermal, tone: 'ink', width: 2.25, fillTo: nldc[q].thermalMean }]}
+          refs={[{ y: nldc[q].thermalMean, label: `Flat target ${nldc[q].thermalMean} GW` }]}
+          yMin={100}
+          yMax={180}
+          yTicks={[100, 120, 140, 160, 180]}
+          xLabels={hours}
+          height="18rem"
+          legend={false}
+        />
+      </div>
+    ))}
+  </Tabs>
+</Figure>
+
+The result was surprisingly stable: **152 to 156 GWh a day**, whatever the season. The complication is efficiency. At a realistic **85% round-trip efficiency**, every day loses 26.9 to 27.6 GWh in conversion alone. That energy has to be generated, not just stored.
+
+<div class="case-block grid gap-6 lg:grid-cols-2">
+  <Figure title="Daily storage needed" note="GWh cycled to flatten thermal.">
+    <Columns
+      suffix=" GWh"
+      max={170}
+      height="12rem"
+      items={[
+        { label: 'Q1', value: 152.4 },
+        { label: 'Q2', value: 156.5, highlight: true },
+        { label: 'Q3', value: 153.4 },
+        { label: 'Q4', value: 152.3 },
+      ]}
+    />
+  </Figure>
+  <Figure title="New solar just to cover losses" note="GW of capacity serving no new demand.">
+    <Columns
+      suffix=" GW"
+      max={4.5}
+      height="12rem"
+      items={[
+        { label: 'Q1', value: 3.3 },
+        { label: 'Q2', value: 3.5 },
+        { label: 'Q3', value: 4.0, highlight: true },
+        { label: 'Q4', value: 3.7 },
+      ]}
+    />
+  </Figure>
+</div>
+
+<Callout label="The detail most plans miss">Between 3.3 and 4.0 GW of new solar would exist only to pay the batteries' efficiency tax.</Callout>
+
+## Why V-Guard has a right to play
+
+A battery system's value is not in the cell. The **Battery Management System** and **Power Conversion System** are close descendants of the inverter electronics V-Guard has made for two decades: DC/AC conversion, thermal management and control firmware.
+
+<Figure title="Where the hardware value sits" note="Share of hardware revenue in the SBU model.">
+  <Bars
+    suffix="%"
+    labelWidth="14rem"
+    items={[
+      { label: 'In-house PCS, BMS, cooling and balance of system', value: 38.0, highlight: true },
+      { label: 'Imported lithium cells', value: 38.4 },
+    ]}
+  />
+</Figure>
+
+V-Guard builds the 38% it already knows how to make, and buys the cell, the part most exposed to global commodity swings, through a strategic import partnership protected by customs duty exemptions. It is not becoming a battery company; it is extending a power-electronics franchise around a commoditised cell.
+
+## The plan: start small, earn the right to bid big
+
+We proposed a phased **business-to-business-to-government** sequence. Commercial and industrial (C&I) customers come first because each deployment pays for itself and builds the commissioned track record that utility tenders require before V-Guard can bid.
+
+<Tiers
+  cols={2}
+  items={[
+    {
+      kicker: 'Phase 1, C&I',
+      title: '₹13,000 Cr opportunity',
+      body: 'Data centres and AI infrastructure first, then semiconductor fabs through EPC partners, then NCR industry bound by CAQM Direction 76, then hospitals and telecom.',
+      meta: '₹191 Cr greenfield capex, 90% in Year 1',
+    },
+    {
+      kicker: 'Phase 2, Utility scale',
+      title: '₹2 lakh Cr opportunity',
+      body: 'Once installed capacity crosses tender thresholds, V-Guard bids for IPP and utility projects with the same in-house PCS and BMS base.',
+      meta: '₹675 Cr expansion capex, Years 5 and 6',
+    },
+  ]}
+/>
+
+## Beating diesel on physics and cost
+
+The first customers already run diesel generators for backup. The pitch had to beat them on the two things those customers care about.
+
+<Compare
+  beforeLabel="500 kW diesel generator"
+  afterLabel="500 kW BESS"
+  rows={[
+    { k: 'Upfront price', before: '₹35-40 lakh', after: '₹65-75 lakh, removed by Energy-as-a-Service' },
+    { k: 'Cost per kWh delivered', before: '~₹44.65 fully burdened, ₹25-28 in fuel alone', after: '₹13.67-23.41' },
+    { k: '10-year ownership cost', before: '₹95 lakh to ₹1.1 Cr+', after: '₹45-60 lakh' },
+    { k: 'Switchover time', before: '10-30 seconds, mechanical start-up', after: 'Under 20 milliseconds, solid-state' },
+    { k: 'Emissions', before: 'Restricted in NCR under GRAP', after: 'Zero local emissions' },
+  ]}
+/>
+
+For a data centre, switchover speed is the whole argument. A diesel generator's 10 to 30 second gap is long enough to trip equipment; a sag of 50 milliseconds can reset controllers. The plan put numbers on that: unplanned downtime averages **$9,000 per minute**, and a single micro-outage on a 64,000-GPU training cluster can waste close to **$0.95 million** of compute in checkpoint reloads.
+
+The upfront premium, the biggest objection, is handled with an **Energy-as-a-Service** model: V-Guard or a financing partner owns the asset and the customer pays per kWh, below their blended grid-and-diesel cost. The battery then earns money every day through demand-charge management, time-of-day arbitrage and rooftop solar self-consumption, not only during outages.
+
+## The numbers
+
+We rebuilt the SBU model as a standalone, zero-dividend, 15-year greenfield business (FY27 to FY41), funded 75:25 debt to equity at 8.5% and 12%.
+
+<Figure title="Delivery volume ramp" note="MWh delivered per year. Phase 2 capacity comes online in Years 5 and 6." source="Team SBU model">
+  <Columns
+    suffix=""
+    decimals={0}
+    height="13rem"
+    items={[
+      { label: 'Y1', value: 30 },
+      { label: 'Y2', value: 90 },
+      { label: 'Y3', value: 195 },
+      { label: 'Y4', value: 355 },
+      { label: 'Y5', value: 560 },
+      { label: 'Y6', value: 1000 },
+      { label: 'Y7', value: 1500 },
+      { label: 'Y8', value: 2000 },
+      { label: 'Y9', value: 2500, highlight: true },
+      { label: 'Y10-15', value: 2500 },
+    ]}
+  />
+</Figure>
+
+<Stats
+  items={[
+    { value: 34.6, decimals: 1, suffix: '%', label: 'levered equity IRR, 22 points above the 12% hurdle' },
+    { display: '₹1,615 Cr', label: 'NPV at the cost of equity' },
+    { display: '₹58.5 Cr to ₹4,010 Cr', label: 'revenue, Year 1 to the Year 9 peak' },
+    { display: '23.6% to 27.9%', label: 'EBITDA margin as the service annuity compounds' },
+  ]}
+/>
+
+<DataTable
+  caption="Key financial checks"
+  head={['Check', 'Result']}
+  rows={[
+    ['Blended post-tax cost of capital', '7.8%'],
+    ['Debt service coverage', 'Trough of 1.6x in Year 2, then above 2x; 4-5x from Year 8'],
+    ['Capital deployed', '₹1,970 Cr total, against ₹37,040 Cr cumulative revenue'],
+    ['Funding', '₹684 Cr cumulative equity and ₹1,834 Cr project debt'],
+    ['Recurring revenue', 'AMC at 2% of cumulative installed base, 50% gross margin, ₹600 Cr+ a year by Year 15'],
+  ]}
+/>
+
+Returns strengthen over time rather than flatten, because every commissioned system turns into a high-margin maintenance contract a year later.
+
+## Timing the market
+
+Government incentives made the case urgent, not just attractive.
+
+<Steps
+  numbered={false}
+  items={[
+    { title: 'Viability Gap Funding', body: 'Covers 40% of capital cost on utility-scale projects in Phase 2.' },
+    { title: 'ISTS charge waiver', body: 'Removes inter-state transmission charges, but only for projects commissioned before June 2028.' },
+    { title: 'Cell duty exemption', body: 'No customs duty on imported lithium cells protects landed cost in both phases.' },
+    { title: 'CAQM Direction 76', body: 'NCR diesel sets of 19-800 kW cannot run during GRAP periods without ₹5-50 lakh retrofits. We reframed that spend as a BESS down payment.' },
+  ]}
+/>

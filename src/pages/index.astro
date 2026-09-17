@@ -1,0 +1,77 @@
+---
+import Base from '@/layouts/Base.astro';
+import Hero from '@/components/site/Hero.astro';
+import ProofStrip from '@/components/site/ProofStrip.astro';
+import FeaturedWork from '@/components/site/FeaturedWork.astro';
+import WorkIndex, { type IndexItem } from '@/components/site/WorkIndex';
+import Experience from '@/components/site/Experience.astro';
+import About from '@/components/site/About.astro';
+import Recognition from '@/components/site/Recognition.astro';
+import Contact from '@/components/site/Contact.astro';
+import { getWork, workHref } from '@/lib/work';
+
+const work = await getWork();
+const internship = work.filter((w) => w.data.group === 'internship');
+const others = work.filter((w) => w.data.group !== 'internship');
+
+const fmt = (m: (typeof work)[number]['data']['metrics'][number]) =>
+  m.display ??
+  `${m.prefix ?? ''}${new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: m.decimals ?? 0,
+    maximumFractionDigits: m.decimals ?? 0,
+  }).format(m.value ?? 0)}${m.suffix ?? ''}`;
+
+const indexItems: IndexItem[] = others.map((w) => ({
+  id: w.id,
+  href: workHref(w),
+  fileId: w.data.fileId,
+  title: w.data.title,
+  org: w.data.org,
+  context: w.data.context,
+  year: w.data.year,
+  group: w.data.group,
+  problem: w.data.problem,
+  metric: { value: fmt(w.data.metrics[0]), label: w.data.metrics[0].label },
+  award: w.data.award,
+  tags: w.data.tags,
+}));
+---
+
+<Base>
+  <Hero />
+  <ProofStrip caseCount={work.length} />
+
+  <section id="work" class="py-20 sm:py-28" aria-labelledby="work-title">
+    <div class="container-x">
+      <div class="max-w-3xl">
+        <h2 id="work-title" class="text-5xl tracking-[-0.04em] sm:text-6xl lg:text-7xl" data-reveal>
+          Four systems for one truck plant
+        </h2>
+        <p class="mt-5 max-w-[60ch] text-lg text-ink-2" data-reveal style="--reveal-i:1">
+          My summer internship at Ashok Leyland’s Alwar plant, April to June 2026. Each project started as a paper
+          register, a spreadsheet mess or a manual check, and ended as a system with data behind it.
+        </p>
+      </div>
+      <div class="mt-12">
+        <FeaturedWork items={internship} />
+      </div>
+
+      <div class="mt-24 sm:mt-32">
+        <div class="max-w-3xl">
+          <h2 class="text-4xl tracking-[-0.04em] sm:text-5xl" data-reveal>More case files</h2>
+          <p class="mt-4 max-w-[60ch] text-ink-2" data-reveal style="--reveal-i:1">
+            Case competitions and coursework in strategy, credit risk, BI, fintech prototypes and ERP.
+          </p>
+        </div>
+        <div class="mt-10" data-reveal style="--reveal-i:2">
+          <WorkIndex client:visible items={indexItems} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Experience work={work} />
+  <About />
+  <Recognition />
+  <Contact />
+</Base>

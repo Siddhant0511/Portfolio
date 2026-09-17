@@ -1,0 +1,148 @@
+---
+title: Digital Grievance Platform
+fileId: AL-01
+order: 1
+group: internship
+org: Ashok Leyland, Alwar Plant 2004
+context: Summer internship, HR department
+period: Apr - Jun 2026
+year: '2026'
+role: Designed and built the platform end to end
+team: Individual, reporting to Head HR
+summary: A zero-cost, QR-first grievance system in Hindi, English and Marwadi that replaced paper Red Books with tracked, routed complaints.
+problem: Worker grievances went into paper registers and disappeared, with no receipt, no tracking and no plant-wide view.
+tools: [Supabase, Web app, QR access, Excel export]
+tags: [Operations, Systems design, HR]
+metrics:
+  - { display: '<10 s', label: 'to file a grievance from any phone' }
+  - { value: 3, label: 'languages on the worker interface' }
+  - { display: '₹0', label: 'monthly running cost on free-tier infra' }
+cover: ../../assets/work/grievance-platform/hr-dashboard.jpg
+coverAlt: HR admin view of a grievance record with triage level, workflow stage and chat thread
+links:
+  - { label: Live platform, href: 'https://grievance-platform-topaz.vercel.app/' }
+---
+
+import Figure from '@/components/case/Figure.astro';
+import Flow from '@/components/case/Flow.astro';
+import Tiers from '@/components/case/Tiers.astro';
+import Gallery from '@/components/case/Gallery.astro';
+import Callout from '@/components/case/Callout.astro';
+import Compare from '@/components/case/Compare.astro';
+import screenLanguage from '@/assets/work/grievance-platform/screen-language.jpg';
+import screenIdentity from '@/assets/work/grievance-platform/screen-identity.jpg';
+import screenHome from '@/assets/work/grievance-platform/screen-home.jpg';
+import screenForm from '@/assets/work/grievance-platform/screen-form.jpg';
+import hrDashboard from '@/assets/work/grievance-platform/hr-dashboard.jpg';
+
+## The problem
+
+Grievance handling at the Alwar plant ran entirely on paper. Workers wrote concerns on slips or logged them in departmental registers called **Red Books**. Each department kept its own book, and nothing connected them.
+
+Once a complaint was written down, there was no way to confirm it had been received, see where it stood, or know when it was closed. HR had no plant-wide view of what the workforce was unhappy about. On the shop floor, the result was predictable: people stopped believing their complaints went anywhere.
+
+## What I set out to build
+
+The brief was to replace the Red Books completely, without disrupting production and without a budget. That set the constraints:
+
+- **Zero running cost**, so the system could survive after the internship ended
+- **Hindi, English and Marwadi**, because the workforce does not read one language
+- **Usable at any literacy level**, including by workers who struggle to type
+- **Real-time status** for the worker, and a single dashboard for HR
+- **A fresh start**: old paper records were deliberately not migrated, to avoid carrying inconsistent data into the new system
+
+## How it works
+
+I mapped the journey of a worker with a complaint before writing any code, then built a web app on a free-tier Supabase database with two faces: a phone-first form for workers and a desktop console for HR.
+
+<Figure title="From a QR code on a pillar to an HR decision" note="Four-tier flow. Nothing needs installing on the worker's phone.">
+  <Flow
+    steps={[
+      { title: 'Scan', detail: 'QR codes on notice boards and structural pillars', meta: 'Any smartphone' },
+      { title: 'Submit', detail: 'Pick a language, a category, or photograph a handwritten note', meta: 'Worker web app' },
+      { title: 'Store and route', detail: 'Tracking ID issued, severity level assigned', meta: 'Supabase' },
+      { title: 'Resolve', detail: 'Triage, chat with the worker, close the loop', meta: 'HR console', emphasis: true },
+    ]}
+  />
+</Figure>
+
+<Gallery
+  variant="phones"
+  images={[
+    { src: screenLanguage, alt: 'Language picker with Marwadi, Hindi and English options', caption: 'Language first, before anything else' },
+    { src: screenIdentity, alt: 'Access screen asking for an employee reference ID', caption: 'Employee ID, no passwords to remember' },
+    { src: screenHome, alt: 'Home screen with register grievance, track status and messages', caption: 'Three jobs: file, track, talk' },
+    { src: screenForm, alt: 'Complaint form with categories such as salary, safety and leave', caption: 'Common issues are one tap away' },
+  ]}
+/>
+
+## Routing by severity
+
+Not every complaint deserves the same clock. I read through historical Red Book entries to find the most frequent grievance types, then designed a three-level matrix. Common issues are offered as quick options and categorised automatically; anything unusual goes to HR for manual categorisation.
+
+<Tiers
+  items={[
+    {
+      kicker: 'Level 1, Routine',
+      level: 1,
+      title: 'Resolved within 5 days',
+      body: 'Salary discrepancies, attendance corrections and leave requests. Auto-categorised and assigned to the department HR representative.',
+      meta: 'Auto-categorised',
+    },
+    {
+      kicker: 'Level 2, Moderate',
+      level: 2,
+      title: 'Resolved within 3 days',
+      body: 'Supervisor conflicts, safety concerns and machine or equipment faults. Reviewed by HR before assignment.',
+      meta: 'Manual review',
+    },
+    {
+      kicker: 'Level 3, Critical',
+      level: 3,
+      title: 'Resolved within 24 hours',
+      body: 'Harassment, discrimination and legal or safety violations. Escalated straight to senior HR.',
+      meta: 'Immediate escalation',
+    },
+  ]}
+/>
+
+## Built for the shop floor
+
+Most of the design work was about removing reasons not to use it.
+
+- **No app, no login friction.** A worker with any smartphone reaches the form in under 10 seconds from a QR code.
+- **A photo counts as a complaint.** Some workers find typing hard, so they can write on paper, take a picture and upload it. HR reads the note in the dashboard.
+- **A tracking ID and a chat thread.** Every complaint gets an ID the worker can check at any time, and a direct line to HR instead of silence.
+- **Staying free.** Supabase's free tier has storage limits, so I added a one-click export that lets HR archive logs offline every month.
+
+<Figure title="The HR console" note="A single record: triage level, workflow stage, a private internal log and the thread with the worker. Records that sit too long raise an SLA breach warning." bare>
+  <Gallery variant="single" zoom images={[{ src: hrDashboard, alt: 'HR console showing a grievance record with triage level, workflow stage, internal log and communication thread' }]} />
+</Figure>
+
+## What the pilot showed
+
+<Callout>
+  The paper process did not fail because officers were careless. It failed because it depended on memory and paper in a loud, fast plant.
+</Callout>
+
+Two things came out of the pilot. Workers often could not describe a machine fault or a safety hazard in words, which is why the **photo upload** became a core feature rather than an extra.
+
+The second was about visibility. Under the old system, three departments could each complain about the same transport vendor and HR would see three unrelated incidents in three books. In one database, those complaints showed up together as a single, actionable problem.
+
+## Impact
+
+<Compare
+  beforeLabel="Red Book"
+  afterLabel="Digital platform"
+  rows={[
+    { k: 'Submitting', before: 'Paper slips and departmental registers', after: 'QR scan from any smartphone' },
+    { k: 'Tracking', before: 'None. Complaints disappeared', after: 'Unique tracking ID with live status' },
+    { k: 'Visibility', before: 'Fragmented by department', after: 'One plant-wide database' },
+    { k: 'Response time', before: 'Unknown and unmonitored', after: 'SLA clocks with aging flags for HR' },
+    { k: 'Languages', before: 'Hindi only, handwritten', after: 'Hindi, English and Marwadi' },
+    { k: 'Reporting', before: 'Manual compilation from paper', after: 'Dashboard and one-click Excel export' },
+    { k: 'Running cost', before: 'Paper, printing and admin hours', after: 'Zero, on free-tier infrastructure' },
+  ]}
+/>
+
+An opaque administrative chore became a transparent, zero-cost system that gives workers a reason to speak up and gives HR evidence about what is actually going wrong.

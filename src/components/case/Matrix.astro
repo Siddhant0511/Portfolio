@@ -1,0 +1,39 @@
+---
+/** 2x2 positioning matrix (e.g. Kraljic). Items are placed by 0-100 coordinates. */
+interface Props {
+  xLabel: string;
+  yLabel: string;
+  quadrants: [string, string, string, string]; // top-left, top-right, bottom-left, bottom-right
+  items: { label: string; x: number; y: number; detail?: string; highlight?: boolean }[];
+}
+const { xLabel, yLabel, quadrants, items } = Astro.props;
+---
+
+<div class="flex gap-3">
+  <div class="flex w-5 items-center justify-center">
+    <span class="label -rotate-90 whitespace-nowrap">{yLabel} &uarr;</span>
+  </div>
+  <div class="min-w-0 flex-1">
+    <div class="relative grid aspect-[4/3] grid-cols-2 grid-rows-2 gap-px border border-line-strong bg-line-strong sm:aspect-[16/10]">
+      {
+        quadrants.map((q) => (
+          <div class="bg-bg p-3 sm:p-4">
+            <span class="label">{q}</span>
+          </div>
+        ))
+      }
+      {
+        items.map((it) => (
+          <div class="absolute -translate-x-1/2 -translate-y-1/2" style={`left:${it.x}%; top:${100 - it.y}%`}>
+            <div class:list={['flex max-w-[11rem] flex-col items-center text-center']}>
+              <span class:list={['size-3.5 rotate-45', it.highlight ? 'bg-accent' : 'bg-ink']} />
+              <span class="mt-2 text-xs leading-tight font-medium sm:text-sm">{it.label}</span>
+              {it.detail && <span class="mt-0.5 hidden text-xs leading-tight text-muted sm:block">{it.detail}</span>}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+    <p class="label mt-2 text-right">{xLabel} &rarr;</p>
+  </div>
+</div>

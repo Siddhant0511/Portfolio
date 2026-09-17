@@ -1,0 +1,94 @@
+---
+import { experience } from '@/lib/site';
+import { workHref, type Work } from '@/lib/work';
+
+interface Props {
+  work: Work[];
+}
+const { work } = Astro.props;
+const titles = Object.fromEntries(work.map((w) => [w.id, w.data]));
+---
+
+<section id="experience" class="border-t border-line py-20 sm:py-28" aria-labelledby="experience-title">
+  <div class="container-x grid gap-12 lg:grid-cols-12 lg:gap-10">
+    <div class="lg:col-span-4">
+      <div class="lg:sticky lg:top-28">
+        <h2 id="experience-title" class="text-5xl tracking-[-0.04em] sm:text-6xl" data-reveal>Experience</h2>
+        <p class="mt-5 max-w-sm text-ink-2" data-reveal style="--reveal-i:1">
+          Two very different rooms: an architecture studio coordinating airport projects, and the HR office of a
+          truck plant.
+        </p>
+      </div>
+    </div>
+
+    <ol class="timeline relative lg:col-span-8">
+      <span class="timeline-line" aria-hidden="true"></span>
+      {
+        experience.map((job, i) => (
+          <li class="relative grid gap-4 pb-14 pl-8 last:pb-0 sm:grid-cols-[10.5rem_1fr] sm:gap-8 sm:pl-10" data-reveal style={`--reveal-i:${i}`}>
+            <span class="node absolute top-1.5 left-0 size-[9px] -translate-x-1/2 border border-ink bg-bg" aria-hidden="true" />
+            <div>
+              <p class="num text-sm whitespace-nowrap text-muted">{job.period}</p>
+            </div>
+            <div>
+              <h3 class="text-2xl tracking-[-0.03em] sm:text-3xl">{job.role}</h3>
+              <p class="mt-1.5 text-[15px] text-ink-2">
+                <span class="font-medium text-ink">{job.org}</span>, {job.place}
+              </p>
+              <p class="mt-5 max-w-[62ch] text-ink-2">{job.summary}</p>
+              <ul class="mt-5 grid gap-2.5">
+                {job.points.map((p) => (
+                  <li class="relative max-w-[62ch] pl-5 text-[15px] leading-relaxed text-ink-2 before:absolute before:top-[0.75em] before:left-0 before:h-px before:w-2.5 before:bg-accent">
+                    {p}
+                  </li>
+                ))}
+              </ul>
+              {job.workIds && (
+                <div class="mt-6 flex flex-wrap gap-2">
+                  {job.workIds.map((id) =>
+                    titles[id] ? (
+                      <a
+                        href={workHref(id)}
+                        class="group inline-flex items-center gap-2 border border-line bg-surface px-3 py-2 text-sm transition-colors hover:border-ink"
+                      >
+                        <span class="font-mono text-[11px] text-accent-ink">{titles[id].fileId}</span>
+                        {titles[id].title}
+                      </a>
+                    ) : null,
+                  )}
+                </div>
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .timeline-line {
+    position: absolute;
+    top: 0.5rem;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+    background: var(--line-strong);
+    transform-origin: top;
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .timeline-line {
+        animation: draw linear both;
+        animation-timeline: view();
+        animation-range: entry 10% cover 60%;
+      }
+    }
+  }
+
+  @keyframes draw {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+</style>

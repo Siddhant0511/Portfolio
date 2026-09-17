@@ -1,0 +1,155 @@
+---
+title: 'AL-TICS: Tyre Verification'
+fileId: AL-04
+order: 4
+group: internship
+org: Ashok Leyland, Alwar Plant 2004
+context: Summer internship, production quality
+period: Apr - Jun 2026
+year: '2026'
+role: Designed the system architecture, model approach and compliance protocol
+team: Individual, with production and quality teams
+summary: A locally hosted CNN that reads embossed tyre sidewalls on the assembly line and halts the line through the PLC when a tyre does not match the vehicle.
+problem: Operators matched tyres against paper spec sheets on a moving line, so wrong size, brand or load-index fitments reached rework.
+tools: [CNN, CLAHE preprocessing, Android, Edge PC, PLC, NFC and BLE]
+tags: [Computer vision, Quality, Manufacturing]
+metrics:
+  - { display: '~2 s', label: 'local inference per tyre' }
+  - { value: 4000, prefix: '~', label: 'training images captured on the plant floor' }
+  - { display: '~56 s', label: 'for a full 6-tyre vehicle cycle' }
+cover: ../../assets/work/al-tics/tyre-1.jpg
+coverAlt: Close-up of an embossed 9.00R20 marking on a black tyre sidewall
+---
+
+import Figure from '@/components/case/Figure.astro';
+import Flow from '@/components/case/Flow.astro';
+import Gallery from '@/components/case/Gallery.astro';
+import Callout from '@/components/case/Callout.astro';
+import DataTable from '@/components/case/DataTable.astro';
+import Compare from '@/components/case/Compare.astro';
+import Steps from '@/components/case/Steps.astro';
+import Tiers from '@/components/case/Tiers.astro';
+import tyre1 from '@/assets/work/al-tics/tyre-1.jpg';
+import tyre2 from '@/assets/work/al-tics/tyre-2.jpg';
+import tyre3 from '@/assets/work/al-tics/tyre-3.jpg';
+
+## The problem
+
+Before a tyre goes on a truck at Alwar, an operator reads the markings on its sidewall and checks them against a paper specification for that vehicle. The line keeps moving while they do it.
+
+That check depended on experience and attention, and both run out. Wrong tyres got fitted: the wrong size, the wrong brand, or the wrong load index on an axle. When a mismatch was caught late, the vehicle needed rework and the line lost time.
+
+## What the system had to do
+
+**AL-TICS**, the Ashok Leyland Tyre Identification and Classification System, was designed around four requirements:
+
+- **No paper.** Specifications appear on screen for the vehicle at the station.
+- **Near-zero latency, fully local.** No cloud calls, no API bills, no dependence on plant internet.
+- **Impossible to skip.** Operators under time pressure must not be able to bypass the scan.
+- **A permanent record.** Every fitment logged against the vehicle's Chassis Body Number (CBN).
+
+## Architecture
+
+<Figure title="Three tiers, all on the plant floor" note="Everything runs on wired Ethernet: factory electromagnetic interference and dense metal structures make Wi-Fi unreliable for time-critical signals.">
+  <Flow
+    steps={[
+      { title: 'Android app', detail: 'Shows the vehicle spec and captures the sidewall scan', meta: '~2 s per tyre' },
+      { title: 'Edge PC', detail: 'Runs the CNN locally and matches the result to the vehicle', meta: 'No cloud, zero API cost' },
+      { title: 'PLC interlock', detail: 'Receives OK or HALT and controls the line segment', meta: 'Real-time', emphasis: true },
+    ]}
+    edges={[{ label: 'Image over Ethernet' }, { label: 'OK or HALT' }]}
+  />
+</Figure>
+
+## Why a custom model
+
+Tyre markings are not printed; they are **embossed into black rubber**. There is no colour contrast at all. Legibility depends on depth, shadow and the angle of the light, and on a factory floor there is dust too. Off-the-shelf OCR could not reach the accuracy a zero-defect line needs.
+
+<Gallery
+  cols={3}
+  images={[
+    { src: tyre1, alt: 'Embossed 9.00R20 size marking on a tyre sidewall', caption: 'Size code 9.00R20, black on black' },
+    { src: tyre2, alt: 'Faint embossed 7.50-16 marking on a worn sidewall', caption: 'Shadows carry the only signal' },
+    { src: tyre3, alt: 'Sidewall marking on a tyre mounted on a steel wheel', caption: 'Captured on the line, not in a lab' },
+  ]}
+/>
+
+I also evaluated a local large language model and ruled it out. On the low-cost edge PCs available on the shop floor, inference was far too slow for a moving line. A **convolutional neural network** was the right tool: it learns edges, textures and embossing patterns directly from images and classifies a sidewall against the database of approved tyres.
+
+<DataTable
+  caption="Model specification"
+  head={['Item', 'Detail']}
+  rows={[
+    ['Architecture', 'CNN image classifier'],
+    ['Training data', '~4,000 images captured at Plant 2004 fitting stations'],
+    ['Split', '80% training, 10% validation, 10% test'],
+    ['Preprocessing', 'Grayscale, CLAHE contrast enhancement, resize and normalise'],
+    ['Augmentation', 'Rotation, brightness variation and blur'],
+    ['Output', 'Tyre make and size, e.g. MRF 9.00R20 or JK 8.25-16, matched to the vehicle spec'],
+    ['Inference', '~2 seconds per tyre, on the local edge PC'],
+    ['Retraining', 'Monthly, on production images labelled by senior staff'],
+  ]}
+/>
+
+<Steps
+  items={[
+    { title: 'Collect on site', body: 'About 4,000 images from the actual fitting stations: real lighting, dust, camera angles and the MRF and JK tyres used at the plant.' },
+    { title: 'Train narrowly', body: 'Calibrate the model to extract only what matters: brand, exact size code and load index.' },
+    { title: 'Deploy at the edge', body: 'A lightweight model on the local PC gives about 2-second results with no network latency.' },
+    { title: 'Keep learning', body: 'Daily images are stored locally; each month senior staff label edge cases and the model is retrained.' },
+  ]}
+/>
+
+## Designing out the shortcut
+
+The biggest risk was not the model. It was an operator under pressure scanning anything to keep the line moving. So compliance was built into the physical workflow.
+
+<Tiers
+  cols={2}
+  items={[
+    {
+      kicker: 'Presence check',
+      title: 'NFC tap at the station',
+      body: 'Before a scan is accepted, the operator taps the Android device on a fixed NFC tag at the fitting station, proving they are physically there.',
+      meta: 'Digital handshake',
+    },
+    {
+      kicker: 'Position check',
+      title: 'BLE trilateration',
+      body: 'Bluetooth beacons locate the device in real time. A scan from outside the radius of the wheel hub is rejected, which blocks the dummy-tyre workaround.',
+      meta: 'Spatial verification',
+    },
+  ]}
+/>
+
+When the model detects the wrong tyre, AL-TICS stops being a checker and starts intervening.
+
+<Figure title="The mismatch protocol" note="A closed loop: the line does not move again until the correct tyre is confirmed.">
+  <Flow
+    steps={[
+      { title: 'Interlock', detail: 'Mismatch flag goes to the PLC and the line segment halts immediately' },
+      { title: 'Show the fix', detail: 'The Android screen turns red and displays the exact brand, size and code required' },
+      { title: 'Correct', detail: 'The operator fetches the right tyre from staging without waiting for a supervisor' },
+      { title: 'Rescan and release', detail: 'A 100% match shows ALL OK in green and the PLC releases the line', emphasis: true },
+    ]}
+  />
+</Figure>
+
+<Callout>Checking the tyre before it is fitted, not after, turns a rework problem into a two-second scan.</Callout>
+
+## Estimated impact
+
+<Compare
+  beforeLabel="Before AL-TICS"
+  afterLabel="With AL-TICS (estimated)"
+  rows={[
+    { k: 'Where errors are caught', before: 'After fitment, as downstream rework', after: 'Before fitment, prevented at the source' },
+    { k: 'Specification reference', before: 'Paper documents and manual lookup', after: 'Live spec on the Android screen' },
+    { k: 'Line control', before: 'A supervisor steps in manually', after: 'Automatic PLC interlock' },
+    { k: 'Audit trail', before: 'No record of which tyre went where', after: 'CBN, tyre, timestamp and photo for every fitment' },
+    { k: 'Infrastructure', before: 'Not applicable', after: 'Fully local edge computing, no cloud dependency' },
+    { k: 'Speed', before: 'Variable, operator-dependent', after: '~2 s per tyre, ~56 s for a 6-tyre vehicle' },
+  ]}
+/>
+
+AL-TICS supports the plant's zero-defect goals by moving verification from detection to prevention. And because every scan is logged, a future quality issue can be traced back to exactly which tyre went on which chassis, with a photo to prove it.

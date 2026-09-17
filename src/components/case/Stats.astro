@@ -1,0 +1,40 @@
+---
+import MetricValue from './MetricValue.astro';
+
+/** A row of supporting numbers inside the case body. */
+interface Stat {
+  value?: number;
+  display?: string;
+  prefix?: string;
+  suffix?: string;
+  decimals?: number;
+  label: string;
+}
+interface Props {
+  items: Stat[];
+}
+const { items } = Astro.props;
+const cols = items.length >= 4 ? 'grid-cols-2 lg:grid-cols-4' : items.length === 3 ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-2';
+---
+
+<dl class:list={['case-block grid border-y border-line', cols]} data-reveal>
+  {
+    items.map((s, i) => (
+      <div
+        class:list={[
+          'flex flex-col gap-2 py-5 pr-4',
+          i > 0 && 'sm:border-l sm:border-line sm:pl-5',
+          items.length !== 3 && i % 2 === 1 && 'border-l border-line pl-4',
+          items.length === 3 && i > 0 && 'border-t border-line sm:border-t-0',
+          items.length >= 4 && i > 1 && 'border-t border-line lg:border-t-0',
+          items.length >= 4 && i === 2 && 'sm:border-l-0 sm:pl-0 lg:border-l lg:pl-5',
+        ]}
+      >
+        <dd class="order-1 font-display text-3xl leading-none font-semibold tracking-[-0.04em] sm:text-4xl">
+          <MetricValue {...s} />
+        </dd>
+        <dt class="order-2 text-sm leading-snug text-ink-2">{s.label}</dt>
+      </div>
+    ))
+  }
+</dl>

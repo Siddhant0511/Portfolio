@@ -1,0 +1,186 @@
+{
+ "overall": 35.39,
+ "daysSince": [
+  {
+   "x": 0,
+   "n": 2910,
+   "rate": 27.9
+  },
+  {
+   "x": 1,
+   "n": 1725,
+   "rate": 28.0
+  },
+  {
+   "x": 2,
+   "n": 1163,
+   "rate": 31.1
+  },
+  {
+   "x": 3,
+   "n": 750,
+   "rate": 43.3
+  },
+  {
+   "x": 4,
+   "n": 431,
+   "rate": 48.5
+  },
+  {
+   "x": 5,
+   "n": 304,
+   "rate": 47.0
+  },
+  {
+   "x": 6,
+   "n": 220,
+   "rate": 65.0
+  },
+  {
+   "x": 7,
+   "n": 166,
+   "rate": 66.3
+  },
+  {
+   "x": 8,
+   "n": 100,
+   "rate": 66.0
+  },
+  {
+   "x": 9,
+   "n": 79,
+   "rate": 72.2
+  },
+  {
+   "x": 10,
+   "n": 152,
+   "rate": 80.3
+  }
+ ],
+ "binge": [
+  {
+   "x": 0,
+   "n": 2382,
+   "rate": 49.2
+  },
+  {
+   "x": 1,
+   "n": 2236,
+   "rate": 37.6
+  },
+  {
+   "x": 2,
+   "n": 1497,
+   "rate": 28.5
+  },
+  {
+   "x": 3,
+   "n": 980,
+   "rate": 22.7
+  },
+  {
+   "x": 4,
+   "n": 485,
+   "rate": 21.6
+  },
+  {
+   "x": 5,
+   "n": 241,
+   "rate": 13.7
+  },
+  {
+   "x": 6,
+   "n": 179,
+   "rate": 17.3
+  }
+ ],
+ "genres": [
+  {
+   "x": 1,
+   "n": 1104,
+   "rate": 52.1
+  },
+  {
+   "x": 2,
+   "n": 1273,
+   "rate": 44.1
+  },
+  {
+   "x": 3,
+   "n": 1499,
+   "rate": 39.9
+  },
+  {
+   "x": 4,
+   "n": 1349,
+   "rate": 32.5
+  },
+  {
+   "x": 5,
+   "n": 1042,
+   "rate": 28.3
+  },
+  {
+   "x": 6,
+   "n": 734,
+   "rate": 22.5
+  },
+  {
+   "x": 7,
+   "n": 456,
+   "rate": 21.5
+  },
+  {
+   "x": 8,
+   "n": 264,
+   "rate": 20.1
+  },
+  {
+   "x": 9,
+   "n": 144,
+   "rate": 16.0
+  },
+  {
+   "x": 10,
+   "n": 135,
+   "rate": 17.8
+  }
+ ],
+ "tier": [
+  {
+   "x": "Basic",
+   "n": 2328,
+   "rate": 38.2
+  },
+  {
+   "x": "Premium",
+   "n": 1639,
+   "rate": 31.1
+  },
+  {
+   "x": "Standard",
+   "n": 4033,
+   "rate": 35.5
+  }
+ ],
+ "Fatigue": {
+  "AVG DAILY MINUTES LAST 7D": 40.798,
+  "AVG DAILY MINUTES LAST 30D": 45.73,
+  "AVG COMPLETION RATE": 0.315,
+  "RECOMMENDATION CLICK RATE": 0.157,
+  "DAYS SINCE LAST SESSION": 2.786,
+  "BINGE SESSIONS LAST 30D": 1.113,
+  "SESSIONS LAST 7D": 4.199,
+  "UNIQUE GENRES WATCHED 30D": 3.281
+ },
+ "No Fatigue": {
+  "AVG DAILY MINUTES LAST 7D": 66.34,
+  "AVG DAILY MINUTES LAST 30D": 69.229,
+  "AVG COMPLETION RATE": 0.425,
+  "RECOMMENDATION CLICK RATE": 0.231,
+  "DAYS SINCE LAST SESSION": 1.445,
+  "BINGE SESSIONS LAST 30D": 1.809,
+  "SESSIONS LAST 7D": 5.736,
+  "UNIQUE GENRES WATCHED 30D": 4.239
+ }
+}

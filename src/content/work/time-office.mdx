@@ -1,0 +1,157 @@
+---
+title: Time Office Process Rectification
+fileId: AL-03
+order: 3
+group: internship
+org: Ashok Leyland, Alwar Plant 2004
+context: Summer internship, HR department
+period: Apr - Jun 2026
+year: '2026'
+role: Diagnosed the sync failures and designed the technical and policy fixes
+team: Individual, with plant IT and Time Office staff
+summary: A three-layer root-cause analysis of biometric-to-payroll sync failures, fixed first by a zero-cost staggered schedule and a cap on manual overrides.
+problem: Attendance data failed to sync from biometric devices to payroll exactly on the 25th and 26th, the days payroll closes.
+tools: [ZKTeco, Easy WDMS, CLMS, Root-cause analysis]
+tags: [Operations, Process improvement, Compliance]
+metrics:
+  - { display: '>95%', label: 'target sync success, up from ~65-70%' }
+  - { value: 50, suffix: '%', label: 'target cut in Time Office effort-hours' }
+  - { value: 3, label: 'manual bypass slips allowed per worker per month' }
+---
+
+import Figure from '@/components/case/Figure.astro';
+import Flow from '@/components/case/Flow.astro';
+import Tiers from '@/components/case/Tiers.astro';
+import Callout from '@/components/case/Callout.astro';
+import DataTable from '@/components/case/DataTable.astro';
+import Compare from '@/components/case/Compare.astro';
+import Steps from '@/components/case/Steps.astro';
+
+## The problem
+
+The Time Office at Alwar captures attendance on **ZKTeco** biometric devices, managed through **Easy WDMS**. That data then has to sync to the company's central **CLMS** platform, where payroll is calculated.
+
+Capture worked. Transmission did not. The sync failed intermittently, with partial transfers and corrupted records, and the failures clustered on the **25th and 26th of every month**, exactly when attendance closes for payroll.
+
+A second problem sat on top of the first. The process allowed informal manual overrides, and late arrivals used them freely, with nobody clearly accountable. Together, the two issues left the Time Office re-checking and re-entering attendance by hand during the most sensitive days of the month, with payroll errors as the risk.
+
+<Figure title="Where the pipeline broke" note="Attendance moves from capture to payroll. Marked links are where the three failure layers sit.">
+  <Flow
+    steps={[
+      { title: 'ZKTeco devices', detail: 'Biometric capture at the gates', meta: 'Worked reliably' },
+      { title: 'Easy WDMS', detail: 'Local workforce data management', meta: 'Plant server' },
+      { title: 'Firewall', detail: 'Plant network perimeter', meta: 'Ports 8080 and 443' },
+      { title: 'CLMS', detail: 'Central platform used for payroll', meta: 'Shared by all plants', emphasis: true },
+    ]}
+    edges={[
+      { label: 'Layer 2: IP drift', fail: true },
+      { label: 'Layer 3: throttling', fail: true },
+      { label: 'Layer 1: concurrency', fail: true },
+    ]}
+  />
+</Figure>
+
+## Finding the root causes
+
+The failures were not random. They lined up with peak-volume days, which pointed at load rather than faulty hardware. Working through the stack layer by layer isolated three causes, in order of impact.
+
+<Tiers
+  scaleLabel="Impact"
+  items={[
+    {
+      kicker: 'Layer 1, Primary',
+      level: 3,
+      title: 'Server concurrency',
+      body: 'Every Ashok Leyland plant pushed its bulk attendance to CLMS at the same time, and the server could not process them in parallel.',
+      meta: 'Dropped packets, mid-transfer timeouts',
+    },
+    {
+      kicker: 'Layer 2, Secondary',
+      level: 2,
+      title: 'Device IP misalignment',
+      body: 'ZKTeco devices used dynamic IP addresses. When an address changed, the link to WDMS broke without any local warning.',
+      meta: 'Silent sync failures',
+    },
+    {
+      kicker: 'Layer 3, Tertiary',
+      level: 1,
+      title: 'Firewall throttling',
+      body: 'The firewall read high-volume traffic on ports 8080 and 443 as anomalous and rejected it.',
+      meta: 'Valid attendance packets blocked',
+    },
+  ]}
+/>
+
+## Fixing it without a budget
+
+I ranked the options by cost and by which layer they addressed. Three of the four fixes cost nothing or very little; the expensive one became a fallback, not the plan.
+
+<DataTable
+  caption="Technical solution matrix"
+  head={['Solution', 'Cost and timing', 'Layer addressed', 'Feasibility']}
+  highlightRow={0}
+  rows={[
+    ['Staggered sync schedules', 'Zero cost, immediate', 'Layer 1, concurrency', 'High'],
+    ['Static IPs for devices', 'Low cost, short term', 'Layer 2, configuration', 'High'],
+    ['Whitelist ports 8080 and 443', 'Zero cost, short term', 'Layer 3, throttling', 'High'],
+    ['CLMS server RAM and CPU upgrade', 'High cost, long term', 'Layer 1, backup option', 'Medium'],
+  ]}
+/>
+
+The primary fix was a schedule, not a server. Instead of every plant pushing data at once, each location gets its own 30-minute sync window.
+
+<Figure title="One queue instead of a collision" note="Chennai and Alwar are the example windows from the plan; the pattern extends to every plant.">
+  <div class="grid gap-10 md:grid-cols-2 md:gap-8">
+    <div>
+      <p class="label">Before</p>
+      <div class="mt-4 grid grid-cols-[5.5rem_1fr] items-center gap-x-3 gap-y-2">
+        <span class="text-sm text-ink-2">All plants</span>
+        <span class="relative h-9"><span class="absolute inset-y-0 left-0 w-1/3 bg-accent"></span><span class="absolute inset-y-0 left-0 w-1/3 translate-x-1 translate-y-1 border border-accent"></span><span class="absolute inset-y-0 left-0 w-1/3 translate-x-2 translate-y-2 border border-accent/60"></span></span>
+        <span></span>
+        <span class="num pt-3 text-xs text-muted">Every plant at the same moment. The server times out.</span>
+      </div>
+    </div>
+    <div>
+      <p class="label !text-accent-ink">After</p>
+      <div class="mt-4 grid grid-cols-[5.5rem_1fr] items-center gap-x-3 gap-y-2">
+        <span class="text-sm text-ink-2">Chennai</span>
+        <span class="relative h-9"><span class="num absolute inset-y-0 left-0 flex w-1/3 items-center bg-ink px-2 text-xs text-bg">10:00 PM</span></span>
+        <span class="text-sm text-ink-2">Alwar</span>
+        <span class="relative h-9"><span class="num absolute inset-y-0 left-1/3 flex w-1/3 items-center bg-ink px-2 text-xs text-bg">10:30 PM</span></span>
+        <span class="text-sm text-muted">Next plant</span>
+        <span class="relative h-9"><span class="num absolute inset-y-0 left-2/3 flex w-1/3 items-center border border-dashed border-line-strong px-2 text-xs text-muted">11:00 PM</span></span>
+      </div>
+    </div>
+  </div>
+</Figure>
+
+<Callout>The biggest fix cost nothing: give each plant its own 30-minute sync window instead of buying a bigger server.</Callout>
+
+## Fixing the behaviour
+
+Technology alone would not stop the manual overrides. The policy side made accountability personal again.
+
+<Steps
+  items={[
+    { title: 'Biometrics first', body: 'Biometric capture becomes the non-negotiable record of attendance, not one option among several.' },
+    { title: 'Gate bypass slips', body: 'A late arrival needs a physical, authorised slip issued at the security gate, hard-capped at three per worker per month.' },
+    { title: 'Worker self-marking', body: 'In exceptional cases the worker signs their own attendance, so line managers supervise rather than do data entry.' },
+  ]}
+/>
+
+## Projected impact
+
+These are the targets set in the plan, measured against the baseline observed during the internship.
+
+<Compare
+  beforeLabel="Baseline"
+  afterLabel="Target"
+  rows={[
+    { k: 'Sync success rate', before: 'About 65-70% (estimated)', after: 'Above 95%, with manual re-entry eliminated' },
+    { k: 'Manual corrections', before: '100% baseline', after: '60-70% reduction' },
+    { k: 'Failures on the 25th and 26th', before: 'Recurring every month', after: 'Zero, securing payroll fidelity' },
+    { k: 'Time Office effort-hours', before: '100% baseline', after: '50% reduction, freeing HR for other work' },
+  ]}
+/>
+
+The Time Office moves from a reactive data-cleaning desk to a monitoring role. With clean data flowing, the next step I proposed is a **reconciliation dashboard** that automatically cross-checks biometric logs against gate slips, removing the last layer of manual auditing.

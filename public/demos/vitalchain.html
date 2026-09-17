@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VitalChain</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--b1:#0c4a6e;--b2:#0369a1;--b3:#0ea5e9;--sky:#7dd3fc;--sbg:#e0f2fe;--bg:#f2f7fb;--wh:#fff;--sf:#f8fafc;--snd:#dce5ee;--snd2:#b8c7d6;--tx:#0f172a;--tx2:#475569;--tx3:#94a3b8;--rd:#dc2626;--rbg:#fef2f2;--gn:#16a34a;--gbg:#dcfce7;--am:#d97706;--abg:#fffbeb;--r:10px;--side:240px;--top:52px}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+code,.mono{font-family:'JetBrains Mono',monospace}
+button{font-family:inherit;cursor:pointer;border:none;outline:none}
+input,select{font-family:inherit;outline:none}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--snd2);border-radius:3px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+@keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes toastOut{from{opacity:1}to{transform:translateX(120%);opacity:0}}
+.top{height:var(--top);display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:var(--b1);color:#fff;flex-shrink:0;z-index:50}
+.top-logo{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:800;letter-spacing:-.3px}.top-logo span{color:var(--sky)}
+.top-v{font-size:8px;background:rgba(255,255,255,.1);padding:2px 7px;border-radius:8px;color:var(--sky);font-weight:600;letter-spacing:.4px;margin-left:4px}
+.pill{display:flex;align-items:center;gap:6px;padding:4px 12px;border-radius:16px;font-size:11px;font-weight:700;transition:all .3s}
+.pill.ok{background:rgba(125,211,252,.15);color:var(--sky)}.pill.bad{background:rgba(220,38,38,.2);color:#fca5a5}
+.pill .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}.pill.ok .dot{background:var(--sky)}.pill.bad .dot{background:var(--rd);animation:pulse 1s infinite}
+.shell{display:flex;flex:1;overflow:hidden}
+.side{width:var(--side);background:var(--wh);border-right:1px solid var(--snd);display:flex;flex-direction:column;flex-shrink:0}
+.side-sec{padding:14px 14px 6px;font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:1.2px}
+.ni{display:flex;align-items:center;gap:10px;padding:9px 14px;margin:1px 6px;border-radius:8px;font-size:13px;font-weight:600;color:var(--tx2);cursor:pointer;transition:all .12s;user-select:none}
+.ni:hover{background:var(--sf);color:var(--tx)}.ni.on{background:var(--sbg);color:var(--b1);font-weight:700}
+.ni .ico{width:22px;text-align:center;font-size:16px;flex-shrink:0}.ni .lbl{flex:1}.ni .cnt{font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;background:var(--snd);color:var(--tx3)}.ni.on .cnt{background:var(--b1);color:#fff}
+.side-foot{margin-top:auto;padding:12px 14px;border-top:1px solid var(--snd);font-size:9px;color:var(--tx3);line-height:1.5}
+.main{flex:1;overflow-y:auto;padding:22px 26px}.sc{display:none;animation:fadeIn .2s ease-out;max-width:820px}.sc.on{display:block}
+.pt{font-size:19px;font-weight:800;color:var(--b1);margin-bottom:3px}.pd{font-size:13px;color:var(--tx2);margin-bottom:18px;line-height:1.5}.pd strong{color:var(--b2)}
+.c{background:var(--wh);border:1px solid var(--snd);border-radius:var(--r);padding:16px;margin-bottom:12px}.ch{font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px}
+.btn{padding:9px 18px;border-radius:8px;font-size:12px;font-weight:700;transition:all .12s;display:inline-flex;align-items:center;gap:6px}
+.bp{background:var(--b1);color:#fff}.bp:hover{background:var(--b2)}.bp:disabled{background:var(--snd2);cursor:default}
+.bo{background:transparent;color:var(--tx2);border:1.5px solid var(--snd)}.bo:hover{border-color:var(--b1);color:var(--b1)}
+.bd{background:var(--rbg);color:var(--rd);border:1px solid #fca5a5}
+.inp{width:100%;padding:9px 11px;border-radius:7px;border:1.5px solid var(--snd);font-size:13px;color:var(--tx);background:var(--sf);transition:border-color .12s}.inp:focus{border-color:var(--b2)}.inp::placeholder{color:var(--snd2)}
+.lb{font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;display:block}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.full{grid-column:1/-1}.mt{margin-top:10px}.mb{margin-bottom:10px}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:9px;font-weight:700}.tb{background:var(--sbg);color:var(--b1)}.tr{background:var(--rbg);color:var(--rd)}.tg{background:var(--gbg);color:var(--gn)}
+.toast-box{position:fixed;top:60px;right:16px;z-index:999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{padding:10px 16px;border-radius:8px;font-size:12px;font-weight:600;box-shadow:0 4px 14px rgba(0,0,0,.12);pointer-events:auto;animation:toastIn .3s ease-out;max-width:320px}
+.toast.out{animation:toastOut .3s ease-in forwards}.toast-ok{background:var(--b1);color:var(--sky)}.toast-err{background:var(--rd);color:#fff}.toast-info{background:var(--wh);color:var(--tx);border:1px solid var(--snd)}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.sc2{background:var(--wh);border:1px solid var(--snd);border-radius:var(--r);padding:14px;text-align:center;transition:transform .12s}.sc2:hover{transform:translateY(-2px)}
+.sc2 .si{font-size:22px;margin-bottom:4px}.sc2 .sv{font-size:22px;font-weight:800;color:var(--b1)}.sc2 .sl2{font-size:10px;color:var(--tx3);margin-top:2px}
+.hw{display:flex;gap:8px;flex-wrap:wrap}.hw>div{flex:1;min-width:120px;background:var(--sbg);border-radius:8px;padding:12px;text-align:center}
+.hw .hi{font-size:20px;margin-bottom:4px}.hw .ht{font-size:11px;font-weight:700;color:var(--b1)}.hw .hd{font-size:10px;color:var(--tx2);margin-top:2px}
+.ho{font-family:'JetBrains Mono',monospace;font-size:12px;padding:12px;border-radius:8px;word-break:break-all;line-height:1.7;letter-spacing:.3px;min-height:46px;transition:all .2s}
+.ho.empty{background:var(--sf);color:var(--tx3);border:1.5px dashed var(--snd);font-family:'DM Sans',sans-serif;font-size:12px;display:flex;align-items:center;justify-content:center}
+.ho.filled{background:var(--sbg);color:var(--b1);border:1px solid var(--sky)}
+.hc{display:inline-block;border-radius:2px;padding:0 1px;transition:all .1s}.hc.diff{background:var(--b1);color:#fff}
+/* type selector cards */
+.type-cards{display:flex;gap:8px;margin-bottom:14px}.type-card{flex:1;padding:14px;border-radius:var(--r);border:2px solid var(--snd);text-align:center;cursor:pointer;transition:all .15s}
+.type-card:hover{border-color:var(--b3)}.type-card.on{border-color:var(--b1);background:var(--sbg)}
+.type-card .tc-ico{font-size:28px;margin-bottom:4px}.type-card .tc-name{font-size:12px;font-weight:700;color:var(--tx)}
+/* cert fields dynamic */
+.cert-fields{animation:fadeIn .2s ease-out}
+/* blocks */
+.bk{border-radius:var(--r);padding:14px;transition:all .25s;animation:fadeIn .3s ease-out;margin-bottom:3px}
+.bk-ok{background:var(--wh);border:1.5px solid var(--b3)}.bk-bad{background:var(--rbg);border:1.5px solid var(--rd);animation:fadeIn .3s,shake .3s}.bk-gen{background:linear-gradient(135deg,#0c4a6e,#0369a1);border:1.5px solid var(--b1);color:#fff}
+.bk-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bdg{font-size:9px;font-weight:700;padding:3px 9px;border-radius:10px;color:#fff}.bdg-ok{background:var(--b3)}.bdg-t{background:var(--rd);animation:pulse 1.2s infinite}.bdg-b{background:var(--am)}
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:6px 0}.dc{background:var(--sf);border-radius:6px;padding:7px 9px;border:1px solid var(--snd)}.dc.bad{background:var(--rbg);border-color:#fca5a5}
+.dl{font-size:9px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.3px}.dv{font-size:12px;font-weight:600;color:var(--tx);margin-top:1px}
+.ed{cursor:pointer;border-bottom:1.5px dashed var(--sky);color:var(--b2);transition:color .1s}.ed:hover{color:var(--b1)}
+.ei{border:2px solid var(--rd);border-radius:4px;padding:1px 5px;font-size:11px;background:var(--rbg);font-family:inherit}
+.hr{display:flex;align-items:center;gap:4px;margin-top:3px;font-size:9px}.hl{color:var(--tx3);min-width:30px;font-weight:600;text-transform:uppercase}
+.hv{font-family:'JetBrains Mono',monospace;font-size:8.5px;padding:2px 6px;border-radius:3px;word-break:break-all}.hv.ok{background:var(--sbg);color:var(--b1)}.hv.bad{background:var(--rbg);color:var(--rd)}
+.cn{display:flex;justify-content:center;padding:1px 0}
+.nd{border-radius:var(--r);padding:14px;text-align:center;transition:all .25s}.nd-ok{background:var(--wh);border:2px solid var(--b3)}.nd-bad{background:var(--rbg);border:2px solid var(--rd)}
+.nd-bl{margin-top:6px;display:flex;flex-wrap:wrap;justify-content:center;gap:3px}.nm{font-size:8px;font-weight:600;padding:2px 6px;border-radius:3px;color:#fff}
+.cvote{border-radius:var(--r);padding:14px;text-align:center;margin-top:12px}.cvote.rj{background:var(--rbg);border:1.5px solid #fca5a5}
+.vts{display:flex;justify-content:center;gap:12px;margin:8px 0;font-size:24px}
+.stabs{display:flex;border-bottom:1.5px solid var(--snd);margin-bottom:14px}
+.stab{flex:1;padding:10px;text-align:center;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;position:relative}
+.stab.trd{color:var(--rd)}.stab.blk{color:var(--b1)}.stab.on.trd{background:var(--rbg)}.stab.on.blk{background:var(--sbg)}
+.stab.on::after{content:'';position:absolute;bottom:-1.5px;left:25%;right:25%;height:2.5px;border-radius:2px}.stab.on.trd::after{background:var(--rd)}.stab.on.blk::after{background:var(--b1)}
+.sp{display:none}.sp.on{display:block;animation:fadeIn .2s ease-out}
+.ss{display:flex;gap:10px;align-items:start;padding:9px 12px;border-radius:8px;margin-bottom:5px;opacity:.18;transform:translateX(-5px);transition:all .3s}
+.ss.a{opacity:1;transform:translateX(0);background:var(--sf);border:1px solid var(--snd)}.ss.d{opacity:.45;transform:translateX(0)}
+.ss.fail{background:var(--rbg);border:1px solid #fca5a5;opacity:1}.ss.pass{background:var(--sbg);border:1px solid var(--sky);opacity:1}
+.sn{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+.st2{font-size:12px;font-weight:700;color:var(--tx)}.sd{font-size:10px;color:var(--tx2);line-height:1.4;margin-top:1px}
+.lg{max-height:200px;overflow:auto}.le{font-size:11px;color:var(--tx2);padding:3px 0;border-bottom:1px solid var(--snd);line-height:1.4}.le:last-child{border:none}
+.lt{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--b2);margin-right:4px}
+.empty{text-align:center;padding:36px 20px;color:var(--tx3);border:2px dashed var(--snd);border-radius:var(--r)}.empty-ico{font-size:36px;margin-bottom:8px;opacity:.6}
+.verifier-strip{display:flex;gap:6px;margin:6px 0;flex-wrap:wrap}
+.verifier{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:16px;font-size:10px;font-weight:600;background:var(--sbg);color:var(--b1);border:1px solid var(--snd)}
+.verifier.bad{background:var(--rbg);color:var(--rd);border-color:#fca5a5}
+@media(max-width:700px){.side{display:none}.sg,.g2,.g3,.dg{grid-template-columns:1fr}.main{padding:14px}.type-cards{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="top"><div class="top-logo">📋 Vital<span>Chain</span><span class="top-v">PROTOTYPE</span></div><div class="pill ok" id="pill"><div class="dot"></div><span id="pillT">Chain Intact</span></div></div>
+<div class="shell">
+<nav class="side">
+  <div class="side-sec">Overview</div>
+  <div class="ni on" data-s="dash"><span class="ico">📊</span><span class="lbl">Dashboard</span></div>
+  <div class="ni" data-s="sim"><span class="ico">🎬</span><span class="lbl">Fraud Scenario</span></div>
+  <div class="side-sec">Blockchain</div>
+  <div class="ni" data-s="hash"><span class="ico">🔬</span><span class="lbl">Hash Lab</span></div>
+  <div class="ni" data-s="reg"><span class="ico">📝</span><span class="lbl">Issue Certificate</span></div>
+  <div class="ni" data-s="chain"><span class="ico">⛓️</span><span class="lbl">Certificate Registry</span><span class="cnt" id="cntBlk">1</span></div>
+  <div class="side-sec">Network</div>
+  <div class="ni" data-s="net"><span class="ico">🌐</span><span class="lbl">Nodes & Consensus</span></div>
+  <div class="side-foot">PGDM Fintech · Blockchain Exercise<br>VitalChain v1.0</div>
+</nav>
+<div class="main" id="M">
+
+<!-- DASHBOARD -->
+<div class="sc on" id="s-dash">
+  <div class="pt">Dashboard</div><div class="pd">Real-time overview of India's blockchain vital records registry.</div>
+  <div class="sg"><div class="sc2"><div class="si">📦</div><div class="sv" id="dB">1</div><div class="sl2">Blocks</div></div><div class="sc2"><div class="si">📜</div><div class="sv" id="dP">0</div><div class="sl2">Certificates</div></div><div class="sc2"><div class="si">🛡️</div><div class="sv" id="dH" style="color:var(--b1)">✓</div><div class="sl2">Chain Health</div></div><div class="sc2"><div class="si">🚨</div><div class="sv" id="dT">0</div><div class="sl2">Tampers</div></div></div>
+  <div class="g2"><div class="c"><div class="ch">Quick Actions</div><button class="btn bp mb" style="width:100%" data-s="reg">📝 Issue New Certificate</button><button class="btn bo mb" style="width:100%" data-s="hash">🔬 Open Hash Lab</button><button class="btn bo" style="width:100%" data-s="sim">🎬 See Pension Fraud</button></div><div class="c"><div class="ch">Activity Log</div><div class="lg" id="dLog"><div style="font-size:11px;color:var(--tx3)">No activity yet.</div></div></div></div>
+  <div class="c"><div class="ch">The Problem in India</div><div class="hw"><div><div class="hi">👶</div><div class="ht">2.5 Cr</div><div class="hd">births/year — 30% unregistered in rural India</div></div><div><div class="hi">💍</div><div class="ht">Bigamy</div><div class="hd">No cross-state marriage database exists</div></div><div><div class="hi">⚰️</div><div class="ht">₹10K Cr+</div><div class="hd">pension fraud from unreported deaths</div></div><div><div class="hi">🔗</div><div class="ht">0 tampers</div><div class="hd">possible on blockchain</div></div></div></div>
+</div>
+
+<!-- FRAUD SCENARIO -->
+<div class="sc" id="s-sim">
+  <div class="pt">Pension Fraud Scenario</div><div class="pd">A family hides a death to keep collecting pension. Click <strong>Next Step</strong> to compare both systems.</div>
+  <div class="c"><div class="stabs"><div class="stab trd on" data-m="trad">❌ Current System</div><div class="stab blk" data-m="block">✅ Blockchain System</div></div><div class="sp on" id="spTrad"></div><div class="sp" id="spBlock"></div><div style="display:flex;gap:8px;justify-content:center;padding-top:12px;border-top:1px solid var(--snd);margin-top:12px"><button class="btn bo" onclick="sPrev()">← Back</button><button class="btn bp" id="sNext" onclick="sNext()">Next Step →</button><button class="btn bo" onclick="sRst()">↺ Replay</button></div></div>
+</div>
+
+<!-- HASH LAB -->
+<div class="sc" id="s-hash">
+  <div class="pt">Hash Lab</div><div class="pd">Type any certificate data → see its <strong>SHA-256 fingerprint</strong>. Change one character — the entire hash changes.</div>
+  <div class="c"><div class="ch">Input — Certificate Data</div><input class="inp" id="hIn" placeholder='Try: Birth — Arjun Kumar, DOB: 15-Mar-2024, Hospital: AIIMS Delhi, Father: Rajesh Kumar' oninput="liveH()"></div>
+  <div class="c"><div class="ch">SHA-256 Hash</div><div class="ho empty" id="hOut">Type something to generate a hash…</div></div>
+  <div class="c"><div class="ch">Avalanche Comparison</div><div class="g2 mb"><div style="padding:8px;border-radius:6px;background:var(--sbg);color:var(--b1);font-family:'JetBrains Mono',monospace;font-size:9px;word-break:break-all" id="hP">Previous hash</div><div style="padding:8px;border-radius:6px;background:var(--abg);color:#78350f;font-family:'JetBrains Mono',monospace;font-size:9px;word-break:break-all" id="hC">Current hash</div></div><div id="hD" style="font-size:11px;font-weight:600;color:var(--am)"></div></div>
+</div>
+
+<!-- ISSUE CERTIFICATE -->
+<div class="sc" id="s-reg">
+  <div class="pt">Issue Certificate</div><div class="pd">Select a certificate type and fill details. Each record is <strong>multi-party verified</strong> and added to the chain.</div>
+  <div class="c">
+    <div class="ch">Certificate Type</div>
+    <div class="type-cards">
+      <div class="type-card on" onclick="setType('birth')"><div class="tc-ico">👶</div><div class="tc-name">Birth</div></div>
+      <div class="type-card" onclick="setType('marriage')"><div class="tc-ico">💍</div><div class="tc-name">Marriage</div></div>
+      <div class="type-card" onclick="setType('death')"><div class="tc-ico">⚰️</div><div class="tc-name">Death</div></div>
+    </div>
+    <div id="certFields" class="cert-fields"></div>
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn bp" id="addBtn" onclick="addBlk()">📝 Issue on Chain</button>
+      <button class="btn bo" onclick="fillS()">Fill Sample</button>
+      <button class="btn bo" onclick="resetAll()">↺ Reset</button>
+    </div>
+  </div>
+</div>
+
+<!-- CERTIFICATE REGISTRY -->
+<div class="sc" id="s-chain">
+  <div class="pt">Certificate Registry</div><div class="pd"><strong>Click any name or date</strong> to simulate tampering.</div>
+  <div id="cArea"></div>
+</div>
+
+<!-- NETWORK -->
+<div class="sc" id="s-net">
+  <div class="pt">Nodes & Consensus</div><div class="pd">3 authority nodes hold copies. <strong>Tamper one</strong> — the others reject it.</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="btn bp" id="naBtn" onclick="netA()">+ Add to All Nodes</button><button class="btn bo" onclick="netR()">↺ Reset</button></div>
+  <div class="g3" id="nG"></div><div id="cBox" style="display:none"></div>
+  <div class="c mt"><div class="ch">Network Log</div><div class="lg" id="nL"><div style="font-size:10px;color:var(--tx3)">No activity.</div></div></div>
+</div>
+
+</div></div>
+<div class="toast-box" id="toastBox"></div>
+<script>
+// NAV
+document.querySelectorAll('[data-s]').forEach(function(el){el.addEventListener('click',function(e){e.stopPropagation();var id=this.dataset.s;document.querySelectorAll('.sc').forEach(function(s){s.classList.remove('on')});var t=document.getElementById('s-'+id);if(t)t.classList.add('on');document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('on')});var nv=document.querySelector('.ni[data-s="'+id+'"]');if(nv)nv.classList.add('on');document.getElementById('M').scrollTop=0})});
+function toast(msg,type){var box=document.getElementById('toastBox'),d=document.createElement('div');d.className='toast toast-'+type;d.textContent=msg;box.appendChild(d);setTimeout(function(){d.classList.add('out');setTimeout(function(){d.remove()},300)},2800)}
+
+// CRYPTO
+async function sha256(m){var b=new TextEncoder().encode(m);var h=await crypto.subtle.digest('SHA-256',b);return Array.from(new Uint8Array(h)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')}
+async function bH(b){return sha256(b.i+'|'+b.t+'|'+b.p+'|'+JSON.stringify(b.d)+'|'+b.n)}
+async function mine(b,df){df=df||2;var px='0'.repeat(df);var n=0,h='';do{n++;h=await bH(Object.assign({},b,{n:n}))}while(!h.startsWith(px)&&n<300000);return{n:n,h:h}}
+
+// HASH LAB
+var pH='';
+async function liveH(){var v=document.getElementById('hIn').value,el=document.getElementById('hOut');if(!v){el.className='ho empty';el.textContent='Type something to generate a hash…';pH='';document.getElementById('hP').textContent='Previous hash';document.getElementById('hC').textContent='Current hash';document.getElementById('hD').textContent='';return}var h=await sha256(v);el.className='ho filled';if(pH){document.getElementById('hP').textContent='Prev: '+pH;document.getElementById('hC').textContent='Now:  '+h;var d=0;for(var i=0;i<64;i++)if(pH[i]!==h[i])d++;document.getElementById('hD').textContent='⚡ '+d+'/64 chars differ ('+Math.round(d/64*100)+'%) — completely different hash';var html='';for(var i=0;i<h.length;i++){html+='<span class="hc'+(pH[i]!==h[i]?' diff':'')+'">'+h[i]+'</span>'}el.innerHTML=html}else el.textContent=h;pH=h}
+
+// CERT TYPE FORM
+var certType='birth';
+var FIELDS={
+  birth:[{id:'name',lb:'Child Name',ph:'e.g. Arjun Kumar'},{id:'dob',lb:'Date of Birth',ph:'e.g. 15-Mar-2024',type:'date'},{id:'hospital',lb:'Hospital / Place',ph:'e.g. AIIMS, New Delhi'},{id:'father',lb:'Father Name',ph:'e.g. Rajesh Kumar'},{id:'mother',lb:'Mother Name',ph:'e.g. Priya Kumar'},{id:'certno',lb:'Certificate No.',ph:'e.g. BR-DL-2024-00471'}],
+  marriage:[{id:'spouse1',lb:'Spouse 1',ph:'e.g. Vikram Singh'},{id:'spouse2',lb:'Spouse 2',ph:'e.g. Anjali Verma'},{id:'dom',lb:'Date of Marriage',ph:'e.g. 20-Jan-2024',type:'date'},{id:'venue',lb:'Venue',ph:'e.g. Arya Samaj, Connaught Place'},{id:'witness',lb:'Witness',ph:'e.g. Suresh Gupta'},{id:'certno',lb:'Certificate No.',ph:'e.g. MR-DL-2024-00892'}],
+  death:[{id:'name',lb:'Deceased Name',ph:'e.g. Ramesh Prasad'},{id:'dod',lb:'Date of Death',ph:'e.g. 10-Feb-2024',type:'date'},{id:'cause',lb:'Cause of Death',ph:'e.g. Cardiac Arrest'},{id:'hospital',lb:'Hospital / Place',ph:'e.g. Safdarjung Hospital'},{id:'kin',lb:'Next of Kin',ph:'e.g. Suresh Prasad (Son)'},{id:'certno',lb:'Certificate No.',ph:'e.g. DT-DL-2024-00156'}]
+};
+var VERIFIERS={birth:['🏥 Hospital','👨‍👩‍👦 Parent','🏛 Municipal Corp'],marriage:['🏛 Sub-Registrar','👤 Spouse 1','👤 Spouse 2'],death:['🏥 Hospital','👤 Next of Kin','🏛 Registrar']};
+
+function setType(t){certType=t;document.querySelectorAll('.type-card').forEach(function(c){c.classList.remove('on')});document.querySelectorAll('.type-card')[{birth:0,marriage:1,death:2}[t]].classList.add('on');renderFields()}
+function renderFields(){
+  var fields=FIELDS[certType],html='<div class="g2">';
+  fields.forEach(function(f){html+='<div><span class="lb">'+f.lb+'</span><input class="inp" id="f_'+f.id+'" placeholder="'+f.ph+'" type="'+(f.type||'text')+'"></div>'});
+  html+='</div><div style="margin-top:10px"><span class="lb">Verified By (Multi-Party)</span><div class="verifier-strip">';
+  VERIFIERS[certType].forEach(function(v){html+='<div class="verifier">'+v+' ✓</div>'});
+  html+='</div></div>';
+  document.getElementById('certFields').innerHTML=html;
+}
+
+// CHAIN
+var ch=[],vl=[],tp=new Set(),lg=[];
+var SAMPLES=[
+  {type:'birth',d:{name:'Arjun Kumar',dob:'2024-03-15',hospital:'AIIMS, New Delhi',father:'Rajesh Kumar',mother:'Priya Kumar',certno:'BR-DL-2024-00471'},vf:['🏥 Hospital','👨‍👩‍👦 Parent','🏛 Municipal Corp']},
+  {type:'marriage',d:{spouse1:'Vikram Singh',spouse2:'Anjali Verma',dom:'2024-01-20',venue:'Arya Samaj, CP',witness:'Suresh Gupta',certno:'MR-DL-2024-00892'},vf:['🏛 Sub-Registrar','👤 Spouse 1','👤 Spouse 2']},
+  {type:'death',d:{name:'Ramesh Prasad',dod:'2024-02-10',cause:'Cardiac Arrest',hospital:'Safdarjung Hospital',kin:'Suresh Prasad (Son)',certno:'DT-DL-2024-00156'},vf:['🏥 Hospital','👤 Next of Kin','🏛 Registrar']},
+  {type:'birth',d:{name:'Meera Sharma',dob:'2024-06-22',hospital:'Fortis, Gurugram',father:'Anil Sharma',mother:'Sunita Sharma',certno:'BR-HR-2024-01205'},vf:['🏥 Hospital','👨‍👩‍👦 Parent','🏛 Municipal Corp']}
+];
+var si=0,bldg=false;
+function log(m){lg.push({t:new Date().toLocaleTimeString(),m:m});if(lg.length>30)lg.shift();document.getElementById('dLog').innerHTML=lg.map(function(e){return'<div class="le"><span class="lt">'+e.t+'</span>'+e.m+'</div>'}).join('');document.getElementById('dLog').scrollTop=9999}
+async function validate(){vl=[true];for(var i=1;i<ch.length;i++){var rh=await bH(ch[i]);vl.push(rh===ch[i].h&&ch[i].p===ch[i-1].h)}}
+function uDash(){document.getElementById('dB').textContent=ch.length;document.getElementById('dP').textContent=Math.max(0,ch.length-1);document.getElementById('cntBlk').textContent=ch.length;var ok=vl.every(Boolean);document.getElementById('dH').textContent=ok?'✓':'✗';document.getElementById('dH').style.color=ok?'var(--b1)':'var(--rd)';document.getElementById('dT').textContent=tp.size;document.getElementById('dT').style.color=tp.size?'var(--rd)':'var(--b1)';var pl=document.getElementById('pill'),pt=document.getElementById('pillT');if(ok){pl.className='pill ok';pt.textContent='Chain Intact · '+ch.length+' blocks'}else{var b=vl.filter(function(v){return!v}).length;pl.className='pill bad';pt.textContent='BROKEN · '+b+' invalid'}}
+
+function ico(t){return t==='birth'?'👶':t==='marriage'?'💍':'⚰️'}
+function typeLabel(t){return t==='birth'?'Birth Certificate':t==='marriage'?'Marriage Certificate':'Death Certificate'}
+function hb(h,ok){return'<span class="hv '+(ok?'ok':'bad')+'">'+(h?h.slice(0,14):'')+'…</span>'}
+function cnSvg(v){var c=v?'#0ea5e9':'#dc2626',d=v?'':'stroke-dasharray="3 2"',inn=v?'<polyline points="8.5,12 10.5,14 14,9" fill="none" stroke="#fff" stroke-width="1.1"/>':'<line x1="9" y1="9" x2="15" y2="15" stroke="#fff" stroke-width="1.1"/><line x1="15" y1="9" x2="9" y2="15" stroke="#fff" stroke-width="1.1"/>';return'<div class="cn"><svg width="22" height="24" viewBox="0 0 22 24"><line x1="11" y1="0" x2="11" y2="24" stroke="'+c+'" stroke-width="2" '+d+'/><circle cx="12" cy="12" r="3.5" fill="'+c+'"/>'+inn+'</svg></div>'}
+
+// primary name for a cert
+function pName(d,type){return type==='marriage'?d.spouse1+' & '+d.spouse2:d.name}
+// primary date
+function pDate(d,type){return type==='birth'?d.dob:type==='marriage'?d.dom:d.dod}
+// editable fields config per type
+function editFields(type){
+  if(type==='birth')return[['name','Name'],['dob','DOB'],['hospital','Hospital'],['father','Father'],['mother','Mother']];
+  if(type==='marriage')return[['spouse1','Spouse 1'],['spouse2','Spouse 2'],['dom','Date'],['venue','Venue'],['witness','Witness']];
+  return[['name','Deceased'],['dod','Date'],['cause','Cause'],['hospital','Hospital'],['kin','Next of Kin']];
+}
+
+function render(){
+  var ar=document.getElementById('cArea');
+  if(ch.length===0){ar.innerHTML='<div class="empty"><div class="empty-ico">📜</div><div style="font-size:13px;font-weight:600;color:var(--tx2)">No certificates issued</div><div style="font-size:11px">Go to Issue Certificate to add your first record.</div></div>';uDash();return}
+  var html='';
+  for(var i=0;i<ch.length;i++){
+    if(i>0)html+=cnSvg(vl[i]);
+    var b=ch[i],v=vl[i],t=tp.has(i),tm=new Date(b.t).toLocaleTimeString();
+    if(i===0){html+='<div class="bk bk-gen"><div class="bk-top"><span class="tag" style="background:rgba(255,255,255,.15);color:#fff;font-size:9px">BLOCK #0 · GENESIS</span><span class="mono" style="font-size:8px;color:var(--sky)">'+tm+'</span></div><div style="font-size:12px;font-weight:700">📋 Vital Records Registry Initialized</div><div class="hr" style="margin-top:6px"><span class="hl" style="color:rgba(255,255,255,.4)">Hash</span><span class="hv ok">'+(b.h?b.h.slice(0,14):'')+'…</span></div></div>';continue}
+    var d=b.d,ct=b.ct,cls=t||!v?'bk bk-bad':'bk bk-ok';
+    var bdg=t?'<span class="bdg bdg-t">⚠ TAMPERED</span>':(v?'<span class="bdg bdg-ok">✓ Verified</span>':'<span class="bdg bdg-b">✗ Broken</span>');
+    var bg=v?'':'bad';
+    var ef=editFields(ct);
+    var cells='<div class="dg">';
+    ef.forEach(function(f){cells+='<div class="dc '+bg+'"><div class="dl">'+f[1]+'</div><div class="dv ed" onclick="sE('+i+',&quot;'+f[0]+'&quot;,this)">'+(d[f[0]]||'—')+'</div></div>'});
+    cells+='<div class="dc '+bg+'"><div class="dl">Cert No.</div><div class="dv">'+(d.certno||'—')+'</div></div></div>';
+    var vfHtml='<div class="verifier-strip">';(b.vf||[]).forEach(function(vf){vfHtml+='<div class="verifier'+(bg?' bad':'')+'">'+vf+' ✓</div>'});vfHtml+='</div>';
+    html+='<div class="'+cls+'" id="blk-'+i+'"><div class="bk-top"><span class="tag '+(v?'tb':'tr')+'">BLOCK #'+i+'</span>'+bdg+'</div><div style="display:flex;gap:10px;align-items:center;margin-bottom:6px"><div style="width:32px;height:32px;border-radius:7px;background:'+(v?'var(--sbg)':'var(--rbg)')+';display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">'+ico(ct)+'</div><div><div style="font-size:12px;font-weight:700">'+typeLabel(ct)+'</div><div style="font-size:10px;color:var(--tx2)">'+pName(d,ct)+' · '+(d.certno||'')+'</div></div></div>'+cells+vfHtml+'<div class="hr"><span class="hl">Prev</span>'+hb(b.p,v)+'</div><div class="hr"><span class="hl">Hash</span>'+hb(b.h,v)+'</div></div>';
+  }
+  ar.innerHTML=html;uDash()
+}
+
+async function initG(){var g={i:0,t:Date.now(),p:'0'.repeat(64),d:{t:'Genesis'},n:0};var r=await mine(g);g.n=r.n;g.h=r.h;ch=[g];vl=[true];tp=new Set();si=0;lg=[]}
+async function addBlk(){
+  if(bldg)return;
+  var fields=FIELDS[certType],data={};
+  for(var fi=0;fi<fields.length;fi++){var f=fields[fi];var el=document.getElementById('f_'+f.id);if(!el)continue;data[f.id]=el.value.trim();if(!data[f.id]){toast('Please fill all fields.','err');return}}
+  bldg=true;var btn=document.getElementById('addBtn');btn.disabled=true;btn.textContent='⛏ Mining…';
+  var prev=ch[ch.length-1],b={i:ch.length,t:Date.now(),p:prev.h,d:data,ct:certType,vf:VERIFIERS[certType],n:0};
+  log('⛏ Mining #'+b.i+'…');var r=await mine(b);b.n=r.n;b.h=r.h;ch.push(b);await validate();
+  var label=pName(data,certType);
+  log('✅ #'+b.i+' — '+typeLabel(certType)+': '+label);toast(typeLabel(certType)+' issued: '+label,'ok');
+  bldg=false;btn.disabled=false;btn.textContent='📝 Issue on Chain';
+  document.querySelectorAll('#certFields input').forEach(function(i){i.value=''});render();
+  document.querySelector('.ni[data-s="chain"]').click();
+  setTimeout(function(){var el=document.getElementById('blk-'+b.i);if(el)el.scrollIntoView({behavior:'smooth',block:'center'})},100)
+}
+function fillS(){
+  var s=SAMPLES[si%SAMPLES.length];setType(s.type);
+  setTimeout(function(){var keys=Object.keys(s.d);keys.forEach(function(k){var el=document.getElementById('f_'+k);if(el)el.value=s.d[k]})},50);
+  si++;toast('Sample '+s.type+' certificate filled','info')
+}
+async function resetAll(){await initG();log('🔄 Reset.');render();netInit();toast('Chain reset','info')}
+function sE(i,field,el){var c=ch[i].d[field]||'';el.innerHTML='<input class="ei" style="width:110px" value="'+c+'" onblur="cm('+i+',&quot;'+field+'&quot;,this)" onkeydown="if(event.key===\'Enter\')cm('+i+',&quot;'+field+'&quot;,this)" autofocus>';el.querySelector('input').select()}
+async function cm(i,field,el){var r=el.value.trim();if(!r||r===ch[i].d[field]){render();return}log('🚨 '+field+' in Block #'+i+' → "'+r+'"');ch[i].d[field]=r;tp.add(i);await validate();log('💥 Chain BROKEN from #'+i+'!');toast('Tamper detected! Chain broken.','err');render()}
+
+// NETWORK
+var nodes=[],nLg=[],nsi=0;
+var NN=[{n:'Hospital (AIIMS)',e:'🏥'},{n:'Registrar Office',e:'🏛️'},{n:'UIDAI / Aadhaar',e:'🆔'}];
+function nLog(m){nLg.push({t:new Date().toLocaleTimeString(),m:m});if(nLg.length>20)nLg.shift();document.getElementById('nL').innerHTML=nLg.map(function(e){return'<div class="le"><span class="lt">'+e.t+'</span>'+e.m+'</div>'}).join('')}
+async function netInit(){var g={i:0,t:Date.now(),p:'0'.repeat(64),d:{t:'Genesis'},n:0};var r=await mine(g,1);g.n=r.n;g.h=r.h;nodes=NN.map(function(n){return Object.assign({},n,{c:[Object.assign({},g)],bad:false,bi:-1})});nsi=0;nLg=[];netR2()}
+function netR2(){document.getElementById('nG').innerHTML=nodes.map(function(n,ni){var c=n.bad?'nd nd-bad':'nd nd-ok',st=n.bad?'<div style="font-size:10px;font-weight:600;color:var(--rd);margin-top:3px">⚠ Tampered</div>':'<div style="font-size:10px;font-weight:600;color:var(--b3);margin-top:3px">✓ Honest</div>',bl=n.c.map(function(b,bi){var col=bi===n.bi?'var(--rd)':(n.bad&&bi>n.bi?'var(--am)':'var(--b3)');return'<span class="nm" style="background:'+col+'">#'+bi+'</span>'}).join(''),btn=n.c.length>1&&!n.bad?'<button class="btn bd" style="margin-top:8px;padding:5px 10px;font-size:10px" onclick="netT('+ni+')">⚠ Tamper #1</button>':'';return'<div class="'+c+'"><div style="font-size:26px">'+n.e+'</div><div style="font-size:12px;font-weight:700;margin-top:3px">'+n.n+'</div>'+st+'<div class="nd-bl">'+bl+'</div>'+btn+'</div>'}).join('');document.getElementById('naBtn').disabled=nsi>=SAMPLES.length;document.getElementById('naBtn').textContent=nsi>=SAMPLES.length?'All Added':'+ Add: '+SAMPLES[nsi].d.name||SAMPLES[nsi].d.spouse1}
+async function netA(){if(nsi>=SAMPLES.length)return;var s=SAMPLES[nsi];for(var j=0;j<nodes.length;j++){var n=nodes[j];if(n.bad)continue;var prev=n.c[n.c.length-1],b={i:n.c.length,t:Date.now(),p:prev.h,d:Object.assign({},s.d),ct:s.type,n:0};var r=await mine(b,1);b.n=r.n;b.h=r.h;n.c.push(b)}nsi++;var label=s.d.name||s.d.spouse1;nLog('✅ "'+label+'" added.');toast(label+' cert added to all nodes','ok');netR2()}
+function netT(ni){var n=nodes[ni];if(n.c.length<2)return;n.c[1].d.name='FAKE PERSON';n.bad=true;n.bi=1;nLog('🚨 '+n.n+': birth record tampered!');var honest=nodes.filter(function(x){return!x.bad}).length;document.getElementById('cBox').style.display='block';document.getElementById('cBox').innerHTML='<div class="cvote rj"><div style="font-size:13px;font-weight:700;color:var(--rd)">🗳 Consensus Vote</div><div class="vts">'+nodes.map(function(x){return x.bad?'❌':'✅'}).join('')+'</div><div style="font-size:12px;font-weight:700;color:var(--b1)">'+honest+'/3 honest. Fraud <span style="color:var(--rd)">REJECTED</span>.</div><div style="font-size:10px;color:var(--tx2);margin-top:4px">The fake birth certificate was caught by UIDAI and the Registrar.</div></div>';nLog('🗳 '+honest+'/3 reject.');toast('Fake certificate rejected!','err');netR2()}
+function netR(){document.getElementById('cBox').style.display='none';nLg=[];document.getElementById('nL').innerHTML='<div style="font-size:10px;color:var(--tx3)">No activity.</div>';netInit()}
+
+// SCENARIO
+var TS=[{t:'⚰️ Ramesh Prasad (age 78) passes away',d:'Family is informed at Safdarjung Hospital, Delhi.'},{t:'💰 Family decides to hide the death',d:'Ramesh was receiving ₹15,000/month government pension.'},{t:'🔇 Death certificate not filed',d:'Family bribes hospital clerk ₹5,000 to delay the paperwork.'},{t:'💸 Pension collected for 3 more years',d:'₹5.4 lakh fraudulently drawn from government funds.'},{t:'😞 Fraud discovered during random audit',d:'By then, the money is gone. No one is held accountable. Taxpayers lose.'}];
+var BS=[{t:'⚰️ Ramesh Prasad passes away at hospital',d:'Death registered on blockchain instantly by hospital node.'},{t:'🔗 Block auto-propagates to all nodes',d:'UIDAI, Registrar, and Pension Authority all receive the record in seconds.'},{t:'🚫 Pension system flags the record',d:'Aadhaar-linked pension auto-stops. No human intervention needed.'},{t:'🛡️ Family cannot suppress the record',d:'Hospital, Registrar, and UIDAI all hold copies. Bribery is useless — majority rules.'},{t:'✅ ₹5.4 lakh saved for taxpayers',d:'Death → pension stop is instant, automatic, and tamper-proof.'}];
+var sM='trad',sI={trad:0,block:0};
+function sBuild(){['trad','block'].forEach(function(m){var steps=m==='trad'?TS:BS,col=m==='trad'?'var(--rd)':'var(--b1)',idx=sI[m];document.getElementById(m==='trad'?'spTrad':'spBlock').innerHTML=steps.map(function(s,i){var cls='ss';if(i===idx)cls+=' a';else if(i<idx)cls+=' d';if(i===steps.length-1&&idx>=i)cls+=(m==='trad'?' fail':' pass');return'<div class="'+cls+'"><div class="sn" style="background:'+col+'">'+(i+1)+'</div><div><div class="st2">'+s.t+'</div><div class="sd">'+s.d+'</div></div></div>'}).join('')});var steps=sM==='trad'?TS:BS,btn=document.getElementById('sNext');btn.textContent=sI[sM]>=steps.length-1?'✓ Done':'Next Step →';btn.disabled=sI[sM]>=steps.length-1}
+document.querySelectorAll('.stab').forEach(function(t){t.addEventListener('click',function(){sM=this.dataset.m;document.querySelectorAll('.stab').forEach(function(x){x.classList.remove('on')});this.classList.add('on');document.querySelectorAll('.sp').forEach(function(p){p.classList.remove('on')});document.getElementById(sM==='trad'?'spTrad':'spBlock').classList.add('on');sBuild()})});
+function sNext(){var mx=(sM==='trad'?TS:BS).length-1;if(sI[sM]<mx){sI[sM]++;sBuild()}}
+function sPrev(){if(sI[sM]>0){sI[sM]--;sBuild()}}
+function sRst(){sI[sM]=0;sBuild()}
+
+// INIT
+(async function(){renderFields();sBuild();await initG();log('🏁 Vital Records genesis created.');render();await netInit();nLog('🌐 3 authority nodes online.')})();
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+---
+/**
+ * Accessible tabs. Pass panel labels; place each panel in a <div slot="panel-N">.
+ * Without JS every panel stays visible, stacked.
+ */
+interface Props {
+  labels: string[];
+  label: string;
+}
+const { labels, label } = Astro.props;
+const id = `tabs-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div class="tabs" data-tabs>
+  <div role="tablist" aria-label={label} class="mb-5 hidden flex-wrap gap-1 border-b border-line pb-3 [.js_&]:flex">
+    {
+      labels.map((l, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`${id}-tab-${i}`}
+          aria-controls={`${id}-panel-${i}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+          class="h-9 cursor-pointer px-3 text-sm text-ink-2 transition-colors hover:text-ink aria-selected:bg-ink aria-selected:text-bg"
+        >
+          {l}
+        </button>
+      ))
+    }
+  </div>
+  {
+    labels.map((_, i) => (
+      <div role="tabpanel" id={`${id}-panel-${i}`} aria-labelledby={`${id}-tab-${i}`} data-tab-panel class:list={[i > 0 && 'mt-8 [.js_&]:mt-0']}>
+        <slot name={`panel-${i}`} />
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  function setupTabs() {
+    document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((root) => {
+      if (root.dataset.bound) return;
+      root.dataset.bound = 'true';
+      const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+      const panels = [...root.querySelectorAll<HTMLElement>('[data-tab-panel]')];
+      const select = (i: number, focus = false) => {
+        tabs.forEach((t, k) => {
+          t.setAttribute('aria-selected', String(k === i));
+          t.tabIndex = k === i ? 0 : -1;
+        });
+        panels.forEach((p, k) => (p.hidden = k !== i));
+        if (focus) tabs[i].focus();
+      };
+      tabs.forEach((t, i) => {
+        t.addEventListener('click', () => select(i));
+        t.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowRight') select((i + 1) % tabs.length, true);
+          if (e.key === 'ArrowLeft') select((i - 1 + tabs.length) % tabs.length, true);
+        });
+      });
+      select(0);
+    });
+  }
+  document.addEventListener('astro:page-load', setupTabs);
+</script>

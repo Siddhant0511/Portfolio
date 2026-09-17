@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tez Credit — Instant Personal Loan</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+--ink:#0A1628;--ink-soft:#1A2942;--paper:#FBFAF7;--paper-warm:#F3F0E9;
+--saffron:#FF6B35;--saffron-dark:#E4551F;--saffron-soft:#FFF0E8;
+--indigo:#2D3E8C;--indigo-light:#4557B5;--indigo-soft:#EEF0FB;
+--teal:#0E8388;--teal-soft:#E3F4F4;
+--green:#178A4C;--green-soft:#E6F5EC;--red:#C43D3D;--red-soft:#FBEBEB;--amber:#D98A00;--amber-soft:#FCF3E0;
+--line:#E5E1D8;--line-soft:#EFEBE2;--muted:#6B7280;--muted-soft:#9AA1AC;
+--shadow:0 4px 24px rgba(10,22,40,0.08);--shadow-lg:0 12px 48px rgba(10,22,40,0.14);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{background:radial-gradient(ellipse at 30% 20%,#12203a 0%,#070d18 55%,#03060d 100%);display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Inter',system-ui,sans-serif;overflow:hidden;color:var(--ink);padding:0;}
+#bgParticles{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.device{position:relative;z-index:2;width:404px;height:872px;max-height:calc(100vh - 20px);border-radius:58px;background:linear-gradient(145deg,#3a3d44 0%,#1c1e22 18%,#2a2d33 50%,#16181c 82%,#34373d 100%);padding:11px;box-shadow:0 0 0 1px rgba(255,255,255,.06),0 30px 80px rgba(0,0,0,.7),0 8px 20px rgba(0,0,0,.5),inset 0 0 3px rgba(255,255,255,.15);}
+.device::before{content:'';position:absolute;left:-3px;top:150px;width:3px;height:30px;border-radius:3px 0 0 3px;background:linear-gradient(90deg,#0c0d0f,#2c2f35);}
+.device::after{content:'';position:absolute;left:-3px;top:205px;width:3px;height:52px;border-radius:3px 0 0 3px;background:linear-gradient(90deg,#0c0d0f,#2c2f35);}
+.device-rail-r{position:absolute;right:-3px;top:225px;width:3px;height:72px;border-radius:0 3px 3px 0;background:linear-gradient(270deg,#0c0d0f,#2c2f35);z-index:3;}
+.device-rail-l2{position:absolute;left:-3px;top:275px;width:3px;height:52px;border-radius:3px 0 0 3px;background:linear-gradient(90deg,#0c0d0f,#2c2f35);z-index:3;}
+.phone{width:100%;height:100%;background:var(--paper);position:relative;overflow:hidden;display:flex;flex-direction:column;border-radius:47px;}
+.dynamic-island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:118px;height:34px;background:#000;border-radius:20px;z-index:60;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;}
+.di-cam{width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#2a3a55,#05070d 70%);box-shadow:inset 0 0 2px rgba(80,120,200,.6);position:relative;}
+.di-cam::after{content:'';position:absolute;inset:3px;border-radius:50%;background:rgba(90,140,230,.35);}
+@media(max-width:430px){.device{width:100vw;height:100vh;max-height:none;border-radius:0;padding:0;box-shadow:none;}.device::before,.device::after,.device-rail-r{display:none;}.phone{border-radius:0;}}
+.statusbar{display:flex;justify-content:space-between;align-items:center;padding:16px 26px 8px;font-size:13px;font-weight:700;color:var(--ink);flex-shrink:0;font-variant-numeric:tabular-nums;}
+.statusbar-r{display:flex;gap:5px;align-items:center;font-size:11px;}
+.topbar{display:flex;align-items:center;gap:12px;padding:8px 20px 12px;flex-shrink:0;}
+.back{width:36px;height:36px;border-radius:12px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;color:var(--ink);transition:all .18s;flex-shrink:0;}
+.back:hover{background:var(--paper-warm);}.back:active{transform:scale(.9);}
+.back.hidden{visibility:hidden;}
+.brand{display:flex;align-items:center;gap:8px;}
+.brand-mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--saffron),var(--saffron-dark));display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 3px 10px rgba(255,107,53,.35);}
+.brand-mark svg{width:17px;height:17px;}
+.brand-name{font-family:'Sora',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.5px;color:var(--ink);}
+.brand-name .t{color:var(--saffron);}
+.brand-tag{font-size:8px;font-weight:700;letter-spacing:1px;color:var(--muted-soft);text-transform:uppercase;margin-top:-2px;}
+.progress-wrap{padding:0 20px 4px;flex-shrink:0;}
+.progress-track{height:3px;background:var(--line-soft);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--saffron),var(--indigo));border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.progress-label{display:flex;justify-content:space-between;margin-top:5px;font-size:10px;color:var(--muted-soft);font-weight:600;}
+.screen{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--line) transparent;}
+.screen::-webkit-scrollbar{width:4px;}.screen::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px;}
+.pad{padding:8px 20px 28px;}
+.step-anim{animation:slideIn .4s cubic-bezier(.16,1,.3,1);}
+@keyframes slideIn{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--saffron);margin-bottom:8px;}
+.h1{font-family:'Sora',sans-serif;font-size:26px;font-weight:800;line-height:1.15;letter-spacing:-.6px;color:var(--ink);}
+.h2{font-family:'Sora',sans-serif;font-size:20px;font-weight:700;letter-spacing:-.3px;color:var(--ink);}
+.sub{font-size:13px;color:var(--muted);line-height:1.55;margin-top:8px;}
+.mono{font-family:'JetBrains Mono',monospace;}
+/* Landing */
+.hero{background:linear-gradient(150deg,var(--ink) 0%,var(--ink-soft) 100%);border-radius:24px;padding:26px 22px;color:#fff;position:relative;overflow:hidden;margin-bottom:18px;}
+.hero-glow{position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,53,.4),transparent 70%);top:-70px;right:-50px;}
+.hero-glow2{position:absolute;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(69,87,181,.35),transparent 70%);bottom:-60px;left:-40px;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:100px;padding:5px 12px;font-size:11px;font-weight:600;margin-bottom:16px;position:relative;}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
+.hero h1{font-family:'Sora',sans-serif;font-size:29px;font-weight:800;line-height:1.1;letter-spacing:-.8px;position:relative;}
+.hero h1 .amt{color:var(--saffron);}
+.hero p{font-size:13px;color:rgba(255,255,255,.65);margin-top:10px;line-height:1.5;position:relative;}
+.hero-stats{display:flex;gap:0;margin-top:20px;position:relative;}
+.hero-stat{flex:1;}
+.hero-stat+.hero-stat{border-left:1px solid rgba(255,255,255,.12);padding-left:14px;}
+.hero-stat .v{font-family:'Sora',sans-serif;font-size:19px;font-weight:700;}
+.hero-stat .l{font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;}
+.stack-row{display:flex;gap:8px;margin-bottom:18px;}
+.stack-pill{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 8px;text-align:center;transition:all .2s;}
+.stack-pill .ic{font-size:20px;}
+.stack-pill .nm{font-size:10px;font-weight:700;color:var(--ink);margin-top:5px;}
+.stack-pill .ds{font-size:8px;color:var(--muted-soft);margin-top:1px;}
+.feature-list{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:20px;}
+.feature{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--line-soft);}
+.feature:last-child{border-bottom:none;}
+.feature-ic{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.feature-tx .t{font-size:13px;font-weight:600;color:var(--ink);}
+.feature-tx .d{font-size:11px;color:var(--muted);margin-top:1px;}
+/* Buttons */
+.btn{width:100%;border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn:active{transform:scale(.97);}
+.btn-primary{background:linear-gradient(135deg,var(--saffron),var(--saffron-dark));color:#fff;box-shadow:0 6px 20px rgba(255,107,53,.32);}
+.btn-primary:hover{box-shadow:0 8px 28px rgba(255,107,53,.42);}
+.btn-primary:disabled{background:var(--line);color:var(--muted-soft);box-shadow:none;cursor:not-allowed;}
+.btn-dark{background:var(--ink);color:#fff;}
+.btn-dark:hover{background:var(--ink-soft);}
+.btn-ghost{background:#fff;border:1.5px solid var(--line);color:var(--ink);}
+.btn-ghost:hover{border-color:var(--muted-soft);}
+.btn-sm{padding:12px;font-size:13px;border-radius:12px;}
+/* Amount slider */
+.amt-display{text-align:center;padding:20px 0 8px;}
+.amt-value{font-family:'Sora',sans-serif;font-size:44px;font-weight:800;letter-spacing:-1.5px;color:var(--ink);}
+.amt-value .r{color:var(--saffron);}
+.amt-label{font-size:12px;color:var(--muted);margin-top:2px;}
+.slider-wrap{padding:20px 4px;}
+input[type=range]{-webkit-appearance:none;width:100%;height:6px;border-radius:4px;background:linear-gradient(90deg,var(--saffron) var(--pct,50%),var(--line) var(--pct,50%));outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid var(--saffron);cursor:pointer;box-shadow:0 3px 10px rgba(255,107,53,.4);transition:transform .1s;}
+input[type=range]::-webkit-slider-thumb:active{transform:scale(1.15);}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--saffron);cursor:pointer;}
+.slider-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--muted-soft);font-weight:600;margin-top:8px;}
+.chips{display:flex;gap:8px;margin:16px 0;}
+.chip{flex:1;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:12px 4px;text-align:center;cursor:pointer;transition:all .18s;}
+.chip:hover{border-color:var(--saffron);}
+.chip.active{background:var(--saffron-soft);border-color:var(--saffron);}
+.chip .p{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--ink);}
+.chip .m{font-size:10px;color:var(--muted);margin-top:2px;}
+.tenure-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0 20px;}
+.tenure{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px 4px;text-align:center;cursor:pointer;transition:all .18s;}
+.tenure:hover{border-color:var(--indigo);}
+.tenure.active{background:var(--indigo-soft);border-color:var(--indigo);}
+.tenure .n{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--ink);}
+.tenure .u{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.emi-preview{background:var(--ink);border-radius:16px;padding:18px;color:#fff;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;}
+.emi-preview .lbl{font-size:11px;color:rgba(255,255,255,.55);}
+.emi-preview .val{font-family:'Sora',sans-serif;font-size:24px;font-weight:700;margin-top:3px;}
+.emi-preview .rt{text-align:right;}
+.emi-preview .rt .v{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;}
+/* Profile cards */
+.profile-card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;}
+.profile-card:hover{border-color:var(--saffron);transform:translateY(-2px);box-shadow:var(--shadow);}
+.profile-card.active{border-color:var(--saffron);background:var(--saffron-soft);}
+.profile-av{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.profile-tx{flex:1;min-width:0;}
+.profile-nm{font-size:15px;font-weight:700;color:var(--ink);}
+.profile-ds{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4;}
+.profile-meta{display:flex;gap:8px;margin-top:6px;}
+.profile-tag{font-size:9px;font-weight:600;padding:2px 7px;border-radius:6px;background:var(--paper-warm);color:var(--muted);}
+.profile-radio{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.profile-card.active .profile-radio{border-color:var(--saffron);background:var(--saffron);}
+.profile-card.active .profile-radio::after{content:'✓';color:#fff;font-size:12px;font-weight:700;}
+/* Form fields */
+.field{margin-bottom:16px;}
+.field-label{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:7px;display:flex;justify-content:space-between;}
+.field-label .hint{color:var(--muted-soft);font-weight:500;}
+.input{width:100%;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;font-size:15px;font-family:'JetBrains Mono',monospace;color:var(--ink);transition:all .18s;letter-spacing:1px;}
+.input:focus{outline:none;border-color:var(--saffron);box-shadow:0 0 0 3px var(--saffron-soft);}
+.input::placeholder{color:var(--muted-soft);letter-spacing:1px;}
+.input.text-input{font-family:'Inter',sans-serif;letter-spacing:0;}
+/* OTP */
+.otp-row{display:flex;gap:10px;justify-content:center;margin:20px 0;}
+.otp-box{width:46px;height:56px;background:#fff;border:1.5px solid var(--line);border-radius:12px;text-align:center;font-size:24px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--ink);transition:all .18s;}
+.otp-box:focus{outline:none;border-color:var(--saffron);box-shadow:0 0 0 3px var(--saffron-soft);}
+.otp-box.filled{border-color:var(--indigo);background:var(--indigo-soft);}
+.otp-info{text-align:center;font-size:12px;color:var(--muted);margin-bottom:8px;}
+.otp-resend{text-align:center;font-size:12px;color:var(--saffron);font-weight:600;cursor:pointer;margin-top:14px;}
+.demo-hint{background:var(--amber-soft);border:1px dashed var(--amber);border-radius:10px;padding:8px 12px;font-size:11px;color:var(--amber);text-align:center;margin-bottom:12px;font-weight:600;}
+/* Aadhaar/verification cards */
+.verify-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px;}
+.aadhaar-visual{background:linear-gradient(135deg,#fff,var(--paper-warm));border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px;position:relative;overflow:hidden;}
+.aadhaar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.aadhaar-emblem{display:flex;align-items:center;gap:8px;}
+.aadhaar-emblem .em{font-size:22px;}
+.aadhaar-emblem .tx .t1{font-size:9px;font-weight:700;color:var(--ink);}
+.aadhaar-emblem .tx .t2{font-size:7px;color:var(--muted);}
+.uidai-logo{font-size:8px;font-weight:700;color:var(--saffron);text-align:right;line-height:1.3;}
+.aadhaar-body{display:flex;gap:14px;align-items:center;}
+.aadhaar-photo{width:56px;height:66px;border-radius:8px;background:var(--indigo-soft);display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;border:1px solid var(--line);}
+.aadhaar-info .nm{font-size:15px;font-weight:700;color:var(--ink);}
+.aadhaar-info .dt{font-size:11px;color:var(--muted);margin-top:2px;}
+.aadhaar-num{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;letter-spacing:3px;color:var(--ink);margin-top:10px;text-align:center;padding-top:10px;border-top:1px dashed var(--line);}
+/* Fetch animation */
+.fetch-item{display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;transition:all .3s;}
+.fetch-item.done{border-color:var(--green);background:var(--green-soft);}
+.fetch-ic{width:40px;height:40px;border-radius:11px;background:var(--paper-warm);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.fetch-item.done .fetch-ic{background:#fff;}
+.fetch-tx{flex:1;}
+.fetch-tx .t{font-size:13px;font-weight:600;color:var(--ink);}
+.fetch-tx .d{font-size:11px;color:var(--muted);margin-top:1px;}
+.fetch-status{flex-shrink:0;}
+.spinner{width:20px;height:20px;border:2.5px solid var(--line);border-top-color:var(--saffron);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.check{width:24px;height:24px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;animation:pop .3s cubic-bezier(.16,1.4,.5,1);}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+/* Data review rows */
+.data-card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:14px;}
+.data-card-head{padding:13px 16px;background:var(--paper-warm);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;}
+.data-card-head .ic{font-size:16px;}
+.data-card-head .t{font-size:12px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.5px;}
+.data-card-head .verified{margin-left:auto;font-size:9px;font-weight:700;color:var(--green);background:var(--green-soft);padding:3px 8px;border-radius:6px;display:flex;align-items:center;gap:3px;}
+.data-row{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--line-soft);}
+.data-row:last-child{border-bottom:none;}
+.data-row .k{font-size:12px;color:var(--muted);}
+.data-row .v{font-size:13px;font-weight:600;color:var(--ink);text-align:right;}
+/* Credit assessment */
+.gauge-wrap{display:flex;flex-direction:column;align-items:center;padding:10px 0 20px;}
+.gauge-score{font-family:'Sora',sans-serif;font-size:40px;font-weight:800;color:var(--ink);margin-top:-70px;}
+.gauge-label{font-size:12px;font-weight:600;color:var(--muted);}
+.assess-list{margin:16px 0;}
+.assess-row{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;}
+.assess-ic{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.assess-tx{flex:1;}
+.assess-tx .t{font-size:13px;font-weight:600;color:var(--ink);}
+.assess-tx .d{font-size:11px;color:var(--muted);margin-top:1px;}
+.assess-val{font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;}
+/* Decision */
+.decision-hero{border-radius:20px;padding:26px 22px;text-align:center;margin-bottom:18px;position:relative;overflow:hidden;}
+.decision-hero.approved{background:linear-gradient(150deg,var(--green),#0F6E3C);color:#fff;}
+.decision-hero.review{background:linear-gradient(150deg,var(--amber),#B87400);color:#fff;}
+.decision-hero.declined{background:linear-gradient(150deg,var(--ink),var(--ink-soft));color:#fff;}
+.decision-icon{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 14px;animation:pop .4s cubic-bezier(.16,1.4,.5,1);}
+.decision-hero h2{font-family:'Sora',sans-serif;font-size:24px;font-weight:800;}
+.decision-hero p{font-size:13px;opacity:.85;margin-top:8px;line-height:1.5;}
+.offer-amt{font-family:'Sora',sans-serif;font-size:36px;font-weight:800;margin-top:6px;}
+.offer-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.offer-box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;}
+.offer-box .k{font-size:11px;color:var(--muted);}
+.offer-box .v{font-family:'Sora',sans-serif;font-size:20px;font-weight:700;color:var(--ink);margin-top:3px;}
+.offer-box .s{font-size:10px;color:var(--muted-soft);margin-top:2px;}
+/* Agreement */
+.agreement-doc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;max-height:200px;overflow-y:auto;font-size:11px;color:var(--muted);line-height:1.7;}
+.agreement-doc h4{font-size:12px;color:var(--ink);margin:10px 0 4px;font-weight:700;}
+.agreement-doc h4:first-child{margin-top:0;}
+.consent{display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--indigo-soft);border-radius:12px;margin-bottom:14px;cursor:pointer;}
+.consent-box{width:22px;height:22px;border-radius:6px;border:2px solid var(--indigo);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .18s;background:#fff;}
+.consent.checked .consent-box{background:var(--indigo);}
+.consent.checked .consent-box::after{content:'✓';color:#fff;font-size:13px;font-weight:700;}
+.consent-tx{font-size:12px;color:var(--ink);line-height:1.5;}
+/* eSign */
+.esign-pad{background:#fff;border:2px dashed var(--line);border-radius:14px;height:140px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;position:relative;cursor:crosshair;overflow:hidden;}
+.esign-hint{color:var(--muted-soft);font-size:13px;pointer-events:none;}
+/* Disbursement */
+.disburse-visual{text-align:center;padding:20px 0;}
+.upi-flow{display:flex;align-items:center;justify-content:center;gap:0;margin:24px 0;}
+.upi-node{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.upi-node .circ{width:56px;height:56px;border-radius:16px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:var(--shadow);}
+.upi-node .lb{font-size:10px;color:var(--muted);font-weight:600;}
+.upi-line{flex:1;height:2px;background:var(--line);position:relative;margin:0 4px;margin-bottom:22px;overflow:hidden;}
+.upi-line .pulse{position:absolute;width:20px;height:100%;background:linear-gradient(90deg,transparent,var(--saffron),transparent);animation:flow 1.2s linear infinite;}
+@keyframes flow{from{left:-20px}to{left:100%}}
+.success-amt{font-family:'Sora',sans-serif;font-size:40px;font-weight:800;color:var(--green);text-align:center;margin:8px 0;}
+.receipt{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px;}
+.receipt-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line-soft);font-size:12px;}
+.receipt-row:last-child{border-bottom:none;}
+.receipt-row .k{color:var(--muted);}
+.receipt-row .v{font-weight:600;color:var(--ink);font-family:'JetBrains Mono',monospace;}
+.confetti{position:absolute;width:8px;height:8px;top:-10px;animation:fall 2.5s linear forwards;z-index:5;}
+@keyframes fall{to{transform:translateY(900px) rotate(720deg);opacity:0;}}
+.badge-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;}
+.trust-badge{font-size:9px;font-weight:600;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:8px;padding:5px 9px;display:flex;align-items:center;gap:4px;}
+.timeline{margin:16px 0;}
+.tl-item{display:flex;gap:12px;padding-bottom:16px;position:relative;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-item::before{content:'';position:absolute;left:11px;top:26px;bottom:0;width:2px;background:var(--line);}
+.tl-item:last-child::before{display:none;}
+.tl-dot{width:24px;height:24px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;flex-shrink:0;z-index:1;}
+.tl-tx .t{font-size:13px;font-weight:600;color:var(--ink);}
+.tl-tx .d{font-size:11px;color:var(--muted);margin-top:1px;}
+.info-note{display:flex;gap:8px;background:var(--teal-soft);border-radius:10px;padding:10px 12px;font-size:11px;color:var(--teal);line-height:1.5;margin-bottom:14px;}
+.qr-box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;text-align:center;margin-bottom:14px;}
+.spacer{height:8px;}
+/* ── SVG icon system ── */
+.ico{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;}
+.ico svg{width:1em;height:1em;display:block;}
+.feature-ic .ico svg,.data-card-head .ic .ico svg,.assess-ic .ico svg,.profile-av .ico svg{width:1.1em;height:1.1em;}
+.feature-ic{font-size:17px;}.profile-av{font-size:22px;}.assess-ic{font-size:15px;}
+.data-card-head .ic{font-size:16px;display:inline-flex;color:var(--muted);}
+.stack-pill .ic{font-size:22px;display:flex;justify-content:center;}
+.ic-saffron{color:var(--saffron);}.ic-indigo{color:var(--indigo);}.ic-green{color:var(--green);}
+.btn .ico{font-size:17px;}.btn .ico svg{width:17px;height:17px;}
+.verified .ico{font-size:11px;}
+.trust-badge .ico{font-size:11px;}
+.tl-dot .ico{font-size:12px;}.decision-icon .ico{font-size:30px;}
+.decision-icon .ico svg{width:32px;height:32px;}
+.upi-node .circ{font-size:22px;color:var(--ink);}
+.fetch-ic{color:var(--muted);}.fetch-ic .ico{font-size:17px;}
+.check .ico{font-size:13px;}.check .ico svg{width:14px;height:14px;}
+.info-note .ico{font-size:15px;flex-shrink:0;}
+/* ── Simulated banner ── */
+.sim-banner{display:flex;align-items:center;gap:8px;background:var(--amber-soft);border:1px solid rgba(217,138,0,.3);border-radius:12px;padding:10px 12px;font-size:11.5px;color:#8a5a00;line-height:1.4;margin-bottom:16px;}
+.sim-banner .ico{font-size:16px;flex-shrink:0;color:var(--amber);}
+.sim-banner b{color:#6b4600;}
+/* ── API mapping card ── */
+.api-map{background:var(--ink);border-radius:16px;padding:14px 16px;color:#fff;}
+.api-map-head{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;color:rgba(255,255,255,.9);}
+.api-map-head .ico{font-size:16px;color:var(--saffron);}
+.api-map-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:12px;}
+.api-map-row:last-child{border-bottom:none;}
+.api-map-row .k{color:rgba(255,255,255,.6);flex:1;}
+.api-map-row .arw{color:var(--saffron);font-weight:700;}
+.api-map-row .v{color:#fff;font-weight:600;flex:1;text-align:right;}
+/* ── Rupee in words ── */
+.amt-words,.offer-words{font-size:11px;color:var(--muted);margin-top:6px;font-style:italic;letter-spacing:.2px;}
+.offer-words{color:rgba(255,255,255,.75);}
+.amt-display .amt-words{color:var(--muted);}
+/* ── OTP / consent error states ── */
+.otp-error{text-align:center;font-size:12px;font-weight:600;color:var(--red);margin-top:10px;min-height:16px;display:flex;align-items:center;justify-content:center;gap:5px;}
+.otp-error .ico{font-size:14px;}
+.otp-box.err{border-color:var(--red)!important;background:var(--red-soft)!important;animation:none;}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.btn:disabled{background:var(--line)!important;color:var(--muted-soft)!important;box-shadow:none!important;cursor:not-allowed;}
+/* ── Lender marketplace ── */
+.tier-note{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);line-height:1.4;margin-top:8px;}
+.tier-chip{font-size:10px;font-weight:700;padding:4px 10px;border-radius:8px;white-space:nowrap;flex-shrink:0;text-transform:uppercase;letter-spacing:.5px;}
+.tier-micro{background:var(--saffron-soft);color:var(--saffron-dark);}
+.tier-mid{background:var(--indigo-soft);color:var(--indigo);}
+.tier-large{background:var(--teal-soft);color:var(--teal);}
+.lender-card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all .2s;position:relative;}
+.lender-card:hover{border-color:var(--saffron);transform:translateY(-2px);box-shadow:var(--shadow);}
+.lender-card.active{border-color:var(--saffron);background:var(--saffron-soft);}
+.lender-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.lender-ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.lender-id{flex:1;min-width:0;}
+.lender-nm{font-size:14px;font-weight:700;color:var(--ink);}
+.lender-ty{font-size:11px;color:var(--muted);margin-top:1px;}
+.lender-badge{font-size:9px;font-weight:700;padding:4px 9px;border-radius:7px;white-space:nowrap;flex-shrink:0;text-transform:uppercase;letter-spacing:.3px;}
+.lender-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;}
+.ls{background:var(--paper-warm);border-radius:9px;padding:8px 4px;text-align:center;}
+.lender-card.active .ls{background:#fff;}
+.ls-v{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--ink);}
+.ls-k{font-size:8.5px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.2px;}
+.lender-blurb{font-size:11.5px;color:var(--muted);line-height:1.4;}
+.lender-radio{position:absolute;top:14px;right:16px;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);transition:all .2s;display:none;}
+.lender-strip{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:14px;}
+/* ── SPLASH / SLIDE TO OPEN ── */
+.splash{position:absolute;inset:0;z-index:50;border-radius:47px;overflow:hidden;background:linear-gradient(165deg,#0d1b30 0%,#0a1424 45%,#050a14 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform .6s cubic-bezier(.7,0,.2,1),opacity .5s ease;}
+.splash.dismissed{transform:translateY(-100%);opacity:0;pointer-events:none;}
+.splash-particles{position:absolute;inset:0;z-index:1;width:100%;height:100%;}
+.splash-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;flex:1;justify-content:center;width:100%;padding:0 20px;text-align:center;}
+.logo-badge{width:104px;height:104px;border-radius:30px;background:linear-gradient(140deg,#FF6B35,#E4551F 60%,#c4430f);display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 20px 50px rgba(255,107,53,.45),inset 0 2px 6px rgba(255,255,255,.3);animation:logoRise 1s cubic-bezier(.16,1,.3,1);}
+@keyframes logoRise{0%{opacity:0;transform:translateY(40px) scale(.7)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.logo-badge svg{width:58px;height:58px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.25));}
+.logo-badge::after{content:'';position:absolute;inset:-6px;border-radius:36px;border:1px solid rgba(255,107,53,.25);}
+@keyframes ring{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.12);opacity:0}}
+.logo-spark{position:absolute;width:8px;height:8px;border-radius:50%;background:#FFD9B8;box-shadow:0 0 12px #FF6B35;animation:spark 2.4s ease-in-out infinite;}
+.logo-wordmark{font-family:'Sora',sans-serif;font-weight:800;font-size:34px;letter-spacing:-1px;color:#fff;margin-top:26px;animation:fadeUp .8s ease .3s both;white-space:nowrap;text-align:center;width:100%;}
+.logo-wordmark .t{color:var(--saffron);}
+.logo-sub{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);font-weight:600;margin-top:8px;animation:fadeUp .8s ease .45s both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.logo-tagline{font-size:14px;color:rgba(255,255,255,.55);margin-top:40px;text-align:center;line-height:1.6;max-width:250px;animation:fadeUp .8s ease .6s both;}
+.logo-tagline b{color:#fff;font-weight:700;}
+/* slide track */
+.slide-wrap{position:relative;z-index:2;width:calc(100% - 48px);margin:0 24px 40px;animation:fadeUp .8s ease .8s both;}
+.slide-track{position:relative;height:64px;border-radius:34px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);overflow:hidden;display:flex;align-items:center;backdrop-filter:blur(8px);}
+.slide-fill{position:absolute;left:0;top:0;height:100%;width:64px;border-radius:34px;background:linear-gradient(90deg,rgba(255,107,53,.35),rgba(255,107,53,.1));transition:width .05s linear;}
+.slide-text{position:absolute;width:100%;text-align:center;font-size:14px;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:.5px;pointer-events:none;animation:shimmer 2s linear infinite;background:linear-gradient(90deg,rgba(255,255,255,.3),rgba(255,255,255,.85),rgba(255,255,255,.3));background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-left:40px;}
+@keyframes shimmer{to{background-position:-200% 0}}
+.slide-knob{position:absolute;left:4px;top:4px;width:56px;height:56px;border-radius:50%;background:linear-gradient(140deg,#FF6B35,#E4551F);display:flex;align-items:center;justify-content:center;cursor:grab;color:#fff;font-size:22px;box-shadow:0 4px 16px rgba(255,107,53,.5);touch-action:none;z-index:2;transition:box-shadow .2s;}
+.slide-knob:active{cursor:grabbing;}
+.slide-knob.done{box-shadow:0 0 30px rgba(255,107,53,.8);}
+
+/* ── Added: verification + loan dashboard + credit score + RuPay card ── */
+.verify-progress{height:8px;background:var(--line-soft);border-radius:8px;overflow:hidden;margin:12px 0 18px}
+.verify-progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--saffron),var(--indigo));transition:width .5s ease}
+.doc-sim-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.doc-sim-ic{width:42px;height:42px;border-radius:12px;background:var(--paper-warm);display:flex;align-items:center;justify-content:center;color:var(--indigo);font-size:19px}
+.doc-sim-tx{flex:1}.doc-sim-tx .t{font-size:13px;font-weight:700}.doc-sim-tx .d{font-size:10px;color:var(--muted);margin-top:2px}
+.doc-sim-status{font-size:11px;font-weight:700;color:var(--muted)}
+.doc-sim-card.done{border-color:var(--green);background:var(--green-soft)}.doc-sim-card.done .doc-sim-status{color:var(--green)}
+.dashboard-hero{background:linear-gradient(145deg,var(--ink),var(--ink-soft));color:#fff;border-radius:20px;padding:20px;margin-bottom:12px}
+.dashboard-hero .small{font-size:11px;color:rgba(255,255,255,.58)}.dashboard-hero .out{font-family:'Sora';font-size:32px;font-weight:800;margin:4px 0}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.dash-box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px}.dash-box .k{font-size:10px;color:var(--muted)}.dash-box .v{font-family:'Sora';font-size:18px;font-weight:700;margin-top:3px}
+.schedule{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:12px}
+.schedule-head,.schedule-row{display:grid;grid-template-columns:.7fr 1fr 1fr 1fr;padding:10px 12px;gap:5px;font-size:10px}
+.schedule-head{background:var(--paper-warm);font-weight:700;color:var(--muted)}.schedule-row{border-top:1px solid var(--line-soft);font-family:'JetBrains Mono';font-size:9px}
+.schedule-row span:first-child{font-family:Inter;font-weight:700}
+.score-ring{width:132px;height:132px;border-radius:50%;margin:8px auto 16px;display:flex;align-items:center;justify-content:center;background:conic-gradient(var(--green) var(--score,78%),var(--line) 0);position:relative}
+.score-ring:after{content:'';position:absolute;inset:10px;background:#fff;border-radius:50%}.score-ring .score{position:relative;z-index:1;font-family:'Sora';font-size:31px;font-weight:800}
+.score-meter{height:9px;border-radius:8px;background:linear-gradient(90deg,var(--red),var(--amber),var(--green));position:relative;margin:8px 0 20px}.score-marker{position:absolute;top:-4px;width:3px;height:17px;background:var(--ink);border-radius:2px}
+.card-visual{border-radius:20px;padding:22px;color:#fff;min-height:205px;background:linear-gradient(135deg,#0A1628,#2D3E8C 65%,#FF6B35);position:relative;overflow:hidden;box-shadow:0 12px 28px rgba(10,22,40,.2);margin:10px 0 16px}
+.card-visual:after{content:'';position:absolute;width:170px;height:170px;border-radius:50%;right:-65px;top:-55px;background:rgba(255,255,255,.08)}
+.card-chip{width:42px;height:30px;border-radius:7px;background:linear-gradient(135deg,#f5d88a,#fff0b0);margin:20px 0 24px;position:relative}
+.card-chip:after{content:'';position:absolute;left:10px;right:10px;top:13px;border-top:1px solid rgba(0,0,0,.25)}
+.card-number{font-family:'JetBrains Mono';font-size:15px;letter-spacing:2px}.card-name{font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-top:14px}.rupay{position:absolute;right:18px;bottom:20px;font-weight:800;font-style:italic;font-size:20px}
+.card-status{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--green-soft);border-radius:10px;color:var(--green);font-size:11px;font-weight:700;margin-bottom:12px}
+.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+.quick-actions .btn{font-size:12px;padding:13px}
+.perm-card{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px;margin-bottom:10px}.perm-ic{font-size:22px;width:38px;text-align:center}.perm-tx{flex:1;display:flex;flex-direction:column;gap:3px;font-size:11px}.perm-tx span{color:var(--muted);line-height:1.35}.perm-status{font-size:10px;font-weight:700;color:var(--amber);white-space:nowrap}.perm-status.ok{color:var(--green)}.otp-demo{background:var(--indigo-soft);border:1px solid #dfe3f7;border-radius:12px;padding:11px 12px;font-size:11px;margin:8px 0 14px;display:flex;align-items:center;justify-content:space-between}.mini-btn{border:0;background:#fff;border-radius:8px;padding:6px 8px;font-size:10px;font-weight:700;color:var(--indigo);cursor:pointer}.doc-explain{background:var(--paper-warm);border-radius:14px;padding:12px;margin:10px 0 14px;display:flex;flex-direction:column;gap:4px;font-size:11px;line-height:1.4}.doc-explain span{color:var(--muted)}.verified-summary{display:flex;align-items:center;justify-content:space-between;background:var(--green-soft);border:1px solid #cdebd8;border-radius:14px;padding:12px;margin:12px 0 16px}.verified-summary div:first-child{display:flex;flex-direction:column;gap:3px;font-size:11px}.verified-summary span{color:var(--muted);font-size:10px}.verified{color:var(--green);font-size:10px;font-weight:800}.face-frame{height:250px;background:#101827;border-radius:22px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;margin:12px 0}.face-frame video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);opacity:.85}.face-grid{position:absolute;width:150px;height:190px;border:2px solid rgba(255,255,255,.8);border-radius:48% 48% 44% 44%;box-shadow:0 0 0 999px rgba(0,0,0,.2)}.scan-line{position:absolute;left:22%;right:22%;height:2px;background:var(--saffron);box-shadow:0 0 12px var(--saffron);animation:scan 1.8s linear infinite}.face-label{position:absolute;bottom:12px;background:rgba(0,0,0,.65);color:#fff;border-radius:20px;padding:6px 10px;font-size:10px}.match-card{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px;margin-bottom:12px;font-size:10px}.match-card div:first-child{display:flex;flex-direction:column;gap:3px}.match-card span{color:var(--muted)}.match-card #matchStatus{font-weight:800;color:var(--green)}@keyframes scan{0%{top:22%}50%{top:72%}100%{top:22%}}
+/* ── KYC verification progress + post-KYC home ── */
+.kyc-status{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;margin:14px 0;}
+.kyc-step{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line-soft);transition:all .3s;}
+.kyc-step:last-child{border-bottom:none;}
+.kyc-dot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--paper-warm);color:var(--muted);flex-shrink:0;font-weight:800;}
+.kyc-step.active .kyc-dot{background:var(--indigo-soft);color:var(--indigo);}
+.kyc-step.done .kyc-dot{background:var(--green);color:#fff;}
+.kyc-copy{flex:1;min-width:0;}
+.kyc-copy .t{font-size:13px;font-weight:700;color:var(--ink);}
+.kyc-copy .d{font-size:10px;color:var(--muted);margin-top:2px;}
+.kyc-state{font-size:10px;font-weight:800;color:var(--muted);white-space:nowrap;}
+.kyc-step.active .kyc-state{color:var(--indigo);}
+.kyc-step.done .kyc-state{color:var(--green);}
+.kyc-spinner{width:17px;height:17px;border:2px solid var(--line);border-top-color:var(--indigo);border-radius:50%;animation:spin .7s linear infinite;}
+.home-hero{background:linear-gradient(145deg,var(--ink),var(--ink-soft));color:#fff;border-radius:22px;padding:20px;margin-bottom:14px;position:relative;overflow:hidden;}
+.home-hero:after{content:'';position:absolute;width:150px;height:150px;border-radius:50%;right:-65px;top:-65px;background:rgba(255,107,53,.16);}
+.home-verified{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);border-radius:100px;padding:6px 10px;font-size:10px;font-weight:700;position:relative;z-index:1;}
+.home-actions{display:flex;flex-direction:column;gap:10px;margin:14px 0;}
+.home-action{width:100%;border:1px solid var(--line);background:#fff;border-radius:16px;padding:15px;display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer;transition:all .2s;}
+.home-action:hover{border-color:var(--saffron);transform:translateY(-1px);box-shadow:var(--shadow);}
+.home-action .ha-ic{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.home-action .ha-copy{flex:1;min-width:0;}
+.home-action .ha-copy .t{font-size:14px;font-weight:800;color:var(--ink);}
+.home-action .ha-copy .d{font-size:10.5px;color:var(--muted);margin-top:3px;line-height:1.4;}
+.home-action .ha-arrow{font-size:18px;color:var(--muted-soft);}
+.line-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;margin:12px 0 16px;}
+.line-card .lc-row{display:flex;gap:8px;margin:12px 0;}
+.line-chip{flex:1;border:1.5px solid var(--line);border-radius:11px;padding:11px 4px;text-align:center;cursor:pointer;font-size:11px;font-weight:700;}
+.line-chip.active{border-color:var(--saffron);background:var(--saffron-soft);}
+/* ── Insurance rows ── */
+.ins-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 2px;border-top:1px solid var(--line-soft);cursor:pointer;transition:background .15s;}
+.ins-row:hover{background:var(--paper-warm);border-radius:8px;padding-left:8px;padding-right:8px;}
+.ins-nm{font-size:13px;font-weight:700;color:var(--ink);}
+.ins-ds{font-size:10.5px;color:var(--muted);margin-top:2px;}
+.ins-pr{font-size:11px;font-weight:700;color:var(--indigo);white-space:nowrap;display:flex;align-items:center;gap:6px;}
+.ins-go{color:var(--muted-soft);font-weight:700;}
+/* ── Toast ── */
+.toast{position:absolute;left:50%;bottom:30px;transform:translate(-50%,20px);background:var(--ink);color:#fff;font-size:12px;font-weight:600;padding:11px 16px;border-radius:12px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:all .3s;z-index:70;max-width:80%;text-align:center;}
+.toast.show{opacity:1;transform:translate(-50%,0);}
+/* ── Home: honest borrowing headroom ── */
+.hx-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px;}
+.hx-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted-soft);}
+.hx-greet{font-family:'Bricolage Grotesque','Sora',sans-serif;font-size:32px;font-weight:800;line-height:1.02;letter-spacing:-1px;color:var(--ink);margin-top:4px;}
+.hx-avatar{width:40px;height:40px;border-radius:14px;background:linear-gradient(140deg,var(--saffron),var(--saffron-dark));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:16px;font-family:'Bricolage Grotesque','Sora',sans-serif;flex-shrink:0;box-shadow:0 4px 12px rgba(255,107,53,.3);}
+.hx-status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin:14px 0 18px;}
+.hx-status .v{display:inline-flex;align-items:center;gap:5px;color:var(--green);font-weight:700;}
+.hx-status .sep{color:var(--line);}
+.hx-status .v.warn{color:var(--amber);cursor:pointer;}
+/* Headroom panel */
+.hx-panel{--pine:#12352B;--pine2:#0B241D;--clay:#D98A55;--free:#4FB08C;position:relative;border-radius:26px;padding:22px 22px 20px;color:#fff;overflow:hidden;background:linear-gradient(160deg,#153b30 0%,#0e2a22 50%,#0a1f19 100%);box-shadow:0 18px 40px rgba(10,31,25,.35);margin-bottom:20px;}
+.hx-panel::after{content:'';position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(79,176,140,.22),transparent 70%);}
+.hx-panel-eyebrow{position:relative;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--free);}
+.hx-amt{position:relative;font-family:'JetBrains Mono',monospace;font-size:42px;font-weight:700;letter-spacing:-1.5px;margin:8px 0 2px;line-height:1;}
+.hx-amt.locked{color:rgba(255,255,255,.35);}
+.hx-amt-sub{position:relative;font-size:12px;color:rgba(255,255,255,.55);margin-bottom:20px;}
+/* meter */
+.hx-meter-wrap{position:relative;margin:0 0 12px;}
+.hx-meter{position:relative;height:16px;border-radius:10px;background:rgba(255,255,255,.09);overflow:hidden;display:flex;}
+.hx-seg{height:100%;transition:width .8s cubic-bezier(.16,1,.3,1);}
+.hx-seg.committed{background:repeating-linear-gradient(45deg,var(--clay),var(--clay) 5px,#c97b46 5px,#c97b46 10px);}
+.hx-seg.free{background:linear-gradient(90deg,var(--free),#6ec9a6);}
+.hx-cap{position:absolute;top:-4px;bottom:-4px;width:2px;background:rgba(255,255,255,.85);border-radius:2px;}
+.hx-cap::after{content:'cap 50%';position:absolute;top:-15px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.5px;color:rgba(255,255,255,.6);white-space:nowrap;}
+.hx-legend{position:relative;display:flex;gap:16px;margin-bottom:16px;}
+.hx-legend .li{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.7);}
+.hx-legend .dot{width:9px;height:9px;border-radius:3px;flex-shrink:0;}
+.hx-legend .li .num{font-family:'JetBrains Mono',monospace;color:#fff;font-weight:600;}
+.hx-cta{position:relative;width:100%;background:#fff;color:var(--pine2,#0B241D);border:none;border-radius:15px;padding:16px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:transform .15s,box-shadow .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.hx-cta:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,0,0,.28);}
+.hx-cta:active{transform:scale(.98);}
+.hx-cta .ar{color:var(--saffron);}
+.hx-fine{position:relative;font-size:11px;color:rgba(255,255,255,.42);line-height:1.5;margin-top:13px;}
+/* products list */
+.hx-do{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted-soft);margin:0 0 6px;}
+.hx-list{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;margin-bottom:16px;}
+.hx-row{display:flex;align-items:center;gap:14px;padding:15px 16px;border-top:1px solid var(--line-soft);cursor:pointer;transition:background .15s;text-align:left;width:100%;background:none;border-left:none;border-right:none;border-bottom:none;}
+.hx-row:first-child{border-top:none;}
+.hx-row:hover{background:var(--paper-warm);}
+.hx-row:active{background:var(--line-soft);}
+.hx-row .rc{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.hx-row .rtx{flex:1;min-width:0;}
+.hx-row .rn{font-size:14px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:7px;}
+.hx-row .rn .tag{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.5px;color:var(--amber);background:var(--amber-soft);border-radius:5px;padding:2px 5px;}
+.hx-row .rd{font-size:11.5px;color:var(--muted);margin-top:2px;}
+.hx-row .rv{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap;}
+.hx-row .chev{color:var(--muted-soft);font-size:16px;margin-left:2px;}
+/* Compact dashboard (kept) */
+.schedule-scroll{max-height:172px;overflow-y:auto;border:1px solid var(--line);border-radius:16px;margin-bottom:12px;}
+.schedule-scroll .schedule{border:none;border-radius:0;margin:0;}
+.schedule-scroll .schedule-head{position:sticky;top:0;z-index:1;}
+.dashboard-hero.compact{padding:16px 18px;margin-bottom:12px;}
+.dashboard-hero.compact .out{font-size:26px;margin:2px 0;}
+.btn-white{width:100%;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:16px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:var(--shadow);}
+.btn-white:hover{transform:translateY(-1px);box-shadow:var(--shadow-lg);}
+.btn-white:active{transform:scale(.98);}
+@media(prefers-reduced-motion:reduce){.hx-seg{transition:none;}}
+/* ── Settings button + sheet ── */
+.hx-set{width:40px;height:40px;border-radius:14px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink);font-size:19px;cursor:pointer;flex-shrink:0;transition:all .18s;}
+.hx-set:hover{background:var(--paper-warm);border-color:var(--muted-soft);}
+.hx-set:active{transform:scale(.92);}
+.sheet-backdrop{position:absolute;inset:0;z-index:80;background:rgba(10,22,40,.45);opacity:0;pointer-events:none;transition:opacity .28s;border-radius:47px;}
+.sheet-backdrop.open{opacity:1;pointer-events:auto;}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:81;background:var(--paper);border-radius:26px 26px 0 0;padding:8px 20px 26px;max-height:86%;overflow-y:auto;transform:translateY(100%);transition:transform .34s cubic-bezier(.16,1,.3,1);box-shadow:0 -12px 40px rgba(10,22,40,.25);}
+.sheet.open{transform:translateY(0);}
+.sheet-grab{width:38px;height:4px;border-radius:3px;background:var(--line);margin:6px auto 14px;}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.sheet-title{font-family:'Bricolage Grotesque','Sora',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.5px;color:var(--ink);}
+.sheet-x{width:32px;height:32px;border-radius:10px;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--muted);cursor:pointer;}
+.sheet-x:active{transform:scale(.9);}
+.set-sec{margin-top:20px;}
+.set-sec-h{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted-soft);margin-bottom:10px;}
+.set-sec-h .ico{font-size:14px;color:var(--muted);}
+.lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.lang-opt{display:flex;flex-direction:column;gap:2px;background:#fff;border:1.5px solid var(--line);border-radius:13px;padding:12px 14px;cursor:pointer;transition:all .16s;text-align:left;}
+.lang-opt:hover{border-color:var(--muted-soft);}
+.lang-opt.active{border-color:var(--saffron);background:var(--saffron-soft);}
+.lang-native{font-size:16px;font-weight:700;color:var(--ink);}
+.lang-en{font-size:11px;color:var(--muted);}
+.lang-opt.active .lang-en{color:var(--saffron-dark);}
+.lang-note{font-size:11px;color:var(--muted);line-height:1.5;margin-top:10px;display:flex;gap:7px;}
+.perm-row{display:flex;gap:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin-bottom:9px;}
+.perm-row .pic{width:38px;height:38px;border-radius:11px;background:var(--paper-warm);display:flex;align-items:center;justify-content:center;color:var(--ink);font-size:18px;flex-shrink:0;}
+.perm-row .ptx{flex:1;min-width:0;}
+.perm-row .pn{font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.perm-row .pstate{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.5px;padding:2px 7px;border-radius:6px;background:var(--paper-warm);color:var(--muted);text-transform:uppercase;}
+.perm-row .pstate.ok{background:var(--green-soft);color:var(--green);}
+.perm-row .pd{font-size:11px;color:var(--muted);line-height:1.45;margin-top:4px;}
+.set-reset{width:100%;background:#fff;border:1.5px solid var(--red);color:var(--red);border-radius:14px;padding:15px;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .16s;}
+.set-reset:hover{background:var(--red-soft);}
+.set-reset:active{transform:scale(.98);}
+.set-foot{text-align:center;font-size:10px;color:var(--muted-soft);margin-top:16px;line-height:1.5;}
+</style>
+</head>
+<body>
+<canvas id="bgParticles"></canvas>
+<div class="device">
+  <div class="device-rail-r"></div>
+  <div class="device-rail-l2"></div>
+  <div class="phone">
+    <div class="dynamic-island"><span class="di-cam"></span></div>
+
+    <!-- SPLASH: slide to open -->
+    <div class="splash" id="splash">
+      <canvas class="splash-particles" id="splashParticles"></canvas>
+      <div class="splash-inner">
+        <div class="logo-badge">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M34 6L14 36h13l-3 22 26-34H35l3-18z" fill="#fff"/>
+            <circle cx="46" cy="16" r="3" fill="#FFD9B8"/>
+          </svg>
+        </div>
+        <div class="logo-wordmark">Tez<span class="t">Credit</span></div>
+        <div class="logo-sub">Instant Personal Loan</div>
+        <div class="logo-tagline"><b>₹5 lakh in 5 minutes.</b><br>Powered by Aadhaar, DigiLocker &amp; UPI.</div>
+      </div>
+      <div class="slide-wrap">
+        <div class="slide-track" id="slideTrack">
+          <div class="slide-fill" id="slideFill"></div>
+          <div class="slide-text">slide to open</div>
+          <div class="slide-knob" id="slideKnob">→</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="statusbar"><span id="clock">9:41</span><div class="statusbar-r"><span>5G</span><span>📶</span><span>🔋</span></div></div>
+    <div class="topbar">
+      <button class="back" id="backBtn" onclick="back()">←</button>
+      <div class="brand"><div class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="#fff"/></svg></div><div><div class="brand-name">Tez<span class="t">Credit</span></div><div class="brand-tag">Instant Personal Loan</div></div></div>
+    </div>
+    <div class="progress-wrap" id="progWrap" style="display:none"><div class="progress-track"><div class="progress-fill" id="progFill"></div></div><div class="progress-label"><span id="progStep">Step 1</span><span id="progName">Amount</span></div></div>
+    <div class="screen" id="screen"></div>
+    <div class="toast" id="insToast"></div>
+    <div class="sheet-backdrop" id="setBackdrop" onclick="closeSettings()"></div>
+    <div class="sheet" id="setSheet"></div>
+  </div>
+</div>
+
+<script>
+// ── Clock ──
+function tick(){const d=new Date();document.getElementById('clock').textContent=d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:false});}
+setInterval(tick,1000);tick();
+
+// ── Particle field factory (lively, connected, drifting) ──
+function makeParticles(canvas,opts){
+  const ctx=canvas.getContext('2d');let W=0,H=0,pts=[],raf,ready=false;
+  const cols=opts.colors, N=opts.count, link=opts.link, speed=opts.speed||0.4, rMax=opts.r||2.6;
+  function resize(){
+    const b=canvas.getBoundingClientRect();
+    if(b.width<2||b.height<2)return;
+    const nw=Math.round(b.width), nh=Math.round(b.height);
+    if(nw===W&&nh===H)return; // no real change → skip (prevents loops)
+    W=nw;H=nh;
+    canvas.width=W*devicePixelRatio;canvas.height=H*devicePixelRatio;
+    ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+    if(!ready){ // seed particles once we know the size
+      pts=[];for(let i=0;i<N;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*speed,vy:(Math.random()-.5)*speed,r:Math.random()*rMax+.6,c:cols[i%cols.length],a:Math.random()*.5+.25,tw:Math.random()*Math.PI*2});
+      ready=true;
+    }
+  }
+  function draw(){
+    if(ready&&W>0){
+      ctx.clearRect(0,0,W,H);
+      if(link){for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.hypot(dx,dy);if(d<link){ctx.globalAlpha=(1-d/link)*.14;ctx.strokeStyle=pts[i].c;ctx.lineWidth=.6;ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke();}}}
+      ctx.globalAlpha=1;
+      for(const p of pts){p.x+=p.vx;p.y+=p.vy;p.tw+=0.04;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;const tw=(Math.sin(p.tw)+1)/2;ctx.globalAlpha=p.a*(0.5+tw*0.6);ctx.fillStyle=p.c;ctx.shadowBlur=8;ctx.shadowColor=p.c;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();}
+      ctx.shadowBlur=0;ctx.globalAlpha=1;
+    }
+    raf=requestAnimationFrame(draw);
+  }
+  // initial size after layout settles
+  requestAnimationFrame(()=>{resize();draw();});
+  let rt;
+  const onResize=()=>{clearTimeout(rt);rt=setTimeout(resize,150);};
+  window.addEventListener('resize',onResize);
+  return {stop(){cancelAnimationFrame(raf);window.removeEventListener('resize',onResize);}, resize};
+}
+// Particle fields removed for a calmer, more professional feel.
+const splashP={stop(){},resize(){}};
+
+// ── Slide to open ──
+(function(){
+  const track=document.getElementById('slideTrack'),knob=document.getElementById('slideKnob'),fill=document.getElementById('slideFill'),splash=document.getElementById('splash');
+  let dragging=false,startX=0,cur=0,maxX=0;
+  function setMax(){maxX=track.clientWidth-knob.offsetWidth-8;}
+  setMax();window.addEventListener('resize',setMax);
+  function move(x){cur=Math.max(0,Math.min(maxX,x));knob.style.left=(4+cur)+'px';fill.style.width=(cur+56)+'px';if(cur>=maxX-2){unlock();}}
+  function unlock(){dragging=false;knob.classList.add('done');knob.textContent='✓';setTimeout(()=>{splash.classList.add('dismissed');splashP.stop();goName('onboard');},180);}
+  function start(e){dragging=true;startX=(e.touches?e.touches[0].clientX:e.clientX)-cur;knob.style.transition='none';}
+  function drag(e){if(!dragging)return;const x=(e.touches?e.touches[0].clientX:e.clientX)-startX;move(x);}
+  function end(){if(!dragging)return;dragging=false;if(cur<maxX-2){knob.style.transition='left .3s ease';fill.style.transition='width .3s ease';cur=0;knob.style.left='4px';fill.style.width='64px';setTimeout(()=>{knob.style.transition='';fill.style.transition='width .05s linear';},300);}}
+  knob.addEventListener('mousedown',start);window.addEventListener('mousemove',drag);window.addEventListener('mouseup',end);
+  knob.addEventListener('touchstart',start,{passive:true});window.addEventListener('touchmove',drag,{passive:true});window.addEventListener('touchend',end);
+  // tap knob also nudges / click anywhere on track fills
+  track.addEventListener('click',(e)=>{if(e.target===knob)return;knob.style.transition='left .4s cubic-bezier(.7,0,.2,1)';fill.style.transition='width .4s ease';move(maxX);});
+})();
+
+// ── State ──
+const STEPS=['landing','onboard','loginOtp','home','kycIntro','aadhaarInput','aadhaarOtp','aadhaarResult','pan','panOtp','panResult','kycDone','insurance','emicalc','welcome','amount','lenders','profile','aadhaar','otp','digilocker','review','assessment','decision','agreement','disbursing','success','dashboard','score','cardapply','cardapproved','lineofcredit','permissions','consent','kycProgress','kycProgressAadhaar','face'];
+let step=0, hist=[0];
+let state={name:'',mobile:'',city:'',email:'',fatherName:'',employmentType:'Not provided',existingEmi:12000,mockCibil:786,userIncome:null,amount:150000,tenure:12,lender:null,profile:null,otp:'',otpTries:0,verifyDone:false,score:null,cardApproved:false,loginOtp:'482913',pan:'',panVerified:false,aadhaar:'',aadhaarVerified:false,permissions:{camera:false,location:false},consents:{data:false,kyc:false,permissions:false},panDetails:null,aadhaarDetails:null,faceVerified:false,kycProgressStage:null,lang:"en"};
+
+// ── Lender marketplace: availability depends on ticket size ──
+// tiers: micro ≤75k, mid 75k–3L, large ≥3L (overlap at boundaries)
+const LENDERS=[
+  {id:'bajaj',name:'Bajaj Finance',type:'NBFC · Personal Loan',icon:'bolt',color:'var(--saffron)',min:40000,max:5500000,rateAdj:-0.5,fee:2.0,tat:'5 min',blurb:'Large loan range with flexible repayment options.',badge:'Popular'},
+  {id:'tata',name:'Tata Capital',type:'NBFC · Personal Loan',icon:'building',color:'var(--indigo)',min:75000,max:3500000,rateAdj:0,fee:2.0,tat:'10 min',blurb:'Digital personal-loan journey with multiple tenure choices.',badge:'Trusted'},
+  {id:'lt',name:'L&T Finance',type:'NBFC · Personal Loan',icon:'briefcase',color:'var(--teal)',min:50000,max:3000000,rateAdj:+0.25,fee:2.5,tat:'10 min',blurb:'Digital-first personal loans with flexible 12–72 month tenure.',badge:'Digital'},
+  {id:'aditya',name:'Aditya Birla Capital',type:'NBFC · Personal / Flexi Loan',icon:'wallet',color:'var(--green)',min:50000,max:5000000,rateAdj:+0.5,fee:2.5,tat:'15 min',blurb:'Personal and flexi-loan options for eligible borrowers.',badge:'Flexi option'},
+  {id:'shriram',name:'Shriram Finance',type:'NBFC · Consumer Finance',icon:'cash',color:'var(--amber)',min:50000,max:2500000,rateAdj:+1.0,fee:2.5,tat:'15 min',blurb:'An additional lender option for eligible applicants.',badge:'More choice'},
+];
+function lendersFor(amt){return LENDERS.filter(l=>amt>=l.min&&amt<=l.max);}
+function tierOf(amt){return amt<=75000?'micro':amt<300000?'mid':'large';}
+
+// ── SVG icon set (consistent line icons, currentColor) ──
+const IC={
+  id:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="11" r="2"/><path d="M13 9h5M13 13h5M5 16c.6-1.5 2-2 3.5-2s2.9.5 3.5 2"/></svg>',
+  doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>',
+  upi:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20M6 14h4"/></svg>',
+  bolt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>',
+  chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  bank:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10 12 3l9 7M4 10v9M20 10v9M8 10v9M16 10v9M2 21h20"/></svg>',
+  wallet:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h13v4M3 7v10a2 2 0 0 0 2 2h15V9H5a2 2 0 0 1-2-2z"/><circle cx="16" cy="14" r="1.2"/></svg>',
+  scale:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M7 21h10M12 5 5 8m7-3 7 3M5 8l-3 6a3 3 0 0 0 6 0zM19 8l-3 6a3 3 0 0 0 6 0z"/></svg>',
+  shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4 3 7 7 9 4-2 7-5 7-9V6z"/><path d="m9 12 2 2 4-4"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg>',
+  user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>',
+  briefcase:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"/></svg>',
+  target:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>',
+  scroll:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h10a2 2 0 0 1 2 2v13a3 3 0 0 0 3 3H8a2 2 0 0 1-2-2z"/><path d="M6 3a2 2 0 0 0-2 2v2h4M10 8h6M10 12h6M10 16h4"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',
+  link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>',
+  cash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9v6M18 9v6"/></svg>',
+  info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5v.5"/></svg>',
+  warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 20h20z"/><path d="M12 9v5M12 17.5v.5"/></svg>',
+  cross:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  building:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2M10 21v-3h4v3"/></svg>',
+  calendar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>',
+  api:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m0 8v3a2 2 0 0 0 2 2h3m8 0h3a2 2 0 0 0 2-2v-3m0-8V5a2 2 0 0 0-2-2h-3"/><circle cx="12" cy="12" r="2.5"/></svg>',
+  arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V15z"/></svg>',
+  globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 2.6 15.4 0 18M12 3c-2.6 2.6-2.6 15.4 0 18"/></svg>',
+  refresh:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg>',
+  camera:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l2-2h6l2 2h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+  pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+};
+function ico(name,cls){return `<span class="ico ${cls||''}">${IC[name]||''}</span>`;}
+
+// ── Personas: credit inputs. income here = declared/verified income used for FOIR ──
+const PROFILES={
+  prime:{icon:'user',bg:'var(--green-soft)',fg:'var(--green)',name:'Arjun Mehta',age:'32 yrs',ds:'Salaried · Software Engineer, Bengaluru',tags:['₹95K/mo income','CIBIL 780','5 yr history'],
+    aadhaar:'XXXX XXXX 4821',dob:'14 Mar 1993',pan:'AXKPM1234C',emp:'Infosys Ltd',income:95000,cibil:780,obligations:12000,defaults:0},
+  thin:{icon:'user',bg:'var(--amber-soft)',fg:'var(--amber)',name:'Sneha Reddy',age:'24 yrs',ds:'Salaried · Marketing Associate, Hyderabad',tags:['₹42K/mo income','CIBIL 690','8 mo history'],
+    aadhaar:'XXXX XXXX 7392',dob:'02 Aug 2001',pan:'BKRPS5678D',emp:'Zomato Ltd',income:42000,cibil:690,obligations:6000,defaults:0,thinFile:true},
+  gig:{icon:'wallet',bg:'var(--indigo-soft)',fg:'var(--indigo)',name:'Ramesh Kumar',age:'29 yrs',ds:'Self-employed · Delivery partner, Delhi',tags:['₹38K/mo variable','CIBIL 720','Irregular inflows'],
+    aadhaar:'XXXX XXXX 5510',dob:'19 Nov 1996',pan:'CMKPK9012E',emp:'Gig · Swiggy + Zepto',income:38000,cibil:720,obligations:8000,defaults:0,variable:true},
+  subprime:{icon:'briefcase',bg:'var(--red-soft)',fg:'var(--red)',name:'Vikram Singh',age:'41 yrs',ds:'Self-employed · Shop owner, Jaipur',tags:['₹55K/mo income','CIBIL 610','2 recent defaults'],
+    aadhaar:'XXXX XXXX 3348',dob:'07 Jun 1984',pan:'DNVPS3456F',emp:'Singh Traders',income:55000,cibil:610,obligations:22000,defaults:2}
+};
+
+function syncLoggedInProfile(){
+  const name=(state.name||state.panDetails?.name||state.aadhaarDetails?.name||'Verified borrower').trim();
+  const dob=state.panDetails?.dob||state.aadhaarDetails?.dob||'Not available from document';
+  const aadhaar=state.aadhaarDetails?.aadhaar||((state.aadhaar||'').replace(/(\d{4})(\d{4})(\d{4})/,'XXXX XXXX $3'))||'Not available';
+  const pan=state.panDetails?.pan||state.pan||'Not available';
+  const address=state.aadhaarDetails?.address||'Address available from verified Aadhaar';
+  const income=state.userIncome||95000;
+  PROFILES.loggedIn={
+    icon:'user',bg:'var(--green-soft)',fg:'var(--green)',name:name,age:dob,
+    ds:'Verified borrower · Aadhaar + PAN',
+    tags:[`\u20b9${Math.round(income).toLocaleString('en-IN')}/mo income`,'Identity verified','PAN + Aadhaar'],
+    aadhaar:aadhaar,dob:dob,pan:pan,emp:state.employmentType||'Not provided',income:income,
+    cibil:state.mockCibil||760,obligations:state.existingEmi||12000,defaults:0,
+    address:address,email:state.email||'Not provided',mobile:state.mobile||'Not provided',
+    fatherName:state.fatherName||'Not available from Aadhaar/PAN'
+  };
+  state.profile='loggedIn';
+}
+
+function fmt(n){return '₹'+Math.round(n).toLocaleString('en-IN');}
+function emiCalc(P,annualRate,months){const r=annualRate/12/100;const e=P*r*Math.pow(1+r,months)/(Math.pow(1+r,months)-1);return Math.round(e);}
+
+// ── Rupee in words (Indian system) ──
+function rupeesInWords(num){
+  num=Math.round(num);if(num===0)return 'Zero Rupees';
+  const a=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+  const b=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+  function two(n){return n<20?a[n]:b[Math.floor(n/10)]+(n%10?' '+a[n%10]:'');}
+  function three(n){return (Math.floor(n/100)?a[Math.floor(n/100)]+' Hundred'+(n%100?' ':''):'')+(n%100?two(n%100):'');}
+  let out='',cr=Math.floor(num/10000000);num%=10000000;let lk=Math.floor(num/100000);num%=100000;let th=Math.floor(num/1000);num%=1000;let hu=num;
+  if(cr)out+=three(cr)+' Crore ';if(lk)out+=three(lk)+' Lakh ';if(th)out+=three(th)+' Thousand ';if(hu)out+=three(hu);
+  return out.trim()+' Rupees';
+}
+
+// ── Real decision engine: FOIR-driven ──
+function riskRate(cibil){ // base APR by bureau band
+  if(cibil>=780)return 12.5; if(cibil>=750)return 13.5; if(cibil>=700)return 15.5;
+  if(cibil>=670)return 16.5; if(cibil>=640)return 18.0; return 22.0;
+}
+function assess(){
+  const p=PROFILES[state.profile];
+  const lender=LENDERS.find(l=>l.id===state.lender);
+  const income=state.userIncome||p.income;
+  let rate=riskRate(p.cibil)+(lender?lender.rateAdj:0);
+  rate=Math.max(10.5,Math.round(rate*10)/10); // floor + 1 decimal
+  const reqEmi=emiCalc(state.amount,rate,state.tenure);
+  const foir=(p.obligations+reqEmi)/income; // fraction
+  const FOIR_MAX=0.50; // policy ceiling
+  // Max EMI room under policy, then max principal that fits it
+  const emiRoom=Math.max(0,income*FOIR_MAX-p.obligations);
+  const r=rate/12/100, n=state.tenure;
+  const maxPrincipal=emiRoom>0?Math.floor(emiRoom*(Math.pow(1+r,n)-1)/(r*Math.pow(1+r,n))/1000)*1000:0;
+  let outcome, offerAmt, verdict, reasons=[];
+  if(p.defaults>0 && p.cibil<650){
+    outcome='declined';offerAmt=0;
+    verdict=`Recent repayment defaults and a bureau score of ${p.cibil} fall below our credit policy. We can't extend an offer right now.`;
+    reasons=[['Bureau score',p.cibil+' · below 650 cut-off','bad'],['Recent defaults',p.defaults+' in last 6 months','bad'],['FOIR at request',(foir*100).toFixed(0)+'% · over 50% ceiling','bad']];
+  } else if(foir<=FOIR_MAX && state.amount<=maxPrincipal){
+    outcome='approved';offerAmt=state.amount;
+    verdict=`Your obligations after this loan stay within a healthy ${(foir*100).toFixed(0)}% of income. Full amount approved.`;
+    reasons=[['Bureau score',p.cibil+' · '+(p.cibil>=750?'excellent':'good'),'good'],['FOIR after loan',(foir*100).toFixed(0)+'% · within 50%','good'],['Verified income',fmt(income)+'/mo','good']];
+  } else if(maxPrincipal>=25000){
+    // amount too big for FOIR → reduce, or gig → conditional
+    offerAmt=Math.min(maxPrincipal,state.amount);
+    const newFoir=(p.obligations+emiCalc(offerAmt,rate,state.tenure))/income;
+    if(p.variable){
+      outcome='review';
+      verdict=`Income verified via UPI cashflow but it's variable, so a manual check is needed. Conditional offer of ${fmt(offerAmt)} at ${newFoir*100<=50?(newFoir*100).toFixed(0):'~50'}% FOIR.`;
+      reasons=[['Bureau score',p.cibil+' · good','good'],['Income stability','Variable · needs review','warn'],['FOIR at offer',(newFoir*100).toFixed(0)+'%','warn']];
+    } else {
+      outcome='approved';
+      verdict=`Requested ${fmt(state.amount)} would push FOIR past our 50% ceiling. Approved for ${fmt(offerAmt)}, which keeps you at a safe ${(newFoir*100).toFixed(0)}%.`;
+      reasons=[['Bureau score',p.cibil+' · good','good'],['FOIR if full amount',(foir*100).toFixed(0)+'% · too high','warn'],['FOIR at offer',(newFoir*100).toFixed(0)+'% · within policy','good']];
+    }
+  } else {
+    outcome='declined';offerAmt=0;
+    verdict=`Existing obligations already consume most of your income (FOIR ${(foir*100).toFixed(0)}%). There isn't room for another EMI right now.`;
+    reasons=[['FOIR at request',(foir*100).toFixed(0)+'% · over 50% ceiling','bad'],['Existing EMIs',fmt(p.obligations)+'/mo','bad'],['Room for new EMI',fmt(emiRoom)+'/mo','bad']];
+  }
+  return {income,rate,reqEmi,foir,offerAmt,outcome,verdict,reasons,maxPrincipal,lender,feePct:(lender?lender.fee:2.0)};
+}
+
+// ── Navigation ──
+function go(i){step=i;hist.push(i);render();}
+function back(){if(hist.length>1){hist.pop();step=hist[hist.length-1];render();}}
+function goName(name){go(STEPS.indexOf(name));}
+
+const LOANFLOW=['lineofcredit','lenders','profile','review','assessment','decision','agreement','disbursing','success'];
+const LOANNAMES={lineofcredit:'Credit line',lenders:'Choose lender',profile:'Your profile',review:'Review details',assessment:'Credit check',decision:'Decision',agreement:'Agreement',disbursing:'Disbursing',success:'Complete'};
+function updateProgress(){
+  const pw=document.getElementById('progWrap');
+  const s=STEPS[step];
+  const idx=LOANFLOW.indexOf(s);
+  if(idx===-1){pw.style.display='none';return;}
+  pw.style.display='block';
+  const total=LOANFLOW.length;
+  document.getElementById('progFill').style.width=(((idx+1)/total)*100)+'%';
+  document.getElementById('progStep').textContent='Step '+(idx+1)+' of '+total;
+  document.getElementById('progName').textContent=LOANNAMES[s]||'';
+}
+function setBack(show){document.getElementById('backBtn').classList.toggle('hidden',!show);}
+
+// ── Renderers ──
+function render(){
+  updateProgress();
+  const s=STEPS[step];
+  setBack(s!=='landing'&&s!=='home'&&s!=='kycProgress'&&s!=='kycProgressAadhaar'&&s!=='disbursing'&&s!=='success');
+  const sc=document.getElementById('screen');
+  sc.scrollTop=0;
+  if(s==='landing')sc.innerHTML=rLanding();
+  else if(s==='onboard')sc.innerHTML=rOnboard();
+  else if(s==='loginOtp')sc.innerHTML=rLoginOtp();
+  else if(s==='permissions')sc.innerHTML=rPermissions();
+  else if(s==='consent')sc.innerHTML=rConsent();
+  else if(s==='pan')sc.innerHTML=rPan();
+  else if(s==='panOtp')sc.innerHTML=rPanOtp();
+  else if(s==='kycProgress'){sc.innerHTML=rKycProgress('pan');runKycProgress();}
+  else if(s==='aadhaarInput')sc.innerHTML=rAadhaarInput();
+  else if(s==='aadhaarOtp')sc.innerHTML=rAadhaarOtp();
+  else if(s==='kycProgressAadhaar'){sc.innerHTML=rKycProgressAadhaar();runKycProgressAadhaar();}
+  else if(s==='face'){sc.innerHTML=rFace();startFaceScan();}
+  else if(s==='home')sc.innerHTML=rHome();
+  else if(s==='kycIntro')sc.innerHTML=rKycIntro();
+  else if(s==='aadhaarResult')sc.innerHTML=rAadhaarResult();
+  else if(s==='panResult')sc.innerHTML=rPanResult();
+  else if(s==='kycDone')sc.innerHTML=rKycDone();
+  else if(s==='insurance')sc.innerHTML=rInsurance();
+  else if(s==='emicalc')sc.innerHTML=rEmiCalc();
+  else if(s==='lineofcredit')sc.innerHTML=rLineOfCredit();
+  else if(s==='docverify'){sc.innerHTML=rDocVerify();runDocVerify();}
+  else if(s==='welcome')sc.innerHTML=rWelcome();
+  else if(s==='amount')sc.innerHTML=rAmount();
+  else if(s==='lenders')sc.innerHTML=rLenders();
+  else if(s==='profile')sc.innerHTML=rProfile();
+  else if(s==='aadhaar')sc.innerHTML=rAadhaar();
+  else if(s==='otp')sc.innerHTML=rOtp();
+  else if(s==='digilocker'){sc.innerHTML=rDigilocker();runDigilocker();}
+  else if(s==='review')sc.innerHTML=rReview();
+  else if(s==='assessment'){sc.innerHTML=rAssessment();runAssessment();}
+  else if(s==='decision')sc.innerHTML=rDecision();
+  else if(s==='agreement')sc.innerHTML=rAgreement();
+  else if(s==='disbursing'){sc.innerHTML=rDisbursing();runDisburse();}
+  else if(s==='success'){sc.innerHTML=rSuccess();}
+  else if(s==='dashboard')sc.innerHTML=rDashboard();
+  else if(s==='score')sc.innerHTML=rScore();
+  else if(s==='cardapply')sc.innerHTML=rCardApply();
+  else if(s==='cardapproved')sc.innerHTML=rCardApproved();
+}
+
+function rLanding(){return `<div class="pad step-anim">
+<div class="sim-banner">${ico('warn')}<span><b>Simulated prototype.</b> India Stack APIs are mocked for this academic demo — no real money moves.</span></div>
+<div class="hero"><div class="hero-glow"></div><div class="hero-glow2"></div>
+<div class="hero-badge"><span class="dot"></span>RBI-registered NBFC · 100% digital</div>
+<h1>Money in your account in <span class="amt">5 minutes</span></h1>
+<p>An unsecured personal loan approved and disbursed entirely online — no branch visit, no paperwork, powered by India Stack.</p>
+<div class="hero-stats"><div class="hero-stat"><div class="v">₹5L</div><div class="l">Up to</div></div><div class="hero-stat"><div class="v">12.5%</div><div class="l">Rate from</div></div><div class="hero-stat"><div class="v">5 min</div><div class="l">Approval</div></div></div>
+</div>
+<div class="stack-row">
+<div class="stack-pill"><div class="ic">${ico('id','ic-saffron')}</div><div class="nm">Aadhaar</div><div class="ds">e-KYC</div></div>
+<div class="stack-pill"><div class="ic">${ico('doc','ic-indigo')}</div><div class="nm">DigiLocker</div><div class="ds">Documents</div></div>
+<div class="stack-pill"><div class="ic">${ico('upi','ic-green')}</div><div class="nm">UPI</div><div class="ds">Disbursal</div></div>
+</div>
+<div class="feature-list">
+<div class="feature"><div class="feature-ic" style="background:var(--saffron-soft);color:var(--saffron)">${ico('bolt')}</div><div class="feature-tx"><div class="t">Instant paperless KYC</div><div class="d">Verify identity with Aadhaar OTP</div></div></div>
+<div class="feature"><div class="feature-ic" style="background:var(--indigo-soft);color:var(--indigo)">${ico('lock')}</div><div class="feature-tx"><div class="t">Bank-grade security</div><div class="d">256-bit encryption, consent-based data</div></div></div>
+<div class="feature"><div class="feature-ic" style="background:var(--green-soft);color:var(--green)">${ico('chart')}</div><div class="feature-tx"><div class="t">Fair, transparent pricing</div><div class="d">Rate based on your credit profile</div></div></div>
+</div>
+<button class="btn btn-primary" onclick="goName('onboard')">Get started ${ico('arrow')}</button>
+<div class="spacer"></div>
+<div class="api-map">
+<div class="api-map-head">${ico('api')}<span>How this maps to real APIs</span></div>
+<div class="api-map-row"><span class="k">Identity OTP</span><span class="arw">→</span><span class="v">UIDAI Aadhaar e-KYC</span></div>
+<div class="api-map-row"><span class="k">Documents (PAN, etc.)</span><span class="arw">→</span><span class="v">DigiLocker Pull API</span></div>
+<div class="api-map-row"><span class="k">Income / bank data</span><span class="arw">→</span><span class="v">Account Aggregator (Sahamati)</span></div>
+<div class="api-map-row"><span class="k">Signature</span><span class="arw">→</span><span class="v">Aadhaar eSign (NSDL/CDAC)</span></div>
+<div class="api-map-row"><span class="k">Disbursal & EMI</span><span class="arw">→</span><span class="v">UPI / IMPS + eNACH mandate</span></div>
+</div>
+<div class="badge-row" style="justify-content:center;margin-top:14px"><div class="trust-badge">${ico('shield')} ISO 27001</div><div class="trust-badge">${ico('check')} RBI NBFC</div><div class="trust-badge">${ico('lock')} DPDP compliant</div></div>
+</div>`;}
+
+
+function rOnboard(){return `<div class="pad step-anim"><div class="eyebrow">Welcome to TezCredit</div><div class="h1">Let's start with your mobile</div><p class="sub">We use your name and mobile number to create a secure demo application session.</p><div class="field"><div class="field-label">Full name</div><input class="input text-input" id="onName" placeholder="e.g. Aarav Sharma" value="${state.name||''}" oninput="state.name=this.value;checkOnboard()"></div><div class="field"><div class="field-label">Mobile number</div><input class="input" id="onMobile" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" value="${state.mobile||''}" oninput="state.mobile=this.value.replace(/\D/g,'');checkOnboard()"></div><div class="info-note">${ico('lock')}<span><b>Why we ask:</b> your mobile is used for OTP-based login and application updates. This prototype stores it only in this browser session.</span></div><div class="consent" id="basicConsent" onclick="toggleConsent(this,'data')"><div class="consent-box"></div><div class="consent-tx">I understand this is a simulated application and consent to use my details for the demo.</div></div><button class="btn btn-primary" id="onBtn" onclick="goName('loginOtp')" disabled>Send demo OTP ${ico('arrow')}</button></div>`}
+function checkOnboard(){const b=document.getElementById('onBtn');if(b)b.disabled=!(state.name.trim()&&/^\d{10}$/.test(state.mobile)&&state.consents.data)}
+function toggleConsent(el,key){state.consents[key]=!state.consents[key];el.classList.toggle('checked',state.consents[key]);if(key==='data')checkOnboard();if(key==='kyc')checkKycConsent();if(key==='permissions')checkPermissionConsent()}
+function rLoginOtp(){setTimeout(fillLoginOtp,250);return `<div class="pad step-anim"><div class="eyebrow">Mobile verification</div><div class="h1">Verify your mobile number</div><p class="sub">We sent a demo OTP to <b>+91 ${state.mobile.slice(0,2)}••••${state.mobile.slice(-2)}</b>.</p><div class="otp-demo">Demo OTP: <b>482913</b> <button class="mini-btn" onclick="fillLoginOtp()">Auto-fill</button></div><div class="field"><div class="field-label">Enter 6-digit OTP</div><input class="input" id="loginOtp" maxlength="6" inputmode="numeric" placeholder="••••••" value="${state.loginOtpInput||''}" oninput="state.loginOtpInput=this.value;checkLoginOtp()"></div><div class="info-note">${ico('shield')}<span><b>Why OTP?</b> It confirms that you control the mobile number linked to this application.</span></div><button class="btn btn-primary" id="loginOtpBtn" onclick="verifyLoginOtp()" disabled>Verify mobile ${ico('arrow')}</button></div>`}
+function fillLoginOtp(){state.loginOtpInput='482913';const el=document.getElementById('loginOtp');if(el)el.value='482913';checkLoginOtp()}
+function checkLoginOtp(){const b=document.getElementById('loginOtpBtn');if(b)b.disabled=document.getElementById('loginOtp')?.value!=='482913'}
+function verifyLoginOtp(){goName('home')}
+function rPermissions(){return `<div class="pad step-anim"><div class="eyebrow">Device permissions</div><div class="h1">A couple of permissions</div><p class="sub">These permissions support KYC and location-aware fraud prevention in a real app. Nothing is shared outside this demo.</p><div class="perm-card"><div class="perm-ic">📷</div><div class="perm-tx"><b>Camera</b><span>Used for face capture during identity verification. It is not used for advertising or recording.</span></div><div class="perm-status ${state.permissions.camera?'ok':''}">${state.permissions.camera?'Allowed':'Not allowed'}</div></div><div class="perm-card"><div class="perm-ic">📍</div><div class="perm-tx"><b>Location</b><span>Used to detect unusual application patterns and support location-based security checks.</span></div><div class="perm-status ${state.permissions.location?'ok':''}">${state.permissions.location?'Allowed':'Not allowed'}</div></div><div class="info-note">${ico('info')}<span><b>Justification:</b> camera is needed for the face-match step; approximate location can help a lender identify suspicious login/application activity.</span></div><button class="btn btn-primary" onclick="requestPermissions()">Allow camera & location ${ico('arrow')}</button><button class="btn btn-ghost btn-sm" onclick="goName('consent')">Continue to consent</button></div>`}
+async function requestPermissions(){try{if(navigator.mediaDevices?.getUserMedia){const stream=await navigator.mediaDevices.getUserMedia({video:true});state.permissions.camera=true;stream.getTracks().forEach(t=>t.stop());}}catch(e){}try{if(navigator.geolocation){await new Promise(res=>navigator.geolocation.getCurrentPosition(()=>{state.permissions.location=true;res()},()=>res(),{timeout:3500}));}}catch(e){}render()}
+function rConsent(){return `<div class="pad step-anim"><div class="eyebrow">Before KYC</div><div class="h1">Your consent matters</div><p class="sub">Please review these items before we request identity information.</p><div class="consent" onclick="toggleConsent(this,'kyc')"><div class="consent-box"></div><div class="consent-tx"><b>Identity verification</b><br>I consent to simulated PAN and Aadhaar verification for this demo.</div></div><div class="consent" onclick="toggleConsent(this,'permissions')"><div class="consent-box"></div><div class="consent-tx"><b>Camera & location</b><br>I understand why these permissions are requested and agree to continue.</div></div><div class="info-note">${ico('lock')}<span><b>Important:</b> this prototype does not contact UIDAI, NSDL, banks, credit bureaus or government systems.</span></div><button class="btn btn-primary" id="kycBtn" onclick="goName('pan')" disabled>Continue to PAN verification ${ico('arrow')}</button></div>`}
+function checkKycConsent(){const b=document.getElementById('kycBtn');if(b)b.disabled=!(state.consents.kyc&&state.consents.permissions)}
+function checkPermissionConsent(){checkKycConsent()}
+function rPan(){return `<div class="pad step-anim"><div class="eyebrow">KYC · Step 2 of 2</div><div class="h1">Verify your PAN card</div><p class="sub">Enter the PAN printed on your card. A real lender uses PAN to establish your identity and perform tax/credit checks.</p><div class="doc-explain"><b>Why PAN is required</b><span>It helps identify the borrower, prevent duplicate identities and support credit underwriting. No external PAN database is queried in this simulation.</span></div><div class="field"><div class="field-label">PAN number</div><input class="input text-input" id="panInput" maxlength="10" placeholder="ABCDE1234F" value="${state.pan||''}" oninput="state.pan=this.value.toUpperCase();this.value=state.pan;checkPan()"></div><div class="info-note">${ico('shield')}<span>Use the demo PAN <b>ABCDE1234F</b>. Do not enter a real PAN.</span></div><button class="btn btn-primary" id="panBtn" onclick="goName('panOtp')" disabled>Verify PAN & send OTP ${ico('arrow')}</button></div>`}
+function checkPan(){const b=document.getElementById('panBtn');if(b)b.disabled=!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(state.pan)}
+function rPanOtp(){setTimeout(fillPanOtp,250);return `<div class="pad step-anim"><div class="eyebrow">PAN verification</div><div class="h1">Confirm PAN verification</div><p class="sub">The demo OTP is automatically filled to simulate secure OTP capture.</p><div class="otp-demo">Demo OTP: <b>135790</b> <span style="font-weight:700;color:var(--green)">Auto-filled</span></div><div class="field"><div class="field-label">PAN OTP</div><input class="input" id="panOtp" maxlength="6" inputmode="numeric" placeholder="••••••" oninput="checkPanOtp()"></div><button class="btn btn-primary" id="panOtpBtn" onclick="verifyPan()" disabled>Verify PAN ${ico('arrow')}</button></div>`}
+function fillPanOtp(){document.getElementById('panOtp').value='135790';checkPanOtp()}
+function checkPanOtp(){const b=document.getElementById('panOtpBtn');if(b)b.disabled=document.getElementById('panOtp')?.value!=='135790'}
+function verifyPan(){
+  state.panVerified=true;
+  state.panDetails={
+    name:(state.name||'Aarav Sharma').trim().toUpperCase(),
+    dob:'14 August 1996',
+    pan:state.pan||'ABCDE1234F',
+    fatherName:'Rajesh Kumar Sharma',
+    status:'Active · Valid'
+  };
+  syncLoggedInProfile();
+  goName('panResult');
+}
+function rAadhaarInput(){return `<div class="pad step-anim"><div class="eyebrow">KYC · Step 1 of 2</div><div class="h1">Verify your Aadhaar</div><p class="sub">Enter the 12-digit Aadhaar number used for identity verification. The real process uses consent-based e-KYC.</p><div class="doc-explain"><b>Why Aadhaar is required</b><span>It supports identity and address verification and can enable a digital KYC flow. This prototype does not contact UIDAI.</span></div><div class="field"><div class="field-label">Aadhaar number</div><input class="input" id="aadhaarInput" maxlength="12" inputmode="numeric" placeholder="1234 5678 9012" value="${state.aadhaar||''}" oninput="state.aadhaar=this.value.replace(/\D/g,'');this.value=state.aadhaar;checkAadhaar()"></div><div class="info-note">${ico('shield')}<span>Use the demo Aadhaar <b>123456789012</b>. Do not enter a real Aadhaar number.</span></div><button class="btn btn-primary" id="aadhaarBtn" onclick="goName('aadhaarOtp')" disabled>Send demo Aadhaar OTP ${ico('arrow')}</button></div>`}
+function checkAadhaar(){const b=document.getElementById('aadhaarBtn');if(b)b.disabled=!/^\d{12}$/.test(state.aadhaar)}
+function rAadhaarOtp(){setTimeout(fillAadhaarOtp,250);return `<div class="pad step-anim"><div class="eyebrow">Aadhaar e-KYC</div><div class="h1">Verify Aadhaar OTP</div><p class="sub">The demo OTP is automatically filled to simulate secure OTP capture.</p><div class="otp-demo">Demo OTP: <b>246810</b> <span style="font-weight:700;color:var(--green)">Auto-filled</span></div><div class="field"><div class="field-label">6-digit OTP</div><input class="input" id="aadhaarOtp" maxlength="6" inputmode="numeric" placeholder="••••••" oninput="checkAadhaarOtp()"></div><button class="btn btn-primary" id="aadhaarOtpBtn" onclick="verifyAadhaar()" disabled>Verify Aadhaar ${ico('arrow')}</button></div>`}
+function fillAadhaarOtp(){document.getElementById('aadhaarOtp').value='246810';checkAadhaarOtp()}
+function checkAadhaarOtp(){const b=document.getElementById('aadhaarOtpBtn');if(b)b.disabled=document.getElementById('aadhaarOtp')?.value!=='246810'}
+function verifyAadhaar(){
+  state.aadhaarVerified=true;
+  const masked=(state.aadhaar||'123456789012').replace(/(\d{4})(\d{4})(\d{4})/,'XXXX XXXX $3');
+  state.aadhaarDetails={
+    name:(state.name||'Aarav Sharma').trim(),
+    dob:'14 August 1996',
+    gender:'Male',
+    aadhaar:masked,
+    address:'42, 3rd Cross, Indiranagar, Bengaluru, Karnataka – 560038'
+  };
+  syncLoggedInProfile();
+  goName('aadhaarResult');
+}
+function rKycProgress(stage){const isPan=stage==='pan';return `<div class="pad step-anim"><div class="eyebrow">Identity verification</div><div class="h1">Verifying your PAN</div><p class="sub">We’re securely validating the PAN OTP and matching the identity details you entered.</p><div class="kyc-status"><div class="kyc-step active"><div class="kyc-dot"><div class="kyc-spinner"></div></div><div class="kyc-copy"><div class="t">PAN verification</div><div class="d">OTP verified · checking PAN details</div></div><div class="kyc-state">Checking…</div></div><div class="kyc-step"><div class="kyc-dot">2</div><div class="kyc-copy"><div class="t">Aadhaar verification</div><div class="d">Next: e-KYC and OTP validation</div></div><div class="kyc-state">Pending</div></div></div><div class="info-note">${ico('shield')}<span>This is a simulated verification flow. No real PAN or government database is contacted.</span></div></div>`}
+function runKycProgress(){setTimeout(()=>{if(step!==STEPS.indexOf('kycProgress'))return;const el=document.querySelector('.kyc-step.active');if(el){el.classList.remove('active');el.classList.add('done');el.querySelector('.kyc-dot').innerHTML='✓';el.querySelector('.kyc-state').textContent='Verified';}setTimeout(()=>{if(step===STEPS.indexOf('kycProgress'))goName('aadhaarInput');},450);},1100)}
+function rKycProgressAadhaar(){return `<div class="pad step-anim"><div class="eyebrow">Identity verification</div><div class="h1">Verifying your identity</div><p class="sub">PAN is verified. We’re now completing Aadhaar e-KYC and the final identity match.</p><div class="kyc-status"><div class="kyc-step done"><div class="kyc-dot">✓</div><div class="kyc-copy"><div class="t">PAN verification</div><div class="d">PAN OTP verified and details matched</div></div><div class="kyc-state">Verified</div></div><div class="kyc-step active"><div class="kyc-dot"><div class="kyc-spinner"></div></div><div class="kyc-copy"><div class="t">Aadhaar verification</div><div class="d">OTP verified · completing e-KYC</div></div><div class="kyc-state">Checking…</div></div><div class="kyc-step active"><div class="kyc-dot"><div class="kyc-spinner"></div></div><div class="kyc-copy"><div class="t">Identity match</div><div class="d">Matching PAN and Aadhaar details</div></div><div class="kyc-state">Checking…</div></div></div><div class="info-note">${ico('shield')}<span>Your identity details are ready. This prototype uses mock records only.</span></div></div>`}
+function runKycProgressAadhaar(){let i=1;const timer=setInterval(()=>{if(step!==STEPS.indexOf('kycProgressAadhaar')){clearInterval(timer);return;}const rows=document.querySelectorAll('.kyc-step');if(i<rows.length){rows[i].classList.remove('active');rows[i].classList.add('done');rows[i].querySelector('.kyc-dot').innerHTML='✓';rows[i].querySelector('.kyc-state').textContent='Verified';i++;}else{clearInterval(timer);setTimeout(()=>goName('face'),450);}},900)}
+
+function rFace(){return `<div class="pad step-anim"><div class="eyebrow">Final identity check</div><div class="h1">Match your face to your Aadhaar photo</div><p class="sub">We simulate a live face capture and compare it with the verified Aadhaar record.</p><div class="face-frame"><video id="faceVideo" autoplay muted playsinline></video><div class="face-grid"></div><div class="scan-line"></div><div class="face-label" id="faceLabel">Camera ready</div></div><div class="match-card"><div><b>Aadhaar photo</b><span>${state.aadhaarDetails?.name||state.name||'Demo applicant'}</span></div><div id="matchStatus">Waiting for scan…</div></div><div class="info-note">${ico('shield')}<span><b>Why?</b> Face matching helps reduce impersonation. <b>Demo only:</b> no biometric template is stored and no real facial-recognition decision is made.</span></div><button class="btn btn-primary" id="faceBtn" onclick="completeFace()" disabled>Complete identity verification ${ico('arrow')}</button></div>`}
+async function startFaceScan(){let v=document.getElementById('faceVideo');try{if(v&&navigator.mediaDevices?.getUserMedia){const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});v.srcObject=stream;state.permissions.camera=true;}}catch(e){}let n=0;const iv=setInterval(()=>{if(step!==STEPS.indexOf('face')){clearInterval(iv);return;}n++;const label=document.getElementById('faceLabel');if(label)label.textContent=n<2?'Detecting face…':n<4?'Aligning face…':'Comparing with Aadhaar photo…';if(n>=5){clearInterval(iv);const st=document.getElementById('matchStatus');if(st)st.textContent='✓ 98% mock match';if(document.getElementById('faceBtn'))document.getElementById('faceBtn').disabled=false;}},650)}
+function completeFace(){state.faceVerified=true;syncLoggedInProfile();const v=document.getElementById('faceVideo');if(v?.srcObject)v.srcObject.getTracks().forEach(t=>t.stop());goName('home')}
+
+// ── KYC intro ──
+function rKycIntro(){return `<div class="pad step-anim">
+<div class="eyebrow">Complete your KYC</div>
+<div class="h1">Verify your identity</div>
+<p class="sub">To unlock credit and card products, we need to verify your identity. This takes two quick steps and each is confirmed with a one-time password.</p>
+<div class="data-card"><div class="data-card-head"><span class="ic">${ico('id')}</span><span class="t">What you'll verify</span></div>
+<div class="data-row"><span class="k">Step 1 — Aadhaar</span><span class="v">${state.aadhaarVerified?'✓ Verified':'Pending'}</span></div>
+<div class="data-row"><span class="k">Step 2 — PAN</span><span class="v">${state.panVerified?'✓ Verified':'Pending'}</span></div></div>
+<div class="info-note">${ico('lock')}<span>Your details are used only for this simulated verification and are never shared outside this prototype.</span></div>
+<button class="btn btn-primary" onclick="goName('aadhaarInput')">${state.aadhaarVerified&&state.panVerified?'Review verification':'Begin verification'} ${ico('arrow')}</button>
+<button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="goName('home')">Back to home</button>
+</div>`;}
+
+// ── Aadhaar result (auto-populated) ──
+function rAadhaarResult(){const d=state.aadhaarDetails||{};return `<div class="pad step-anim">
+<div style="text-align:center;padding:8px 0 4px"><div class="decision-icon" style="background:var(--green-soft);color:var(--green);width:60px;height:60px;margin:0 auto">${ico('check')}</div></div>
+<div class="h1" style="text-align:center">Aadhaar verified</div>
+<p class="sub" style="text-align:center;margin-bottom:16px">We've securely fetched the following details from your Aadhaar record.</p>
+<div class="data-card"><div class="data-card-head"><span class="ic">${ico('id')}</span><span class="t">Aadhaar details</span><span class="verified">✓ VERIFIED</span></div>
+<div class="data-row"><span class="k">Full name</span><span class="v">${d.name||'—'}</span></div>
+<div class="data-row"><span class="k">Date of birth</span><span class="v">${d.dob||'—'}</span></div>
+<div class="data-row"><span class="k">Gender</span><span class="v">${d.gender||'—'}</span></div>
+<div class="data-row"><span class="k">Aadhaar number</span><span class="v mono">${d.aadhaar||'—'}</span></div>
+<div class="data-row"><span class="k">Address</span><span class="v" style="max-width:210px;text-align:right;font-weight:500">${d.address||'—'}</span></div></div>
+<div class="info-note">${ico('info')}<span>These fields were populated automatically after Aadhaar e-KYC. Next, verify your PAN.</span></div>
+<button class="btn btn-primary" onclick="goName('pan')">Continue to PAN verification ${ico('arrow')}</button>
+</div>`;}
+
+// ── PAN result (auto-populated) ──
+function rPanResult(){const d=state.panDetails||{};return `<div class="pad step-anim">
+<div style="text-align:center;padding:8px 0 4px"><div class="decision-icon" style="background:var(--green-soft);color:var(--green);width:60px;height:60px;margin:0 auto">${ico('check')}</div></div>
+<div class="h1" style="text-align:center">PAN verified</div>
+<p class="sub" style="text-align:center;margin-bottom:16px">We've fetched and matched the following details against your PAN.</p>
+<div class="data-card"><div class="data-card-head"><span class="ic">${ico('doc')}</span><span class="t">PAN details</span><span class="verified">✓ VERIFIED</span></div>
+<div class="data-row"><span class="k">Name on PAN</span><span class="v">${d.name||'—'}</span></div>
+<div class="data-row"><span class="k">Date of birth</span><span class="v">${d.dob||'—'}</span></div>
+<div class="data-row"><span class="k">PAN number</span><span class="v mono">${d.pan||'—'}</span></div>
+<div class="data-row"><span class="k">Father's name</span><span class="v">${d.fatherName||'—'}</span></div>
+<div class="data-row"><span class="k">Status</span><span class="v" style="color:var(--green)">${d.status||'Active'}</span></div></div>
+<div class="info-note">${ico('shield')}<span>Aadhaar and PAN names matched successfully. Your KYC is now complete.</span></div>
+<button class="btn btn-primary" onclick="goName('kycDone')">Finish KYC ${ico('arrow')}</button>
+</div>`;}
+
+// ── KYC done ──
+function rKycDone(){return `<div class="pad step-anim">
+<div style="text-align:center;padding:16px 0 8px"><div class="decision-icon" style="background:var(--green-soft);color:var(--green);width:72px;height:72px;margin:0 auto">${ico('shield')}</div></div>
+<div class="h1" style="text-align:center">KYC complete</div>
+<p class="sub" style="text-align:center;margin-bottom:16px">Your identity is fully verified. You can now apply for a credit line or a RuPay card.</p>
+<div class="data-card">
+<div class="data-row"><span class="k">Aadhaar</span><span class="v" style="color:var(--green)">✓ Verified</span></div>
+<div class="data-row"><span class="k">PAN</span><span class="v" style="color:var(--green)">✓ Verified</span></div>
+<div class="data-row"><span class="k">Name match</span><span class="v" style="color:var(--green)">✓ Passed</span></div></div>
+<button class="btn btn-primary" onclick="goName('home')">Back to home ${ico('arrow')}</button>
+</div>`;}
+
+// ── Insurance marketplace (real insurers, by type) ──
+const INSURANCE=[
+  {type:'Health Insurance',icon:'shield',color:'var(--green)',desc:'Cashless hospitalisation and family cover',plans:[
+    ['Star Health','Comprehensive family floater','From ₹542/mo'],
+    ['Niva Bupa','ReAssure 2.0 · unlimited restore','From ₹610/mo'],
+    ['HDFC ERGO','Optima Secure · 2× cover','From ₹688/mo'],
+    ['Care Health','Care Supreme · no room-rent cap','From ₹575/mo']]},
+  {type:'Term & Life Insurance',icon:'user',color:'var(--indigo)',desc:'Financial protection for your family',plans:[
+    ['LIC of India','Tech Term · pure protection','From ₹720/mo'],
+    ['HDFC Life','Click 2 Protect Super','From ₹655/mo'],
+    ['Max Life','Smart Secure Plus','From ₹640/mo'],
+    ['ICICI Prudential','iProtect Smart','From ₹690/mo']]},
+  {type:'Motor Insurance',icon:'bolt',color:'var(--saffron)',desc:'Car & two-wheeler cover with add-ons',plans:[
+    ['ICICI Lombard','Comprehensive car cover','From ₹2,499/yr'],
+    ['Bajaj Allianz','Zero-depreciation add-on','From ₹2,899/yr'],
+    ['TATA AIG','Auto Secure · roadside assist','From ₹2,650/yr'],
+    ['Go Digit','Pay-as-you-drive','From ₹2,199/yr']]},
+  {type:'Travel Insurance',icon:'briefcase',color:'var(--teal)',desc:'Trip, baggage and medical cover abroad',plans:[
+    ['TATA AIG','Travel Guard · worldwide','From ₹450/trip'],
+    ['Bajaj Allianz','Global Personal Guard','From ₹499/trip'],
+    ['Reliance General','Travel Care','From ₹420/trip']]},
+  {type:'Home Insurance',icon:'bank',color:'var(--amber)',desc:'Structure and contents protection',plans:[
+    ['HDFC ERGO','Home Shield · fire & theft','From ₹1,999/yr'],
+    ['ICICI Lombard','Bharat Griha Raksha','From ₹1,750/yr'],
+    ['Bajaj Allianz','My Home Insurance','From ₹1,850/yr']]},
+];
+function rInsurance(){
+  const sections=INSURANCE.map((c,ci)=>`
+    <div class="data-card">
+      <div class="data-card-head"><span class="ic" style="color:${c.color}">${ico(c.icon)}</span><span class="t">${c.type}</span></div>
+      <div style="font-size:11px;color:var(--muted);margin:-4px 0 6px">${c.desc}</div>
+      ${c.plans.map((p,pi)=>`<div class="ins-row" onclick="insureQuote('${p[0].replace(/'/g,"")} — ${p[1].replace(/'/g,"")}')">
+        <div class="ins-tx"><div class="ins-nm">${p[0]}</div><div class="ins-ds">${p[1]}</div></div>
+        <div class="ins-pr">${p[2]}<span class="ins-go">→</span></div></div>`).join('')}
+    </div>`).join('');
+  return `<div class="pad step-anim">
+<div class="eyebrow">Insurance marketplace</div>
+<div class="h1">Browse insurance by type</div>
+<p class="sub">Compare plans from leading Indian insurers across categories. Tap any plan to request a simulated quote.</p>
+${sections}
+<div class="sim-banner">${ico('warn')}<span><b>Prototype only.</b> Company names are real institutions, but premiums shown are illustrative and are not live quotes.</span></div>
+<button class="btn btn-ghost btn-sm" onclick="goName('home')">Back to home</button>
+</div>`;}
+function insureQuote(name){const t=document.getElementById('insToast');if(t){t.textContent='Quote requested for '+name+' (simulated).';t.classList.add('show');clearTimeout(window._insT);window._insT=setTimeout(()=>t.classList.remove('show'),2600);}}
+
+// ── EMI calculator ──
+function rEmiCalc(){
+  const amt=state.emiAmt||200000, ten=state.emiTen||12, rate=state.emiRate||12.5;
+  const emi=emiCalc(amt,rate,ten), total=emi*ten, interest=total-amt;
+  return `<div class="pad step-anim">
+<div class="eyebrow">Plan before you borrow</div><div class="h1">EMI calculator</div>
+<p class="sub">See your monthly instalment and total interest before you apply. Adjust the values below.</p>
+<div class="dashboard-hero compact" style="text-align:center"><div class="small">Monthly EMI</div><div class="out" id="emiOut">${fmt(emi)}</div><div class="small" id="emiSub">${fmt(amt)} \u00b7 ${ten} months \u00b7 ${rate}% p.a.</div></div>
+<div class="field"><div class="field-label">Loan amount <span class="hint" id="emiAmtL">${fmt(amt)}</span></div><input type="range" id="emiAmt" min="25000" max="500000" step="5000" value="${amt}" oninput="calcEmi()"></div>
+<div class="field"><div class="field-label">Tenure <span class="hint" id="emiTenL">${ten} months</span></div><input type="range" id="emiTen" min="3" max="60" step="3" value="${ten}" oninput="calcEmi()"></div>
+<div class="field"><div class="field-label">Interest rate <span class="hint" id="emiRateL">${rate}% p.a.</span></div><input type="range" id="emiRate" min="9" max="24" step="0.5" value="${rate}" oninput="calcEmi()"></div>
+<div class="offer-grid">
+  <div class="offer-box"><div class="k">Total interest</div><div class="v" id="emiInt">${fmt(interest)}</div></div>
+  <div class="offer-box"><div class="k">Total payable</div><div class="v" id="emiTot">${fmt(total)}</div></div>
+</div>
+<div class="info-note">${ico('info')}<span>Indicative only. Your actual rate depends on your credit profile and the lender you choose.</span></div>
+<button class="btn btn-primary" onclick="requireKyc('lineofcredit')">Apply for this loan ${ico('arrow')}</button>
+<button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="goName('home')">Back to home</button>
+</div>`;}
+function calcEmi(){
+  const amt=+document.getElementById('emiAmt').value, ten=+document.getElementById('emiTen').value, rate=+document.getElementById('emiRate').value;
+  state.emiAmt=amt;state.emiTen=ten;state.emiRate=rate;
+  const emi=emiCalc(amt,rate,ten), total=emi*ten, interest=total-amt;
+  document.getElementById('emiOut').textContent=fmt(emi);
+  document.getElementById('emiSub').textContent=`${fmt(amt)} \u00b7 ${ten} months \u00b7 ${rate}% p.a.`;
+  document.getElementById('emiAmtL').textContent=fmt(amt);
+  document.getElementById('emiTenL').textContent=ten+' months';
+  document.getElementById('emiRateL').textContent=rate+'% p.a.';
+  document.getElementById('emiInt').textContent=fmt(interest);
+  document.getElementById('emiTot').textContent=fmt(total);
+}
+
+function rProfile(){
+  syncLoggedInProfile();
+  const p=PROFILES.loggedIn;
+  return `<div class="pad step-anim">
+<div class="eyebrow">Loan assessment profile</div>
+<div class="h1">Your verified profile</div>
+<p class="sub">We’ve filled these details from your verified Aadhaar and PAN. Please review them before continuing. No demo borrower selection is required.</p>
+<div class="data-card">
+<div class="data-card-head"><span class="ic">${ico('id')}</span><span class="t">Identity details</span><span class="verified">✓ VERIFIED</span></div>
+<div class="data-row"><span class="k">Full name</span><span class="v">${p.name}</span></div>
+<div class="data-row"><span class="k">Date of birth</span><span class="v">${p.dob}</span></div>
+<div class="data-row"><span class="k">Aadhaar</span><span class="v mono">${p.aadhaar}</span></div>
+<div class="data-row"><span class="k">PAN</span><span class="v mono">${p.pan}</span></div>
+<div class="data-row"><span class="k">Address</span><span class="v" style="max-width:210px;text-align:right">${p.address}</span></div>
+<div class="data-row"><span class="k">Mobile</span><span class="v">+91 ${p.mobile}</span></div>
+</div>
+<div class="data-card">
+<div class="data-card-head"><span class="ic">${ico('briefcase')}</span><span class="t">Additional application details</span><span class="verified" style="background:var(--amber-soft);color:var(--amber)">REQUIRED</span></div>
+<div class="data-row"><span class="k">Employment</span><span class="v">${p.emp}</span></div>
+<div class="data-row"><span class="k">Monthly income</span><span class="v">${fmt(p.income)}</span></div>
+<div class="data-row"><span class="k">Existing EMIs</span><span class="v">${fmt(p.obligations)}/mo</span></div>
+<div class="info-note" style="margin-top:10px">${ico('info')}<span>Employment, income and existing EMI obligations are not available from PAN/Aadhaar, so these remain application inputs rather than document-derived facts.</span></div>
+</div>
+<div class="sim-banner">${ico('shield')}<span><b>Identity verified.</b> Your PAN, Aadhaar and face verification are complete. Credit bureau data is simulated separately.</span></div>
+<button class="btn btn-primary" onclick="goName('review')">Confirm & continue ${ico('arrow')}</button>
+</div>`;
+}
+function setProfile(k){state.profile=k;render();}
+
+function rDocVerify(){return `<div class="pad step-anim">
+<div class="eyebrow">Step 1 — Document verification</div>
+<div class="h1">Let's verify your documents first</div>
+<p class="sub">A quick simulated check of the documents normally used for a digital loan application.</p>
+<div class="sim-banner">${ico('warn')}<span><b>Simulation only.</b> No government or bureau system is contacted.</span></div>
+<div class="verify-progress"><div id="docVerifyBar"></div></div>
+<div id="docVerifyList">
+${[['id','Aadhaar / identity','Identity match & e-KYC consent'],['doc','PAN card','PAN format and name match'],['scroll','Income proof','Salary / bank statement check'],['shield','Address verification','Address consistency check']].map((x,i)=>`<div class="doc-sim-card" id="doc${i}"><div class="doc-sim-ic">${ico(x[0])}</div><div class="doc-sim-tx"><div class="t">${x[1]}</div><div class="d">${x[2]}</div></div><div class="doc-sim-status">Pending</div></div>`).join('')}
+</div>
+<button class="btn btn-primary" id="docContinue" onclick="goName('welcome')" disabled>Continue to application ${ico('arrow')}</button>
+</div>`;}
+
+function runDocVerify(){
+  const items=[0,1,2,3]; let i=0;
+  const timer=setInterval(()=>{if(step!==1){clearInterval(timer);return;} const el=document.getElementById('doc'+i); if(el){el.classList.add('done');el.querySelector('.doc-sim-status').textContent='Verified';} i++; const bar=document.getElementById('docVerifyBar'); if(bar)bar.style.width=(i/items.length*100)+'%'; if(i>=items.length){clearInterval(timer);state.verifyDone=true;const b=document.getElementById('docContinue');if(b)b.disabled=false;}},650);
+}
+
+function loanSchedule(){
+  const a=state.calc||assess(); const principal=state.finalAmt||a.offerAmt||state.amount;
+  const rate=(state.finalRate||a.rate||12.5)/100/12; const emi=emiCalc(principal,state.finalRate||a.rate||12.5,state.tenure);
+  let bal=principal, rows=[];
+  for(let m=1;m<=state.tenure;m++){const interest=Math.round(bal*rate);const principalPart=Math.max(0,Math.round(emi-interest));const opening=bal;bal=Math.max(0,bal-principalPart);rows.push({m,opening,interest,principal:principalPart,balance:bal});}
+  return {principal,emi,rows};
+}
+function rDashboard(){const s=loanSchedule(); const paid=0; return `<div class="pad step-anim">
+<div class="eyebrow">Post-approval</div><div class="h1">Your loan dashboard</div>
+<p class="sub">Track your outstanding balance, EMI and repayment schedule.</p>
+<div class="dashboard-hero compact"><div class="small">Amount outstanding</div><div class="out">${fmt(s.principal-paid)}</div><div class="small">Loan account \u2022\u20224432 \u00b7 ${state.tenure} months</div></div>
+<button class="btn-white" style="margin-bottom:14px" onclick="goName('home')">Go to home \u2192</button>
+<div class="dash-grid"><div class="dash-box"><div class="k">Monthly EMI</div><div class="v">${fmt(s.emi)}</div></div><div class="dash-box"><div class="k">Interest rate</div><div class="v">${state.finalRate||'12.5'}%</div></div><div class="dash-box"><div class="k">Total repayment</div><div class="v">${fmt(s.emi*state.tenure)}</div></div><div class="dash-box"><div class="k">Next due</div><div class="v">05 Sep</div></div></div>
+<div class="schedule-scroll"><div class="schedule"><div class="schedule-head"><span>EMI</span><span>Principal</span><span>Interest</span><span>Balance</span></div>${s.rows.map(r=>`<div class="schedule-row"><span>${r.m}</span><span>${fmt(r.principal)}</span><span>${fmt(r.interest)}</span><span>${fmt(r.balance)}</span></div>`).join('')}</div></div>
+<div class="quick-actions"><button class="btn btn-dark" onclick="goName('score')">${ico('chart')} Credit score</button><button class="btn btn-primary" onclick="goName('cardapply')">${ico('bank')} RuPay card</button></div>
+<button class="btn btn-ghost btn-sm" onclick="reset()">Start a new simulation</button>
+<div class="sim-banner" style="margin-top:12px">${ico('warn')}<span>Dashboard figures are simulated for this prototype and do not represent a real loan account.</span></div>
+</div>`;}
+
+function rScore(){const score=state.score||760; const pct=Math.max(0,Math.min(100,(score-300)/600*100)); const label=score>=750?'Excellent':score>=700?'Good':score>=650?'Fair':'Needs improvement'; return `<div class="pad step-anim">
+<div class="eyebrow">Independent tool</div><div class="h1">Credit score calculator</div>
+<p class="sub">Estimate a mock credit score separately from the loan application.</p>
+<div class="field"><div class="field-label">Payment history <span class="hint">0–100</span></div><input class="input" id="scorePay" type="number" min="0" max="100" value="90" oninput="calcScore()"></div>
+<div class="field"><div class="field-label">Credit utilisation % <span class="hint">lower is better</span></div><input class="input" id="scoreUtil" type="number" min="0" max="100" value="25" oninput="calcScore()"></div>
+<div class="field"><div class="field-label">Credit history years</div><input class="input" id="scoreHist" type="number" min="0" max="30" value="5" oninput="calcScore()"></div>
+<div class="field"><div class="field-label">Recent enquiries</div><input class="input" id="scoreEnq" type="number" min="0" max="20" value="1" oninput="calcScore()"></div>
+<div class="score-ring" id="scoreRing" style="--score:${pct}%"><div class="score" id="scoreValue">${score}</div></div>
+<div style="text-align:center;font-weight:700;margin-bottom:6px" id="scoreLabel">${label}</div>
+<div class="score-meter"><div class="score-marker" id="scoreMarker" style="left:${pct}%"></div></div>
+<div class="info-note">${ico('info')}<span>This is an independent educational calculator. It is not a real bureau score and has no effect on loan/card approval.</span></div>
+<button class="btn btn-dark" onclick="back()">Back</button>
+</div>`;}
+function calcScore(){const p=+document.getElementById('scorePay').value||0,u=+document.getElementById('scoreUtil').value||0,h=+document.getElementById('scoreHist').value||0,e=+document.getElementById('scoreEnq').value||0;const score=Math.round(Math.max(300,Math.min(900,300+p*3.2+(100-u)*1.8+h*5-e*8)));state.score=score;const pct=(score-300)/600*100;document.getElementById('scoreValue').textContent=score;document.getElementById('scoreRing').style.setProperty('--score',pct+'%');document.getElementById('scoreMarker').style.left=pct+'%';document.getElementById('scoreLabel').textContent=score>=750?'Excellent':score>=700?'Good':score>=650?'Fair':'Needs improvement';}
+
+function rCardApply(){return `<div class="pad step-anim">
+<div class="eyebrow">TezCredit RuPay</div><div class="h1">Apply for your TezCredit RuPay Card</div>
+<p class="sub">A simulated credit-card application with an instant decision.</p>
+<div class="card-visual"><div style="font-family:Sora;font-weight:800;font-size:20px">Tez<span style="color:#FF6B35">Credit</span></div><div class="card-chip"></div><div class="card-number">•••• •••• •••• 4821</div><div class="card-name">${(state.name||'YOUR NAME').toUpperCase()}</div><div class="rupay">RuPay</div></div>
+<div class="data-card"><div class="data-card-head"><span class="ic">${ico('shield')}</span><span class="t">Eligibility snapshot</span><span class="verified">✓ MOCK</span></div><div class="data-row"><span class="k">Credit score</span><span class="v">${state.score||760}</span></div><div class="data-row"><span class="k">Indicative limit</span><span class="v">₹1,00,000</span></div><div class="data-row"><span class="k">Annual fee</span><span class="v">₹499*</span></div></div>
+<div class="consent checked" onclick="this.classList.toggle('checked')"><div class="consent-box"></div><div class="consent-tx">I consent to the simulated card eligibility check and understand this is a prototype.</div></div>
+<button class="btn btn-primary" onclick="state.cardApproved=true;goName('cardapproved')">Apply & check eligibility ${ico('arrow')}</button>
+<button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="back()">Back</button>
+</div>`;}
+
+function rCardApproved(){return `<div class="pad step-anim">
+<div class="decision-hero approved"><div class="decision-icon">${ico('check')}</div><h2>RuPay Card approved!</h2><p>Your simulated TezCredit credit card is ready.</p></div>
+<div class="card-visual"><div style="font-family:Sora;font-weight:800;font-size:20px">Tez<span style="color:#FF6B35">Credit</span></div><div class="card-chip"></div><div class="card-number">5428  ••••  ••••  4821</div><div class="card-name">${(state.name||'YOUR NAME').toUpperCase()}</div><div class="rupay">RuPay</div></div>
+<div class="card-status"><span>✓ Approved</span><span>Limit ₹1,00,000</span></div>
+<div class="data-card"><div class="data-row"><span class="k">Card type</span><span class="v">TezCredit RuPay</span></div><div class="data-row"><span class="k">Available limit</span><span class="v">₹1,00,000</span></div><div class="data-row"><span class="k">Statement date</span><span class="v">25th monthly</span></div></div>
+<div class="sim-banner">${ico('warn')}<span><b>Mockup only.</b> Card details are fictional and no physical/digital card has been issued.</span></div>
+<button class="btn btn-dark" onclick="goName('home')">Back to home</button>
+</div>`;}
+
+function kycComplete(){return state.aadhaarVerified&&state.panVerified;}
+function requireKyc(dest){if(kycComplete()){goName(dest);}else{insureQuote('Verify your identity first');setTimeout(()=>goName('kycIntro'),700);}}
+function borrowHeadroom(){
+  const p=(typeof PROFILES!=='undefined'&&PROFILES.loggedIn)?PROFILES.loggedIn:{income:95000,obligations:12000,cibil:786};
+  const income=state.userIncome||p.income||95000;
+  const obl=p.obligations||12000;
+  const ceiling=0.5;
+  const emiRoom=Math.max(0,income*ceiling-obl);
+  const cibil=p.cibil||state.score||786;
+  const rate=riskRate(cibil);
+  const n=24,r=rate/12/100;
+  let maxP=emiRoom>0?Math.floor(emiRoom*(Math.pow(1+r,n)-1)/(r*Math.pow(1+r,n))/1000)*1000:0;
+  const CEIL=500000; const capped=maxP>CEIL; if(capped)maxP=CEIL;
+  return {income,obl,emiRoom,rate,maxP,capped,ceiling,committedPct:Math.min(100,obl/income*100),freePct:Math.max(0,(income*ceiling-obl)/income*100)};
+}
+const I18N={
+ en:{salute:"Hello",statusVerified:"Identity verified",statusVerifiedTail:"limit read from your file",statusFinish:"Finish KYC",statusFinishTail:"to reveal your real number",panelEyebrow:"Safe to borrow now",panelSub:"at ~{rate}% p.a. over 24 months, EMIs kept under half your income",panelSubCapped:"affordability is higher — capped at our ₹5,00,000 limit",legendPay:"You already pay",legendFree:"Free room",perMo:"/mo",ctaBorrow:"Borrow within this",fine:"Your exact limit is re-checked from your bank statements when you apply — this is your own money math, not a marketing number.",lockedSub:"We calculate this from your income and existing EMIs, once your identity is verified.",lockedCta:"Verify identity to reveal",lockedFine:"Two quick steps: Aadhaar, then PAN. Each is confirmed with an OTP.",sectionMore:"Everything else",cardName:"Credit card",cardDesc:"Revolve at 2.99%/mo, pay only for what you use",emiName:"EMI calculator",emiDesc:"Test a repayment before you commit",emiVal:"try it",scoreName:"Credit score",scoreDescPre:"Refreshed from your bureau file",insName:"Insurance",insDesc:"Health, life, motor, travel & home",insVal:"5 types",simBanner:"Prototype only. Figures come from a simulated profile and don't connect to real bank, bureau or government systems.",lblVeryGood:"very good",lblGood:"good",lblFair:"fair",lblBuilding:"building",setTitle:"Settings",setLanguage:"Language",setLangNote:"This translates the home and settings screens. Other screens stay in English in this prototype.",setPermissions:"Permissions",permCamera:"Camera",permCameraDesc:"Used only for the face-match step during KYC, comparing you to your Aadhaar photo. No video is stored.",permLocation:"Location",permLocationDesc:"Approximate location helps flag unusual sign-in or application activity. Never used for advertising.",permNotUsed:"Not used",permAllowed:"Allowed",permNote:"This prototype does not actually request or transmit these permissions.",setSimulation:"Simulation",resetBtn:"Reset simulation",resetNote:"Clears your details and verification and returns to the start screen."},
+ hi:{salute:"नमस्ते",statusVerified:"पहचान सत्यापित",statusVerifiedTail:"सीमा आपकी फ़ाइल से ली गई",statusFinish:"KYC पूरा करें",statusFinishTail:"अपनी असली सीमा देखने के लिए",panelEyebrow:"अभी सुरक्षित उधार सीमा",panelSub:"लगभग {rate}% प्रति वर्ष, 24 महीनों में — EMI आपकी आय की आधी से कम रखी जाती है",panelSubCapped:"आपकी क्षमता अधिक है — हमारी ₹5,00,000 सीमा तक दिखाई गई",legendPay:"आप पहले से चुका रहे हैं",legendFree:"उपलब्ध सीमा",perMo:"/माह",ctaBorrow:"इसी सीमा में उधार लें",fine:"आवेदन करते समय आपकी सटीक सीमा आपके बैंक स्टेटमेंट से दोबारा जाँची जाती है — यह आपका अपना हिसाब है, कोई विज्ञापन नहीं।",lockedSub:"पहचान सत्यापित होने के बाद हम इसे आपकी आय और मौजूदा EMI से निकालते हैं।",lockedCta:"देखने के लिए पहचान सत्यापित करें",lockedFine:"दो आसान चरण: पहले आधार, फिर पैन। हर एक OTP से पुष्ट होता है।",sectionMore:"और भी",cardName:"क्रेडिट कार्ड",cardDesc:"2.99%/माह पर रिवॉल्व करें, केवल उपयोग किए गए पर भुगतान करें",emiName:"EMI कैलकुलेटर",emiDesc:"उधार लेने से पहले किस्त जाँचें",emiVal:"आज़माएँ",scoreName:"क्रेडिट स्कोर",scoreDescPre:"आपकी ब्यूरो फ़ाइल से अपडेट",insName:"बीमा",insDesc:"स्वास्थ्य, जीवन, वाहन, यात्रा और घर",insVal:"5 प्रकार",simBanner:"केवल प्रोटोटाइप। आँकड़े एक नकली प्रोफ़ाइल से हैं और किसी असली बैंक, ब्यूरो या सरकारी सिस्टम से नहीं जुड़ते।",lblVeryGood:"बहुत अच्छा",lblGood:"अच्छा",lblFair:"ठीक",lblBuilding:"बन रहा",setTitle:"सेटिंग्स",setLanguage:"भाषा",setLangNote:"यह होम और सेटिंग्स स्क्रीन का अनुवाद करता है। इस प्रोटोटाइप में अन्य स्क्रीन अंग्रेज़ी में रहती हैं।",setPermissions:"अनुमतियाँ",permCamera:"कैमरा",permCameraDesc:"केवल KYC के दौरान चेहरा-मिलान के लिए, आपके आधार फ़ोटो से तुलना। कोई वीडियो सहेजा नहीं जाता।",permLocation:"स्थान",permLocationDesc:"अनुमानित स्थान असामान्य लॉगिन या आवेदन गतिविधि पहचानने में मदद करता है। विज्ञापन के लिए कभी उपयोग नहीं।",permNotUsed:"उपयोग नहीं",permAllowed:"अनुमति दी",permNote:"यह प्रोटोटाइप वास्तव में ये अनुमतियाँ नहीं माँगता या भेजता।",setSimulation:"सिमुलेशन",resetBtn:"सिमुलेशन रीसेट करें",resetNote:"आपके विवरण और सत्यापन हटाकर शुरुआती स्क्रीन पर लौटाता है।"},
+ ta:{salute:"வணக்கம்",statusVerified:"அடையாளம் சரிபார்க்கப்பட்டது",statusVerifiedTail:"வரம்பு உங்கள் கோப்பிலிருந்து எடுக்கப்பட்டது",statusFinish:"KYC முடிக்கவும்",statusFinishTail:"உண்மையான வரம்பைக் காண",panelEyebrow:"இப்போது பாதுகாப்பாக கடன் வாங்கக்கூடிய தொகை",panelSub:"ஆண்டுக்கு சுமார் {rate}%, 24 மாதங்களில் — EMI உங்கள் வருமானத்தில் பாதிக்கு கீழே வைக்கப்படும்",panelSubCapped:"உங்கள் திறன் அதிகம் — எங்கள் ₹5,00,000 வரம்பில் காட்டப்பட்டது",legendPay:"நீங்கள் ஏற்கனவே செலுத்துகிறீர்கள்",legendFree:"மீதமுள்ள வரம்பு",perMo:"/மாதம்",ctaBorrow:"இந்த வரம்பில் கடன் வாங்கவும்",fine:"நீங்கள் விண்ணப்பிக்கும் போது உங்கள் சரியான வரம்பு வங்கி அறிக்கைகளிலிருந்து மீண்டும் சரிபார்க்கப்படும் — இது உங்கள் சொந்த கணக்கு, விளம்பரம் அல்ல.",lockedSub:"அடையாளம் சரிபார்க்கப்பட்ட பிறகு உங்கள் வருமானம் மற்றும் தற்போதைய EMI-ல் இருந்து இதைக் கணக்கிடுகிறோம்.",lockedCta:"காண அடையாளத்தை சரிபார்க்கவும்",lockedFine:"இரண்டு எளிய படிகள்: முதலில் ஆதார், பின்பு பான். ஒவ்வொன்றும் OTP மூலம் உறுதி செய்யப்படும்.",sectionMore:"மற்றவை",cardName:"கிரெடிட் கார்டு",cardDesc:"2.99%/மாதம் ரிவால்வ் செய்யவும், பயன்படுத்தியதற்கு மட்டும் செலுத்தவும்",emiName:"EMI கால்குலேட்டர்",emiDesc:"கடன் வாங்கும் முன் தவணையைச் சோதிக்கவும்",emiVal:"முயற்சிக்கவும்",scoreName:"கிரெடிட் ஸ்கோர்",scoreDescPre:"உங்கள் பீரோ கோப்பிலிருந்து புதுப்பிக்கப்பட்டது",insName:"காப்பீடு",insDesc:"சுகாதாரம், வாழ்க்கை, வாகனம், பயணம் & வீடு",insVal:"5 வகைகள்",simBanner:"முன்மாதிரி மட்டுமே. புள்ளிவிவரங்கள் போலி சுயவிவரத்திலிருந்து; உண்மையான வங்கி, பீரோ அல்லது அரசு அமைப்புகளுடன் இணைக்கப்படவில்லை.",lblVeryGood:"மிகச் சிறந்தது",lblGood:"நல்லது",lblFair:"சராசரி",lblBuilding:"உருவாகிறது",setTitle:"அமைப்புகள்",setLanguage:"மொழி",setLangNote:"இது முகப்பு மற்றும் அமைப்புகள் திரைகளை மொழிபெயர்க்கிறது. இந்த முன்மாதிரியில் மற்ற திரைகள் ஆங்கிலத்தில் இருக்கும்.",setPermissions:"அனுமதிகள்",permCamera:"கேமரா",permCameraDesc:"KYC-ல் முக பொருத்தத்திற்கு மட்டும் பயன்படுகிறது, உங்கள் ஆதார் புகைப்படத்துடன் ஒப்பிடுகிறது. வீடியோ சேமிக்கப்படவில்லை.",permLocation:"இருப்பிடம்",permLocationDesc:"தோராயமான இருப்பிடம் அசாதாரண உள்நுழைவு அல்லது விண்ணப்ப செயல்பாட்டைக் கண்டறிய உதவுகிறது. விளம்பரத்திற்கு பயன்படுத்தப்படாது.",permNotUsed:"பயன்படுத்தப்படவில்லை",permAllowed:"அனுமதிக்கப்பட்டது",permNote:"இந்த முன்மாதிரி உண்மையில் இந்த அனுமதிகளைக் கோரவோ அனுப்பவோ இல்லை.",setSimulation:"சிமுலேஷன்",resetBtn:"சிமுலேஷனை மீட்டமைக்கவும்",resetNote:"உங்கள் விவரங்கள் மற்றும் சரிபார்ப்பை அழித்து தொடக்கத் திரைக்குத் திரும்பும்."},
+ te:{salute:"నమస్కారం",statusVerified:"గుర్తింపు ధృవీకరించబడింది",statusVerifiedTail:"పరిమితి మీ ఫైల్ నుండి తీసుకోబడింది",statusFinish:"KYC పూర్తి చేయండి",statusFinishTail:"మీ నిజమైన పరిమితిని చూడటానికి",panelEyebrow:"ఇప్పుడు సురక్షితంగా అప్పు తీసుకోగల మొత్తం",panelSub:"సంవత్సరానికి సుమారు {rate}%, 24 నెలలలో — EMI మీ ఆదాయంలో సగం కంటే తక్కువగా ఉంచబడుతుంది",panelSubCapped:"మీ సామర్థ్యం ఎక్కువ — మా ₹5,00,000 పరిమితి వరకు చూపబడింది",legendPay:"మీరు ఇప్పటికే చెల్లిస్తున్నారు",legendFree:"అందుబాటులో ఉన్న పరిమితి",perMo:"/నెల",ctaBorrow:"ఈ పరిమితిలో అప్పు తీసుకోండి",fine:"మీరు దరఖాస్తు చేసినప్పుడు మీ ఖచ్చితమైన పరిమితి మీ బ్యాంక్ స్టేట్‌మెంట్‌ల నుండి మళ్లీ తనిఖీ చేయబడుతుంది — ఇది మీ స్వంత లెక్క, ప్రకటన కాదు.",lockedSub:"గుర్తింపు ధృవీకరించిన తర్వాత మీ ఆదాయం మరియు ప్రస్తుత EMI ల నుండి దీన్ని లెక్కిస్తాం.",lockedCta:"చూడటానికి గుర్తింపును ధృవీకరించండి",lockedFine:"రెండు సులభమైన దశలు: ముందు ఆధార్, తర్వాత పాన్. ప్రతి ఒక్కటి OTP తో నిర్ధారించబడుతుంది.",sectionMore:"మరిన్ని",cardName:"క్రెడిట్ కార్డ్",cardDesc:"2.99%/నెల రివాల్వ్ చేయండి, వాడినదానికి మాత్రమే చెల్లించండి",emiName:"EMI కాలిక్యులేటర్",emiDesc:"అప్పు తీసుకునే ముందు వాయిదాను పరీక్షించండి",emiVal:"ప్రయత్నించండి",scoreName:"క్రెడిట్ స్కోర్",scoreDescPre:"మీ బ్యూరో ఫైల్ నుండి నవీకరించబడింది",insName:"బీమా",insDesc:"ఆరోగ్యం, జీవితం, వాహనం, ప్రయాణం & ఇల్లు",insVal:"5 రకాలు",simBanner:"ప్రోటోటైప్ మాత్రమే. గణాంకాలు నకిలీ ప్రొఫైల్ నుండి; నిజమైన బ్యాంక్, బ్యూరో లేదా ప్రభుత్వ వ్యవస్థలతో అనుసంధానం కాదు.",lblVeryGood:"చాలా బాగుంది",lblGood:"బాగుంది",lblFair:"ఫర్వాలేదు",lblBuilding:"నిర్మాణంలో",setTitle:"సెట్టింగ్‌లు",setLanguage:"భాష",setLangNote:"ఇది హోమ్ మరియు సెట్టింగ్‌ల స్క్రీన్‌లను అనువదిస్తుంది. ఈ ప్రోటోటైప్‌లో ఇతర స్క్రీన్‌లు ఆంగ్లంలో ఉంటాయి.",setPermissions:"అనుమతులు",permCamera:"కెమెరా",permCameraDesc:"KYC సమయంలో ముఖ-సరిపోలిక కోసం మాత్రమే, మీ ఆధార్ ఫోటోతో పోల్చడానికి. వీడియో నిల్వ చేయబడదు.",permLocation:"స్థానం",permLocationDesc:"సుమారు స్థానం అసాధారణ లాగిన్ లేదా దరఖాస్తు కార్యకలాపాన్ని గుర్తించడంలో సహాయపడుతుంది. ప్రకటనల కోసం ఎప్పుడూ ఉపయోగించబడదు.",permNotUsed:"ఉపయోగించలేదు",permAllowed:"అనుమతించబడింది",permNote:"ఈ ప్రోటోటైప్ నిజంగా ఈ అనుమతులను అడగదు లేదా పంపదు.",setSimulation:"సిమ్యులేషన్",resetBtn:"సిమ్యులేషన్ రీసెట్ చేయండి",resetNote:"మీ వివరాలు మరియు ధృవీకరణను తొలగించి ప్రారంభ స్క్రీన్‌కు తిరిగి వెళుతుంది."},
+ ml:{salute:"നമസ്കാരം",statusVerified:"ഐഡന്റിറ്റി പരിശോധിച്ചു",statusVerifiedTail:"പരിധി നിങ്ങളുടെ ഫയലിൽ നിന്ന് എടുത്തത്",statusFinish:"KYC പൂർത്തിയാക്കുക",statusFinishTail:"നിങ്ങളുടെ യഥാർത്ഥ പരിധി കാണാൻ",panelEyebrow:"ഇപ്പോൾ സുരക്ഷിതമായി വായ്പയെടുക്കാവുന്ന തുക",panelSub:"വർഷത്തിൽ ഏകദേശം {rate}%, 24 മാസത്തിൽ — EMI നിങ്ങളുടെ വരുമാനത്തിന്റെ പകുതിയിൽ താഴെ നിർത്തുന്നു",panelSubCapped:"നിങ്ങളുടെ ശേഷി കൂടുതലാണ് — ഞങ്ങളുടെ ₹5,00,000 പരിധിവരെ കാണിച്ചിരിക്കുന്നു",legendPay:"നിങ്ങൾ ഇപ്പോൾ തന്നെ അടയ്ക്കുന്നു",legendFree:"ലഭ്യമായ പരിധി",perMo:"/മാസം",ctaBorrow:"ഈ പരിധിയിൽ വായ്പയെടുക്കുക",fine:"നിങ്ങൾ അപേക്ഷിക്കുമ്പോൾ നിങ്ങളുടെ കൃത്യമായ പരിധി ബാങ്ക് സ്റ്റേറ്റ്‌മെന്റുകളിൽ നിന്ന് വീണ്ടും പരിശോധിക്കും — ഇത് നിങ്ങളുടെ സ്വന്തം കണക്കാണ്, പരസ്യമല്ല.",lockedSub:"ഐഡന്റിറ്റി പരിശോധിച്ചശേഷം നിങ്ങളുടെ വരുമാനത്തിൽ നിന്നും നിലവിലെ EMI-യിൽ നിന്നും ഞങ്ങൾ ഇത് കണക്കാക്കുന്നു.",lockedCta:"കാണാൻ ഐഡന്റിറ്റി പരിശോധിക്കുക",lockedFine:"രണ്ട് എളുപ്പ ഘട്ടങ്ങൾ: ആദ്യം ആധാർ, പിന്നെ പാൻ. ഓരോന്നും OTP വഴി സ്ഥിരീകരിക്കുന്നു.",sectionMore:"കൂടുതൽ",cardName:"ക്രെഡിറ്റ് കാർഡ്",cardDesc:"2.99%/മാസം റിവോൾവ് ചെയ്യുക, ഉപയോഗിച്ചതിന് മാത്രം അടയ്ക്കുക",emiName:"EMI കാൽക്കുലേറ്റർ",emiDesc:"വായ്പയെടുക്കുന്നതിന് മുമ്പ് തിരിച്ചടവ് പരിശോധിക്കുക",emiVal:"പരീക്ഷിക്കുക",scoreName:"ക്രെഡിറ്റ് സ്കോർ",scoreDescPre:"നിങ്ങളുടെ ബ്യൂറോ ഫയലിൽ നിന്ന് പുതുക്കി",insName:"ഇൻഷുറൻസ്",insDesc:"ആരോഗ്യം, ജീവിതം, വാഹനം, യാത്ര & വീട്",insVal:"5 തരം",simBanner:"പ്രോട്ടോടൈപ്പ് മാത്രം. കണക്കുകൾ ഒരു കൃത്രിമ പ്രൊഫൈലിൽ നിന്നാണ്; യഥാർത്ഥ ബാങ്ക്, ബ്യൂറോ അല്ലെങ്കിൽ സർക്കാർ സംവിധാനങ്ങളുമായി ബന്ധിപ്പിച്ചിട്ടില്ല.",lblVeryGood:"വളരെ നല്ലത്",lblGood:"നല്ലത്",lblFair:"സാധാരണം",lblBuilding:"വളരുന്നു",setTitle:"ക്രമീകരണങ്ങൾ",setLanguage:"ഭാഷ",setLangNote:"ഇത് ഹോം, ക്രമീകരണ സ്ക്രീനുകൾ വിവർത്തനം ചെയ്യുന്നു. ഈ പ്രോട്ടോടൈപ്പിൽ മറ്റ് സ്ക്രീനുകൾ ഇംഗ്ലീഷിൽ തുടരും.",setPermissions:"അനുമതികൾ",permCamera:"ക്യാമറ",permCameraDesc:"KYC-യിൽ മുഖം-പൊരുത്തത്തിന് മാത്രം, നിങ്ങളുടെ ആധാർ ഫോട്ടോയുമായി താരതമ്യം. വീഡിയോ സംഭരിക്കില്ല.",permLocation:"സ്ഥാനം",permLocationDesc:"ഏകദേശ സ്ഥാനം അസാധാരണമായ ലോഗിൻ അല്ലെങ്കിൽ അപേക്ഷാ പ്രവർത്തനം കണ്ടെത്താൻ സഹായിക്കുന്നു. പരസ്യത്തിന് ഒരിക്കലും ഉപയോഗിക്കില്ല.",permNotUsed:"ഉപയോഗിച്ചിട്ടില്ല",permAllowed:"അനുവദിച്ചു",permNote:"ഈ പ്രോട്ടോടൈപ്പ് യഥാർത്ഥത്തിൽ ഈ അനുമതികൾ ആവശ്യപ്പെടുകയോ അയയ്ക്കുകയോ ഇല്ല.",setSimulation:"സിമുലേഷൻ",resetBtn:"സിമുലേഷൻ റീസെറ്റ് ചെയ്യുക",resetNote:"നിങ്ങളുടെ വിവരങ്ങളും പരിശോധനയും മായ്ച്ച് ആരംഭ സ്ക്രീനിലേക്ക് മടങ്ങുന്നു."}
+};
+function t(k){const L=I18N[state.lang]||I18N.en;return (L[k]!==undefined?L[k]:(I18N.en[k]!==undefined?I18N.en[k]:k));}
+function rHome(){
+  const done=kycComplete();
+  const first=(state.name||'there').split(' ')[0];
+  const score=state.score||786;
+  const lblKey=score>=750?'lblVeryGood':score>=700?'lblGood':score>=650?'lblFair':'lblBuilding';
+  const scoreLabel=t(lblKey);
+  const h=borrowHeadroom();
+  const status=done
+    ?`<span class="v">${ico('check')} ${t('statusVerified')}</span><span class="sep">\u2502</span><span>${t('statusVerifiedTail')}</span>`
+    :`<span class="v warn" onclick="goName('kycIntro')">${ico('warn')} ${t('statusFinish')}</span><span class="sep">\u2502</span><span>${t('statusFinishTail')}</span>`;
+  const panel=done?`
+  <div class="hx-panel">
+    <div class="hx-panel-eyebrow">${t('panelEyebrow')}</div>
+    <div class="hx-amt">${fmt(h.maxP)}</div>
+    <div class="hx-amt-sub">${h.capped?t('panelSubCapped'):t('panelSub').replace('{rate}',h.rate)}</div>
+    <div class="hx-meter-wrap">
+      <div class="hx-meter"><div class="hx-seg committed" id="segC" style="width:0"></div><div class="hx-seg free" id="segF" style="width:0"></div></div>
+      <div class="hx-cap" style="left:${h.ceiling*100}%"></div>
+    </div>
+    <div class="hx-legend">
+      <div class="li"><span class="dot" style="background:#d98a55"></span>${t('legendPay')} <span class="num">${fmt(h.obl)}${t('perMo')}</span></div>
+      <div class="li"><span class="dot" style="background:#4fb08c"></span>${t('legendFree')} <span class="num">${fmt(h.emiRoom)}${t('perMo')}</span></div>
+    </div>
+    <button class="hx-cta" onclick="requireKyc('lineofcredit')">${t('ctaBorrow')} <span class="ar">\u2192</span></button>
+    <div class="hx-fine">${t('fine')}</div>
+  </div>`:`
+  <div class="hx-panel">
+    <div class="hx-panel-eyebrow">${t('panelEyebrow')}</div>
+    <div class="hx-amt locked">\u20b9\u2013\u2013\u2013,\u2013\u2013\u2013</div>
+    <div class="hx-amt-sub">${t('lockedSub')}</div>
+    <button class="hx-cta" onclick="goName('kycIntro')">${t('lockedCta')} <span class="ar">\u2192</span></button>
+    <div class="hx-fine">${t('lockedFine')}</div>
+  </div>`;
+  const tag=done?'':'<span class="tag">KYC</span>';
+  if(done)setTimeout(animHeadroom,40);
+  return `<div class="pad step-anim">
+<div class="hx-top">
+  <div><div class="hx-eyebrow">TezCredit</div><div class="hx-greet">${t('salute')},<br>${first}.</div></div>
+  <button class="hx-set" onclick="openSettings()" aria-label="Settings">${ico('gear')}</button>
+</div>
+<div class="hx-status">${status}</div>
+${panel}
+<div class="hx-do">${t('sectionMore')}</div>
+<div class="hx-list">
+  <button class="hx-row" onclick="requireKyc('cardapply')"><span class="rc" style="background:var(--indigo)"></span><div class="rtx"><div class="rn">${t('cardName')} ${tag}</div><div class="rd">${t('cardDesc')}</div></div><span class="rv">\u20b92,00,000</span><span class="chev">\u203a</span></button>
+  <button class="hx-row" onclick="goName('emicalc')"><span class="rc" style="background:var(--teal)"></span><div class="rtx"><div class="rn">${t('emiName')}</div><div class="rd">${t('emiDesc')}</div></div><span class="rv">${t('emiVal')}</span><span class="chev">\u203a</span></button>
+  <button class="hx-row" onclick="goName('score')"><span class="rc" style="background:var(--green)"></span><div class="rtx"><div class="rn">${t('scoreName')}</div><div class="rd">${t('scoreDescPre')} \u00b7 ${scoreLabel}</div></div><span class="rv">${score}</span><span class="chev">\u203a</span></button>
+  <button class="hx-row" onclick="goName('insurance')"><span class="rc" style="background:var(--amber)"></span><div class="rtx"><div class="rn">${t('insName')}</div><div class="rd">${t('insDesc')}</div></div><span class="rv">${t('insVal')}</span><span class="chev">\u203a</span></button>
+</div>
+<div class="sim-banner">${ico('warn')}<span>${t('simBanner')}</span></div></div>`;}
+function animHeadroom(){const h=borrowHeadroom();const c=document.getElementById('segC'),f=document.getElementById('segF');if(c)c.style.width=h.committedPct+'%';if(f)f.style.width=h.freePct+'%';}
+
+// ── Settings sheet ──
+const LANGS=[['en','English','English'],['hi','हिंदी','Hindi'],['ta','தமிழ்','Tamil'],['te','తెలుగు','Telugu'],['ml','മലയാളം','Malayalam']];
+function settingsHTML(){
+  const cam=state.permissions&&state.permissions.camera;
+  const loc=state.permissions&&state.permissions.location;
+  const langOpts=LANGS.map(l=>`<button class="lang-opt ${state.lang===l[0]?'active':''}" onclick="setLang('${l[0]}')"><span class="lang-native">${l[1]}</span><span class="lang-en">${l[2]}</span></button>`).join('');
+  return `
+  <div class="sheet-grab"></div>
+  <div class="sheet-head"><div class="sheet-title">${t('setTitle')}</div><button class="sheet-x" onclick="closeSettings()">✕</button></div>
+  <div class="set-sec">
+    <div class="set-sec-h">${ico('globe')} ${t('setLanguage')}</div>
+    <div class="lang-grid">${langOpts}</div>
+    <div class="lang-note">${ico('info')}<span>${t('setLangNote')}</span></div>
+  </div>
+  <div class="set-sec">
+    <div class="set-sec-h">${ico('lock')} ${t('setPermissions')}</div>
+    <div class="perm-row"><div class="pic">${ico('camera')}</div><div class="ptx"><div class="pn">${t('permCamera')} <span class="pstate ${cam?'ok':''}">${cam?t('permAllowed'):t('permNotUsed')}</span></div><div class="pd">${t('permCameraDesc')}</div></div></div>
+    <div class="perm-row"><div class="pic">${ico('pin')}</div><div class="ptx"><div class="pn">${t('permLocation')} <span class="pstate ${loc?'ok':''}">${loc?t('permAllowed'):t('permNotUsed')}</span></div><div class="pd">${t('permLocationDesc')}</div></div></div>
+    <div class="lang-note">${ico('shield')}<span>${t('permNote')}</span></div>
+  </div>
+  <div class="set-sec">
+    <div class="set-sec-h">${ico('refresh')} ${t('setSimulation')}</div>
+    <button class="set-reset" onclick="resetSim()">${ico('refresh')} ${t('resetBtn')}</button>
+    <div class="lang-note">${ico('info')}<span>${t('resetNote')}</span></div>
+  </div>
+  <div class="set-foot">TezCredit · academic prototype · v1.0<br>No real money, identity or credit systems are involved.</div>`;
+}
+function openSettings(){const s=document.getElementById('setSheet'),b=document.getElementById('setBackdrop');s.innerHTML=settingsHTML();b.classList.add('open');requestAnimationFrame(()=>s.classList.add('open'));}
+function closeSettings(){const s=document.getElementById('setSheet'),b=document.getElementById('setBackdrop');s.classList.remove('open');b.classList.remove('open');}
+function setLang(l){state.lang=l;const s=document.getElementById('setSheet');if(s)s.innerHTML=settingsHTML();if(STEPS[step]==='home')render();}
+function resetSim(){closeSettings();setTimeout(reset,120);}
+function rLineOfCredit(){const amounts=[50000,100000,150000,250000];const tenures=[6,12,18,24];return `<div class="pad step-anim"><div class="eyebrow">Line of credit</div><div class="h1">Choose your credit limit</div><p class="sub">Set a simulated limit and repayment period, then continue to the credit application.</p><div class="line-card"><div style="font-size:12px;font-weight:700;color:var(--muted)">Credit limit</div><div class="amt-display"><div class="amt-value"><span class="r">₹</span>${state.amount.toLocaleString('en-IN')}</div><div class="amt-label">Requested line of credit</div></div><div class="lc-row">${amounts.map(a=>`<button class="line-chip ${state.amount===a?'active':''}" onclick="state.amount=${a};render()">₹${(a/1000)}K</button>`).join('')}</div><div style="font-size:12px;font-weight:700;color:var(--muted);margin-top:8px">Repayment period</div><div class="lc-row">${tenures.map(t=>`<button class="line-chip ${state.tenure===t?'active':''}" onclick="state.tenure=${t};render()">${t} mo</button>`).join('')}</div></div><div class="info-note">${ico('info')}<span>This prototype uses fictional borrower profiles for the underwriting demo. No real credit decision is made.</span></div><button class="btn btn-primary" onclick="goName('lenders')">Compare lenders ${ico('arrow')}</button><button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="goName('home')">Back to home</button></div>`}
+
+function rLenders(){
+  const amt=state.amount;
+  const list=lendersFor(amt);
+  const tier=tierOf(amt);
+  const tierLabel=tier==='micro'?'Small-ticket':tier==='mid'?'Mid-ticket':'Large-ticket';
+  if(!list.length){return `<div class="pad step-anim"><div class="eyebrow">Lender marketplace</div><div class="h1">No matching lenders yet</div><p class="sub">Try a different loan amount to see available NBFC options.</p><button class="btn btn-primary" onclick="goName('lineofcredit')">Change amount ${ico('arrow')}</button></div>`;}
+  const cards=list.map(l=>{
+    const selected=state.lender===l.id;
+    const base=riskRate((PROFILES[state.profile]||PROFILES.prime).cibil);
+    const rate=Math.max(10.5,Math.round((base+l.rateAdj)*10)/10);
+    const emi=state.profile?emiCalc(amt,rate,state.tenure):null;
+    const fee=Math.round(amt*l.fee/100);
+    return `<button class="lender-card ${selected?'active':''}" onclick="state.lender='${l.id}';render()" style="width:100%;text-align:left">
+      <div class="lender-top"><div class="lender-ic" style="background:${l.color}1a;color:${l.color}">${ico(l.icon)}</div><div class="lender-id"><div class="lender-nm">${l.name}</div><div class="lender-ty">${l.type}</div></div><span class="lender-badge" style="background:${l.color}18;color:${l.color}">${l.badge}</span></div>
+      <div class="lender-stats"><div class="ls"><div class="ls-v">${rate}%</div><div class="ls-k">Indicative APR</div></div><div class="ls"><div class="ls-v">${state.tenure} mo</div><div class="ls-k">Tenure</div></div><div class="ls"><div class="ls-v">${emi?fmt(emi):'—'}</div><div class="ls-k">Est. EMI</div></div><div class="ls"><div class="ls-v">${fmt(fee)}</div><div class="ls-k">Est. fee</div></div></div>
+      <div class="lender-blurb">${l.blurb}</div><div class="lender-radio" style="display:block;border-color:${selected?'var(--saffron)':'var(--line)'};background:${selected?'var(--saffron)':'#fff'}">${selected?'<span style="display:block;width:8px;height:8px;background:#fff;border-radius:50%;margin:4px"></span>':''}</div>
+    </button>`;
+  }).join('');
+  return `<div class="pad step-anim"><div class="eyebrow">Step 2 — Choose lender</div><div class="h1">Compare NBFCs for your loan</div><p class="sub">You selected <b>${fmt(amt)}</b> for <b>${state.tenure} months</b>. Compare the available lenders and choose one to continue.</p><div class="tier-note"><span class="tier-chip tier-${tier}">${tierLabel}</span><span>${list.length} lender options match this loan size.</span></div><div style="margin-top:14px">${cards}</div><div class="sim-banner">${ico('warn')}<span><b>Prototype only.</b> Lender names are real institutions, but rates, fees, approval times and offers shown here are illustrative and are not live offers or approvals.</span></div><button class="btn btn-primary" onclick="goName('profile')" ${state.lender?'':'disabled'}>${state.lender?'Continue with selected lender':'Select a lender to continue'} ${ico('arrow')}</button><button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="goName('lineofcredit')">Change amount / tenure</button></div>`;
+}
+
+function rWelcome(){return `<div class="pad step-anim"><div class="eyebrow">Application profile</div><div class="h1">Almost there, ${state.name.split(' ')[0]||'there'}!</div><p class="sub">Your identity has been verified. Tell us where you live and your monthly take-home income so we can assess affordability.</p><div class="verified-summary"><div><b>${state.name.toUpperCase()}</b><span>Mobile ••••••${state.mobile.slice(-4)}</span></div><div class="verified">✓ ID VERIFIED</div></div><div class="field"><div class="field-label">City</div><input class="input text-input" id="wCity" placeholder="e.g. Bengaluru" value="${state.city||''}" oninput="state.city=this.value.trim();checkWelcome()"></div><div class="field"><div class="field-label">Monthly take-home income</div><input class="input" id="wInc" inputmode="numeric" placeholder="₹ 50,000" value="${state.userIncome?('₹ '+state.userIncome.toLocaleString('en-IN')):''}" oninput="onIncome(this);checkWelcome()"></div><div class="info-note">${ico('info')}<span>These details are used only for this simulated affordability check. Enter any fictional values for the demo.</span></div><button class="btn btn-primary" id="welcomeBtn" onclick="continueWelcome()" disabled>Continue to loan amount ${ico('arrow')}</button></div>`}
+function onIncome(el){let v=(el.value||'').replace(/[^\d]/g,'');state.userIncome=v?+v:null;el.value=v?'₹ '+(+v).toLocaleString('en-IN'):'';}
+function checkWelcome(){const city=(document.getElementById('wCity')?.value||'').trim();const inc=state.userIncome;const b=document.getElementById('welcomeBtn');if(b)b.disabled=!(city && inc && inc>=1000);}
+function continueWelcome(){const city=(document.getElementById('wCity')?.value||'').trim();const raw=(document.getElementById('wInc')?.value||'').replace(/[^\d]/g,'');const inc=Number(raw);if(!city){alert('Please enter your city for the demo.');return;}if(!Number.isFinite(inc)||inc<1000){alert('Please enter a valid monthly take-home income.');return;}state.city=city;state.userIncome=inc;goName('amount');}
+function resendOtp(){state.otpTries=0;const err=document.getElementById('otpError');err.innerHTML=`${ico('check')} <span style="color:var(--green)">New OTP sent (still 123456 in demo).</span>`;document.querySelectorAll('.otp-box').forEach(b=>{b.classList.remove('err');});}
+
+function rDigilocker(){return `<div class="pad step-anim">
+<div class="eyebrow">Step 4 — Documents</div>
+<div class="h1">Fetching from DigiLocker</div>
+<p class="sub">With your consent, we're pulling verified documents straight from your DigiLocker — no scans, no uploads.</p>
+<div class="spacer"></div><div class="spacer"></div>
+<div id="fetchList">
+<div class="fetch-item" data-f="0"><div class="fetch-ic">${ico('id')}</div><div class="fetch-tx"><div class="t">PAN Card</div><div class="d">Income Tax Department</div></div><div class="fetch-status"><div class="spinner"></div></div></div>
+<div class="fetch-item" data-f="1"><div class="fetch-ic">${ico('doc')}</div><div class="fetch-tx"><div class="t">Aadhaar e-KYC</div><div class="d">UIDAI — demographic details</div></div><div class="fetch-status"><div class="spinner"></div></div></div>
+<div class="fetch-item" data-f="2"><div class="fetch-ic">${ico('bank')}</div><div class="fetch-tx"><div class="t">Bank statement (6 mo)</div><div class="d">Account Aggregator</div></div><div class="fetch-status"><div class="spinner"></div></div></div>
+<div class="fetch-item" data-f="3"><div class="fetch-ic">${ico('doc')}</div><div class="fetch-tx"><div class="t">Form 26AS / income proof</div><div class="d">Income Tax Department</div></div><div class="fetch-status"><div class="spinner"></div></div></div>
+</div>
+<div class="info-note" style="margin-top:6px">${ico('doc')}<span>DigiLocker documents are government-issued and pre-verified, so there's nothing to attest.</span></div>
+<button class="btn btn-primary" id="dlBtn" onclick="goName('review')" disabled>Please wait…</button>
+</div>`;}
+function runDigilocker(){let i=0;const items=document.querySelectorAll('.fetch-item');const iv=setInterval(()=>{if(i<items.length){const it=items[i];it.classList.add('done');it.querySelector('.fetch-status').innerHTML='<div class="check">'+IC.check+'</div>';i++;}else{clearInterval(iv);const b=document.getElementById('dlBtn');b.disabled=false;b.innerHTML='Review your details '+IC.arrow;}},650);}
+
+function rReview(){const p=PROFILES[state.profile];const inc=state.userIncome||p.income;const dispName=state.name.trim()||p.name;return `<div class="pad step-anim">
+<div class="eyebrow">Step 5 — Confirm</div>
+<div class="h1">Review your details</div>
+<p class="sub">Fetched and verified from India Stack. Confirm everything looks right.</p>
+<div class="spacer"></div><div class="spacer"></div>
+<div class="data-card"><div class="data-card-head"><span class="ic">${ico('id')}</span><span class="t">Identity</span><span class="verified">${ico('check')} Aadhaar verified</span></div>
+<div class="data-row"><span class="k">Full name</span><span class="v">${p.name}</span></div>
+<div class="data-row"><span class="k">Date of birth</span><span class="v">${p.dob}</span></div>
+<div class="data-row"><span class="k">Aadhaar</span><span class="v mono">${p.aadhaar}</span></div>
+<div class="data-row"><span class="k">PAN</span><span class="v mono">${p.pan}</span></div></div>
+<div class="data-card"><div class="data-card-head"><span class="ic">${ico('briefcase')}</span><span class="t">Employment & income</span><span class="verified">${ico('check')} AA verified</span></div>
+<div class="data-row"><span class="k">Employer / source</span><span class="v">${p.emp}</span></div>
+<div class="data-row"><span class="k">Monthly income</span><span class="v">${fmt(inc)}${state.userIncome?' <span style=\"font-size:9px;color:var(--muted)\">(you)</span>':''}</span></div>
+<div class="data-row"><span class="k">Existing EMIs</span><span class="v">${fmt(p.obligations)}/mo</span></div></div>
+<div class="data-card"><div class="data-card-head"><span class="ic">${ico('target')}</span><span class="t">Loan request</span></div>
+<div class="data-row"><span class="k">Amount requested</span><span class="v">${fmt(state.amount)}</span></div>
+<div class="data-row"><span class="k">In words</span><span class="v" style="font-size:11px;max-width:160px">${rupeesInWords(state.amount)}</span></div>
+<div class="data-row"><span class="k">Tenure</span><span class="v">${state.tenure} months</span></div></div>
+<button class="btn btn-primary" onclick="goName('assessment')">Run my credit check ${ico('arrow')}</button>
+</div>`;}
+
+function rAssessment(){return `<div class="pad step-anim">
+<div class="eyebrow">Step 6 — Underwriting</div>
+<div class="h1" id="assessTitle">Assessing your application…</div>
+<p class="sub" id="assessSub">Our engine is scoring your creditworthiness across multiple signals.</p>
+<div class="spacer"></div>
+<div class="gauge-wrap" id="gaugeWrap" style="opacity:0;transition:opacity .5s">
+<svg width="180" height="110" viewBox="0 0 180 110"><path d="M15 100 A 75 75 0 0 1 165 100" fill="none" stroke="var(--line)" stroke-width="12" stroke-linecap="round"/><path id="gaugeArc" d="M15 100 A 75 75 0 0 1 165 100" fill="none" stroke="var(--green)" stroke-width="12" stroke-linecap="round" stroke-dasharray="236" stroke-dashoffset="236" style="transition:stroke-dashoffset 1.2s ease"/></svg>
+<div class="gauge-score" id="gaugeScore">—</div><div class="gauge-label">CIBIL Score</div>
+</div>
+<div class="assess-list" id="assessList"></div>
+<button class="btn btn-primary" id="assessBtn" onclick="goName('decision')" disabled style="opacity:.5">Analysing…</button>
+</div>`;}
+function runAssessment(){const p=PROFILES[state.profile];const a=assess();state.calc=a;
+const foirPct=(a.foir*100).toFixed(0);
+const checks=[
+{t:'Identity match',d:'Aadhaar ↔ PAN name verified',v:'Pass',c:'var(--green)',ic:'check',bg:'var(--green-soft)'},
+{t:'Credit bureau pull',d:'CIBIL score & history',v:p.cibil,c:p.cibil>=750?'var(--green)':p.cibil>=680?'var(--amber)':'var(--red)',ic:'chart',bg:'var(--indigo-soft)'},
+{t:'Income verification',d:'Bank statement · AA',v:fmt(a.income)+'/mo',c:'var(--green)',ic:'cash',bg:'var(--green-soft)'},
+{t:'Requested EMI',d:state.tenure+' mo @ '+a.rate+'%',v:fmt(a.reqEmi)+'/mo',c:'var(--indigo)',ic:'calendar',bg:'var(--indigo-soft)'},
+{t:'FOIR (debt-to-income)',d:'(₹'+p.obligations.toLocaleString('en-IN')+' + EMI) ÷ income',v:foirPct+'%',c:a.foir<=0.4?'var(--green)':a.foir<=0.5?'var(--amber)':'var(--red)',ic:'scale',bg:'var(--amber-soft)'},
+{t:'Fraud & AML screening',d:'Watchlist + velocity checks',v:'Clear',c:'var(--green)',ic:'shield',bg:'var(--teal-soft)'},
+];
+let i=0;const list=document.getElementById('assessList');
+const iv=setInterval(()=>{
+ if(i<checks.length){const ch=checks[i];const row=document.createElement('div');row.className='assess-row';row.style.animation='slideIn .3s ease';row.innerHTML=`<div class="assess-ic" style="background:${ch.bg};color:${ch.c}">${ico(ch.ic)}</div><div class="assess-tx"><div class="t">${ch.t}</div><div class="d">${ch.d}</div></div><div class="assess-val" style="color:${ch.c}">${ch.v}</div>`;list.appendChild(row);i++;}
+ else{clearInterval(iv);
+  document.getElementById('assessTitle').textContent='Assessment complete';
+  document.getElementById('assessSub').textContent='Here is your credit summary.';
+  const gw=document.getElementById('gaugeWrap');gw.style.opacity='1';
+  const frac=(p.cibil-300)/(900-300);
+  document.getElementById('gaugeArc').style.strokeDashoffset=236*(1-frac);
+  document.getElementById('gaugeArc').setAttribute('stroke',p.cibil>=750?'var(--green)':p.cibil>=680?'var(--amber)':'var(--red)');
+  let cur=300;const gi=setInterval(()=>{cur+=Math.ceil((p.cibil-300)/25);if(cur>=p.cibil){cur=p.cibil;clearInterval(gi);}document.getElementById('gaugeScore').textContent=cur;},40);
+  const b=document.getElementById('assessBtn');b.disabled=false;b.style.opacity='1';b.innerHTML='See your decision '+IC.arrow;
+ }
+},600);}
+
+function rDecision(){const p=PROFILES[state.profile];const a=state.calc||assess();state.calc=a;
+state.finalAmt=a.offerAmt;state.finalRate=a.rate;
+const reasonHTML=(a.reasons||[]).map(r=>`<div class="data-row"><span class="k">${r[0]}</span><span class="v" style="color:${r[2]==='good'?'var(--green)':r[2]==='warn'?'var(--amber)':'var(--red)'}">${r[1]}</span></div>`).join('');
+if(a.outcome==='approved'){const emi=emiCalc(a.offerAmt,a.rate,state.tenure);const feeAmt=Math.round(a.offerAmt*a.feePct/100);return `<div class="pad step-anim">
+<div class="decision-hero approved"><div class="decision-icon">${ico('check')}</div><h2>You're approved${state.name.trim()?', '+state.name.trim().split(' ')[0]:''}!</h2><p>${a.verdict}</p><div class="offer-amt">${fmt(a.offerAmt)}</div><div class="offer-words">${rupeesInWords(a.offerAmt)}</div></div>
+${a.lender?`<div class="lender-strip"><div class="lender-ic" style="background:${a.lender.color}1a;color:${a.lender.color}">${ico(a.lender.icon)}</div><div><div class="lender-nm" style="font-size:13px">Sanctioned by ${a.lender.name}</div><div class="lender-ty">${a.lender.type} · disburses in ${a.lender.tat}</div></div></div>`:''}
+<div class="offer-grid">
+<div class="offer-box"><div class="k">Interest rate</div><div class="v">${a.rate}%</div><div class="s">per annum, reducing</div></div>
+<div class="offer-box"><div class="k">Monthly EMI</div><div class="v">${fmt(emi)}</div><div class="s">for ${state.tenure} months</div></div>
+<div class="offer-box"><div class="k">Tenure</div><div class="v">${state.tenure} mo</div><div class="s">flexible prepay</div></div>
+<div class="offer-box"><div class="k">Processing fee</div><div class="v">${fmt(feeAmt)}</div><div class="s">${a.feePct}% one-time</div></div>
+</div>
+<div class="data-card"><div class="data-card-head"><span class="ic">${ico('scale')}</span><span class="t">Why you qualified</span></div>${reasonHTML}</div>
+${a.offerAmt<state.amount?`<div class="info-note">${ico('info')}<span>You requested ${fmt(state.amount)}. Based on your FOIR, ${fmt(a.offerAmt)} is your safe approved limit.</span></div>`:''}
+<button class="btn btn-primary" onclick="goName('agreement')">Accept offer ${ico('arrow')}</button>
+<button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="goName('lenders')">Compare other lenders</button>
+</div>`;}
+if(a.outcome==='review'){const emi=emiCalc(a.offerAmt,a.rate,state.tenure);return `<div class="pad step-anim">
+<div class="decision-hero review"><div class="decision-icon">${ico('clock')}</div><h2>Conditional offer</h2><p>${a.verdict}</p><div class="offer-amt">${fmt(a.offerAmt)}</div><div class="offer-words">${rupeesInWords(a.offerAmt)}</div></div>
+<div class="offer-grid">
+<div class="offer-box"><div class="k">Indicative rate</div><div class="v">${a.rate}%</div><div class="s">subject to review</div></div>
+<div class="offer-box"><div class="k">Est. EMI</div><div class="v">${fmt(emi)}</div><div class="s">for ${state.tenure} months</div></div>
+</div>
+<div class="data-card"><div class="data-card-head"><span class="ic">${ico('scale')}</span><span class="t">Assessment summary</span></div>${reasonHTML}</div>
+<div class="timeline"><div class="tl-item"><div class="tl-dot">${ico('check')}</div><div class="tl-tx"><div class="t">Application received</div><div class="d">All documents verified</div></div></div>
+<div class="tl-item"><div class="tl-dot" style="background:var(--amber)">2</div><div class="tl-tx"><div class="t">Manual income review</div><div class="d">Analyst checks UPI cashflow stability · ~2 hrs</div></div></div>
+<div class="tl-item"><div class="tl-dot" style="background:var(--line);color:var(--muted)">3</div><div class="tl-tx"><div class="t">Final decision & disbursal</div><div class="d">You'll get an SMS + app notification</div></div></div></div>
+<button class="btn btn-primary" onclick="goName('agreement')">Accept conditional offer ${ico('arrow')}</button>
+<button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="goName('landing')">Maybe later</button>
+</div>`;}
+return `<div class="pad step-anim">
+<div class="decision-hero declined"><div class="decision-icon">${ico('cross')}</div><h2>Not approved right now</h2><p>${a.verdict}</p></div>
+<div class="data-card"><div class="data-card-head"><span class="ic">${ico('info')}</span><span class="t">Why & what helps</span></div>${reasonHTML}</div>
+<div class="info-note">${ico('info')}<span>Improving factors: clear overdue dues, lower existing EMIs, and keep FOIR below 50%. Reapply after 3 months of clean repayment.</span></div>
+<button class="btn btn-dark" onclick="goName('landing')">Back to home</button>
+<button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="goName('profile')">Try another profile</button>
+</div>`;}
+
+function rAgreement(){const p=PROFILES[state.profile];const a=state.calc||assess();const emi=emiCalc(state.finalAmt,state.finalRate,state.tenure);const feePct=a.feePct||2;const feeAmt=Math.round(state.finalAmt*feePct/100);const lname=a.lender?a.lender.name:'TezCredit';return `<div class="pad step-anim">
+<div class="eyebrow">Step 8 — Loan agreement</div>
+<div class="h1">Sign your agreement</div>
+<p class="sub">A Key Fact Statement as mandated by RBI. Review, consent, and e-sign with Aadhaar.</p>
+<div class="spacer"></div>
+<div class="data-card"><div class="data-card-head"><span class="ic">${ico('scroll')}</span><span class="t">Key Fact Statement</span></div>
+<div class="data-row"><span class="k">Lender</span><span class="v">${lname}</span></div>
+<div class="data-row"><span class="k">Loan amount</span><span class="v">${fmt(state.finalAmt)}</span></div>
+<div class="data-row"><span class="k">In words</span><span class="v" style="font-size:11px;max-width:170px">${rupeesInWords(state.finalAmt)}</span></div>
+<div class="data-row"><span class="k">Interest rate</span><span class="v">${state.finalRate}% p.a. (reducing)</span></div>
+<div class="data-row"><span class="k">Tenure</span><span class="v">${state.tenure} months</span></div>
+<div class="data-row"><span class="k">Monthly EMI</span><span class="v">${fmt(emi)}</span></div>
+<div class="data-row"><span class="k">Processing fee</span><span class="v">${fmt(feeAmt)} (${feePct}%)</span></div>
+<div class="data-row"><span class="k">APR (all-in)</span><span class="v">${(state.finalRate+feePct*0.9).toFixed(1)}%</span></div>
+<div class="data-row"><span class="k">Total repayable</span><span class="v">${fmt(emi*state.tenure)}</span></div>
+<div class="data-row"><span class="k">Prepayment charge</span><span class="v">Nil</span></div></div>
+<div class="agreement-doc"><h4>1. Loan terms</h4>The Borrower agrees to repay ${lname} the sanctioned amount in ${state.tenure} equal monthly instalments via UPI Autopay / eNACH mandate. <h4>2. Interest & charges</h4>Interest accrues on a reducing-balance basis. A one-time processing fee is deducted at disbursal. No hidden charges apply.<h4>3. Cooling-off period</h4>You may exit within 3 days of disbursal by repaying principal + pro-rata interest, with no penalty, per RBI Digital Lending guidelines.<h4>4. Data & privacy</h4>Your data is processed under the DPDP Act 2023 on a consent basis and shared only with the Account Aggregator and credit bureaus as required.</div>
+<div class="consent" id="agreeConsent" onclick="toggleAgree()"><div class="consent-box"></div><div class="consent-tx">I have read and accept the Key Fact Statement and loan agreement with ${lname}, and authorise a UPI Autopay mandate for EMI collection.</div></div>
+<button class="btn btn-primary" id="signBtn" onclick="goName('disbursing')" disabled>eSign with Aadhaar & disburse ${ico('arrow')}</button>
+</div>`;}
+function toggleAgree(){const c=document.getElementById('agreeConsent');c.classList.toggle('checked');document.getElementById('signBtn').disabled=!c.classList.contains('checked');}
+
+function rDisbursing(){const a=state.calc||assess();const lname=a.lender?a.lender.name.split(' ')[0]:'TezCredit';return `<div class="pad step-anim">
+<div class="disburse-visual">
+<div class="h2" style="text-align:center" id="disbTitle">Disbursing your loan…</div>
+<p class="sub" style="text-align:center" id="disbSub">Transferring funds to your bank account via UPI</p>
+<div class="upi-flow"><div class="upi-node"><div class="circ">${ico('building')}</div><div class="lb">${lname}</div></div><div class="upi-line"><div class="pulse"></div></div><div class="upi-node"><div class="circ">${ico('bank')}</div><div class="lb">Your bank</div></div></div>
+<div class="fetch-item" data-d="0"><div class="fetch-ic">${ico('pen')}</div><div class="fetch-tx"><div class="t">eSign registered</div><div class="d">Aadhaar eSign · NSDL</div></div><div class="fetch-status"><div class="spinner"></div></div></div>
+<div class="fetch-item" data-d="1"><div class="fetch-ic">${ico('link')}</div><div class="fetch-tx"><div class="t">UPI Autopay mandate set</div><div class="d">EMI auto-collection enabled</div></div><div class="fetch-status"><div class="spinner"></div></div></div>
+<div class="fetch-item" data-d="2"><div class="fetch-ic">${ico('cash')}</div><div class="fetch-tx"><div class="t">Funds transferred</div><div class="d">IMPS / UPI credit</div></div><div class="fetch-status"><div class="spinner"></div></div></div>
+</div></div>`;}
+function runDisburse(){let i=0;const items=document.querySelectorAll('.fetch-item');const iv=setInterval(()=>{if(i<items.length){items[i].classList.add('done');items[i].querySelector('.fetch-status').innerHTML='<div class="check">'+IC.check+'</div>';i++;}else{clearInterval(iv);setTimeout(()=>goName('success'),500);}},800);}
+
+function rSuccess(){const p=PROFILES[state.profile];const a=state.calc||assess();const emi=emiCalc(state.finalAmt,state.finalRate,state.tenure);const feePct=a.feePct||2;const feeAmt=Math.round(state.finalAmt*feePct/100);const lname=a.lender?a.lender.name:'TezCredit';const txnId='TEZ'+Date.now().toString().slice(-9);const d=new Date();return `<div class="pad step-anim" style="position:relative">
+<div style="text-align:center;padding:16px 0 8px"><div class="decision-icon" style="background:var(--green-soft);color:var(--green);width:72px;height:72px">${ico('check')}</div></div>
+<div class="h1" style="text-align:center">Money's on its way${state.name.trim()?', '+state.name.trim().split(' ')[0]:''}!</div>
+<div class="success-amt">${fmt(state.finalAmt)}</div>
+<div class="offer-words" style="text-align:center;color:var(--muted);margin-bottom:6px">${rupeesInWords(state.finalAmt)}</div>
+<p class="sub" style="text-align:center;margin-bottom:18px">Credited to your bank account ending ••4432</p>
+<div class="receipt">
+<div class="receipt-row"><span class="k">Transaction ID</span><span class="v">${txnId}</span></div>
+<div class="receipt-row"><span class="k">Lender</span><span class="v">${lname}</span></div>
+<div class="receipt-row"><span class="k">Amount disbursed</span><span class="v">${fmt(state.finalAmt-feeAmt)}</span></div>
+<div class="receipt-row"><span class="k">Processing fee</span><span class="v">-${fmt(feeAmt)}</span></div>
+<div class="receipt-row"><span class="k">Interest rate</span><span class="v">${state.finalRate}% p.a.</span></div>
+<div class="receipt-row"><span class="k">First EMI</span><span class="v">${fmt(emi)}</span></div>
+<div class="receipt-row"><span class="k">Mode</span><span class="v">UPI / IMPS</span></div>
+<div class="receipt-row"><span class="k">Date</span><span class="v">${d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}</span></div>
+</div>
+<div class="timeline"><div class="tl-item"><div class="tl-dot">${ico('check')}</div><div class="tl-tx"><div class="t">Loan disbursed by ${lname}</div><div class="d">Just now</div></div></div>
+<div class="tl-item"><div class="tl-dot" style="background:var(--indigo)">${ico('calendar')}</div><div class="tl-tx"><div class="t">First EMI on ${new Date(d.getFullYear(),d.getMonth()+1,5).toLocaleDateString('en-IN',{day:'2-digit',month:'short'})}</div><div class="d">${fmt(emi)} via UPI Autopay</div></div></div></div>
+<div class="sim-banner" style="margin:4px 0 14px">${ico('warn')}<span>Simulated disbursal — no real funds were transferred.</span></div>
+<button class="btn btn-primary" onclick="goName('dashboard')">View loan dashboard ${ico('arrow')}</button>
+<button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="goName('profile')">Run another borrower</button>
+<div class="badge-row" style="justify-content:center;margin-top:16px"><div class="trust-badge">${ico('shield')} RBI compliant</div><div class="trust-badge">${ico('lock')} DPDP 2023</div><div class="trust-badge">${ico('check')} Digital lending norms</div></div>
+</div>`;}
+function reset(){state={name:'',mobile:'',city:'',email:'',fatherName:'',employmentType:'Not provided',existingEmi:12000,mockCibil:786,userIncome:null,amount:150000,tenure:12,lender:null,profile:null,otp:'',otpTries:0,verifyDone:false,score:null,cardApproved:false,loginOtp:'482913',pan:'',panVerified:false,aadhaar:'',aadhaarVerified:false,permissions:{camera:false,location:false},consents:{data:false,kyc:false,permissions:false},panDetails:null,aadhaarDetails:null,faceVerified:false,kycProgressStage:null,lang:"en"};hist=[0];step=0;render();}
+function fireConfetti(){const cols=['#FF6B35','#2D3E8C','#178A4C','#D98A00','#0E8388'];const phone=document.querySelector('.phone');for(let i=0;i<40;i++){const c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'%';c.style.background=cols[i%cols.length];c.style.animationDelay=Math.random()*0.5+'s';c.style.borderRadius=Math.random()>.5?'50%':'2px';phone.appendChild(c);setTimeout(()=>c.remove(),3000);}}
+
+render();
+</script>
+</body>
+</html>

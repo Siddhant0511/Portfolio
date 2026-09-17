@@ -1,0 +1,210 @@
+---
+/**
+ * Responsive line chart. The plot is an SVG stretched to its box (non-scaling strokes);
+ * all text is HTML positioned in percentages so labels stay legible at phone widths.
+ */
+type Tone = 'ink' | 'accent' | 'muted' | 'faint';
+interface Series {
+  name: string;
+  values: number[];
+  tone?: Tone;
+  width?: number;
+  dashed?: boolean;
+  /** Fill between the line and a horizontal value: above in accent, below in ink tint. */
+  fillTo?: number;
+}
+interface Props {
+  series: Series[];
+  yMin: number;
+  yMax: number;
+  yTicks: number[];
+  ySuffix?: string;
+  xLabels: { at: number; label: string }[];
+  bands?: { from: number; to: number; label?: string }[];
+  refs?: { y: number; label: string }[];
+  points?: { x: number; y: number; label: string; tone?: 'accent' | 'ink'; place?: 'above' | 'below' }[];
+  height?: string;
+  legend?: boolean;
+  ariaLabel: string;
+}
+
+const {
+  series,
+  yMin,
+  yMax,
+  yTicks,
+  ySuffix = '',
+  xLabels,
+  bands = [],
+  refs = [],
+  points = [],
+  height = '18rem',
+  legend = true,
+  ariaLabel,
+} = Astro.props;
+
+const n = Math.max(...series.map((s) => s.values.length));
+const X = (i: number) => (n <= 1 ? 0 : (i / (n - 1)) * 1000);
+const Y = (v: number) => (1 - (v - yMin) / (yMax - yMin)) * 1000;
+const xp = (i: number) => (n <= 1 ? 0 : (i / (n - 1)) * 100);
+const yp = (v: number) => (1 - (v - yMin) / (yMax - yMin)) * 100;
+
+const path = (vals: number[]) => vals.map((v, i) => `${i ? 'L' : 'M'}${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(' ');
+const fillPath = (vals: number[], to: number) =>
+  `${path(vals)} L${X(vals.length - 1).toFixed(1)},${Y(to).toFixed(1)} L0,${Y(to).toFixed(1)} Z`;
+
+const stroke: Record<Tone, string> = {
+  ink: 'var(--ink)',
+  accent: 'var(--accent)',
+  muted: 'var(--muted)',
+  faint: 'var(--line-strong)',
+};
+const uid = `lc${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div class="linechart">
+  {
+    legend && series.length > 1 && (
+      <ul class="mb-4 flex flex-wrap gap-x-5 gap-y-1.5">
+        {series.map((s) => (
+          <li class="flex items-center gap-2 text-xs text-ink-2">
+            <span
+              class="inline-block w-5 border-t-2"
+              style={`border-color:${stroke[s.tone ?? 'ink']}; border-top-style:${s.dashed ? 'dashed' : 'solid'}`}
+            />
+            {s.name}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  <div class="relative pl-10 sm:pl-12" style={`height:${height}`}>
+    <div class="absolute inset-y-0 left-0 w-10 sm:w-12" aria-hidden="true">
+      {
+        yTicks.map((t) => (
+          <span class="num absolute right-2 -translate-y-1/2 text-[10px] text-muted sm:text-[11px]" style={`top:${yp(t)}%`}>
+            {t}
+            {ySuffix}
+          </span>
+        ))
+      }
+    </div>
+    <div class="plot relative h-full">
+      <svg viewBox="0 0 1000 1000" preserveAspectRatio="none" class="absolute inset-0 h-full w-full overflow-visible" role="img" aria-label={ariaLabel}>
+        <defs>
+          {
+            series.map((s, k) =>
+              s.fillTo !== undefined ? (
+                <>
+                  <clipPath id={`${uid}-above-${k}`}>
+                    <rect x="0" y="0" width="1000" height={Y(s.fillTo)} />
+                  </clipPath>
+                  <clipPath id={`${uid}-below-${k}`}>
+                    <rect x="0" y={Y(s.fillTo)} width="1000" height={1000 - Y(s.fillTo)} />
+                  </clipPath>
+                </>
+              ) : null,
+            )
+          }
+        </defs>
+        {bands.map((b) => <rect x={X(b.from)} y="0" width={X(b.to) - X(b.from)} height="1000" fill="var(--accent-soft)" />)}
+        {
+          yTicks.map((t) => (
+            <line x1="0" x2="1000" y1={Y(t)} y2={Y(t)} stroke="var(--line)" stroke-width="1" vector-effect="non-scaling-stroke" />
+          ))
+        }
+        {
+          series.map((s, k) =>
+            s.fillTo !== undefined ? (
+              <>
+                <path d={fillPath(s.values, s.fillTo)} fill="var(--accent)" fill-opacity="0.22" clip-path={`url(#${uid}-above-${k})`} />
+                <path d={fillPath(s.values, s.fillTo)} fill="var(--ink)" fill-opacity="0.08" clip-path={`url(#${uid}-below-${k})`} />
+              </>
+            ) : null,
+          )
+        }
+        {
+          refs.map((r) => (
+            <line x1="0" x2="1000" y1={Y(r.y)} y2={Y(r.y)} stroke="var(--ink)" stroke-width="1.25" stroke-dasharray="5 4" vector-effect="non-scaling-stroke" />
+          ))
+        }
+        <g class="lines">
+          {
+            series.map((s) => (
+              <path
+                d={path(s.values)}
+                fill="none"
+                stroke={stroke[s.tone ?? 'ink']}
+                stroke-width={s.width ?? 2}
+                stroke-dasharray={s.dashed ? '6 5' : undefined}
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                vector-effect="non-scaling-stroke"
+              />
+            ))
+          }
+        </g>
+      </svg>
+
+      {
+        bands.map((b) =>
+          b.label ? (
+            <span class="label absolute bottom-1.5 -translate-x-1/2 text-center !text-accent-ink" style={`left:${(xp(b.from) + xp(b.to)) / 2}%`} aria-hidden="true">
+              {b.label}
+            </span>
+          ) : null,
+        )
+      }
+      {
+        refs.map((r) => (
+          <span class="label absolute right-0 -translate-y-full bg-surface/80 px-1 pb-0.5 !text-ink" style={`top:${yp(r.y)}%`} aria-hidden="true">
+            {r.label}
+          </span>
+        ))
+      }
+      {
+        points.map((p) => (
+          <span class="absolute" style={`left:${xp(p.x)}%; top:${yp(p.y)}%`} aria-hidden="true">
+            <span class:list={['absolute size-2.5 -translate-1/2 rounded-full border-2 border-surface', p.tone === 'ink' ? 'bg-ink' : 'bg-accent']} />
+            <span
+              class:list={[
+                'num absolute -translate-x-1/2 text-[11px] font-medium whitespace-nowrap',
+                p.place === 'below' ? 'top-2.5' : 'bottom-2.5',
+                p.tone === 'ink' ? 'text-ink' : 'text-accent-ink',
+              ]}
+            >
+              {p.label}
+            </span>
+          </span>
+        ))
+      }
+    </div>
+  </div>
+  <div class="relative mt-2 ml-10 h-5 border-t border-ink/30 sm:ml-12" aria-hidden="true">
+    {
+      xLabels.map((l, i) => (
+        <span
+          class:list={[
+            'num absolute top-1.5 text-[10px] whitespace-nowrap text-muted sm:text-[11px]',
+            i === 0 ? '' : i === xLabels.length - 1 && l.at >= n - 1 ? '-translate-x-full' : '-translate-x-1/2',
+          ]}
+          style={`left:${xp(l.at)}%`}
+        >
+          {l.label}
+        </span>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) :global([data-reveal]) .lines {
+      clip-path: inset(0 100% 0 0);
+      transition: clip-path 1400ms cubic-bezier(0.65, 0, 0.35, 1) 150ms;
+    }
+    :global(.js) :global([data-reveal].is-in) .lines {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+</style>

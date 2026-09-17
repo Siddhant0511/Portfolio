@@ -1,0 +1,110 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { MagnifyingGlassPlusIcon } from '@phosphor-icons/react';
+
+/**
+ * Real artefacts from a project: screenshots, photos, diagrams.
+ * `phones` lays out tall mobile screens; `zoom` lets wide diagrams open full size.
+ */
+interface Shot {
+  src: ImageMetadata;
+  alt: string;
+  caption?: string;
+}
+interface Props {
+  images: Shot[];
+  variant?: 'phones' | 'grid' | 'single';
+  cols?: 2 | 3 | 4;
+  zoom?: boolean;
+}
+const { images, variant = 'grid', cols = 2, zoom = false } = Astro.props;
+const gridCols =
+  variant === 'phones'
+    ? 'grid-cols-2 md:grid-cols-4'
+    : variant === 'single'
+      ? 'grid-cols-1'
+      : { 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-3', 4: 'grid-cols-2 lg:grid-cols-4' }[cols];
+const widths = variant === 'phones' ? [240, 400] : variant === 'single' ? [720, 1200, 1800] : [480, 800, 1200];
+const sizes =
+  variant === 'phones'
+    ? '(min-width: 768px) 14rem, 45vw'
+    : variant === 'single'
+      ? '(min-width: 1024px) 60vw, 94vw'
+      : '(min-width: 1024px) 30vw, 94vw';
+---
+
+<div class:list={['case-block grid gap-3 sm:gap-4', gridCols, variant === 'phones' && 'items-start']} data-reveal>
+  {
+    images.map((img) => (
+      <figure class="min-w-0">
+        <div class:list={['group relative overflow-hidden border border-line bg-surface-2', variant === 'phones' && 'p-2 sm:p-3']}>
+          <Image
+            src={img.src}
+            alt={img.alt}
+            widths={widths}
+            sizes={sizes}
+            class:list={['w-full', variant === 'phones' && 'aspect-[10/16] border border-line bg-white object-cover object-top']}
+          />
+          {zoom && (
+            <button
+              type="button"
+              data-zoom-src={img.src.src}
+              data-zoom-alt={img.alt}
+              class="absolute inset-0 flex cursor-zoom-in items-end justify-end p-3 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
+              aria-label={`Open full size: ${img.alt}`}
+            >
+              <span class="inline-flex items-center gap-1.5 bg-ink px-2.5 py-1.5 text-xs text-bg">
+                <MagnifyingGlassPlusIcon className="size-3.5" aria-hidden="true" /> Full size
+              </span>
+            </button>
+          )}
+        </div>
+        {img.caption && <figcaption class="mt-2 text-sm leading-snug text-muted">{img.caption}</figcaption>}
+      </figure>
+    ))
+  }
+</div>
+
+{
+  zoom && (
+    <dialog data-zoom-dialog class="zoom-dialog m-auto max-h-[92dvh] w-[min(96vw,1600px)] max-w-none bg-surface p-0 text-ink backdrop:bg-black/70">
+      <div class="flex items-center justify-between gap-4 border-b border-line px-4 py-3">
+        <p data-zoom-title class="truncate text-sm text-ink-2" />
+        <form method="dialog">
+          <button class="h-9 cursor-pointer border border-line-strong px-3 text-sm hover:border-ink">Close</button>
+        </form>
+      </div>
+      <div class="max-h-[calc(92dvh-3.5rem)] overflow-auto">
+        <img data-zoom-img alt="" class="block h-auto max-w-none min-w-full" />
+      </div>
+    </dialog>
+  )
+}
+
+<script>
+  function setupZoom() {
+    document.querySelectorAll<HTMLButtonElement>('[data-zoom-src]').forEach((btn) => {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = 'true';
+      btn.addEventListener('click', () => {
+        const dialog = btn.closest('.case-block')?.nextElementSibling as HTMLDialogElement | null;
+        const target = dialog?.matches('[data-zoom-dialog]') ? dialog : document.querySelector<HTMLDialogElement>('[data-zoom-dialog]');
+        if (!target) return;
+        const img = target.querySelector<HTMLImageElement>('[data-zoom-img]')!;
+        img.src = btn.dataset.zoomSrc!;
+        img.alt = btn.dataset.zoomAlt ?? '';
+        target.querySelector('[data-zoom-title]')!.textContent = btn.dataset.zoomAlt ?? '';
+        target.showModal();
+      });
+    });
+    document.querySelectorAll<HTMLDialogElement>('[data-zoom-dialog]').forEach((d) => {
+      if (d.dataset.bound) return;
+      d.dataset.bound = 'true';
+      d.addEventListener('click', (e) => {
+        if (e.target === d) d.close();
+      });
+    });
+  }
+  document.addEventListener('astro:page-load', setupZoom);
+</script>

@@ -1,0 +1,14 @@
+---
+/** A single insight worth pausing on. Keep it to three lines. */
+interface Props {
+  label?: string;
+}
+const { label = 'Key insight' } = Astro.props;
+---
+
+<aside class="case-block relative border-l-2 border-accent py-1 pl-5 sm:pl-7" data-reveal>
+  <p class="label !text-accent-ink">{label}</p>
+  <div class="mt-3 max-w-[40ch] font-display text-[clamp(1.35rem,2.6vw,2rem)] leading-[1.18] font-medium tracking-[-0.025em] text-ink [&_p]:m-0">
+    <slot />
+  </div>
+</aside>

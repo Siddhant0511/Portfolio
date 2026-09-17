@@ -1,0 +1,73 @@
+---
+/** Horizontal bar list without background tracks. Values are labelled directly. */
+interface Item {
+  label: string;
+  value: number;
+  display?: string;
+  highlight?: boolean;
+  note?: string;
+}
+interface Props {
+  items: Item[];
+  max?: number;
+  suffix?: string;
+  decimals?: number;
+  labelWidth?: string;
+  /** Optional reference value drawn as a dashed vertical line. */
+  reference?: { value: number; label: string };
+}
+
+const { items, suffix = '', decimals = 1, labelWidth = '11rem', reference } = Astro.props;
+const max = Astro.props.max ?? Math.max(...items.map((i) => i.value), reference?.value ?? 0);
+const pct = (v: number) => Math.max(0.5, (v / max) * 100);
+---
+
+<div class:list={['bars relative grid gap-2.5', reference && 'pt-6']} style={`--label-w:${labelWidth}`}>
+  {
+    items.map((it, k) => (
+      <div class="grid grid-cols-[minmax(6.5rem,var(--label-w))_1fr] items-center gap-3 sm:gap-5">
+        <span class:list={['text-sm leading-tight', it.highlight ? 'font-medium text-ink' : 'text-ink-2']}>
+          {it.label}
+          {it.note && <span class="block text-xs text-muted">{it.note}</span>}
+        </span>
+        <span class="track relative flex items-center gap-3">
+          <span
+            class:list={['bar block h-6 origin-left sm:h-7', it.highlight ? 'bg-accent' : 'bg-line-strong']}
+            style={`width: calc((100% - 4.5rem) * ${pct(it.value) / 100}); --k:${k}`}
+          />
+          <span class:list={['num relative z-10 bg-surface pr-1 text-sm whitespace-nowrap', it.highlight ? 'text-accent-ink' : 'text-ink-2']}>
+            {it.display ?? `${it.value.toFixed(decimals)}${suffix}`}
+          </span>
+        </span>
+      </div>
+    ))
+  }
+  {
+    reference && (
+      <div class="pointer-events-none absolute inset-y-0 right-0 left-0 z-0 grid grid-cols-[minmax(6.5rem,var(--label-w))_1fr] gap-3 sm:gap-5" aria-hidden="true">
+        <span />
+        <span class="relative">
+          <span
+            class="absolute top-0 -bottom-1 border-l border-dashed border-ink/50"
+            style={`left: calc((100% - 4.5rem) * ${pct(reference.value) / 100})`}
+          >
+            <span class="label absolute top-0 left-1.5 whitespace-nowrap">{reference.label}</span>
+          </span>
+        </span>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) :global([data-reveal]) .bar {
+      transform: scaleX(0);
+      transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: calc(150ms + var(--k) * 60ms);
+    }
+    :global(.js) :global([data-reveal].is-in) .bar {
+      transform: scaleX(1);
+    }
+  }
+</style>

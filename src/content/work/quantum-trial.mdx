@@ -1,0 +1,186 @@
+---
+title: Attrition Copilot for Velorium
+fileId: CC-02
+order: 6
+group: competition
+org: The Quantum Trial
+context: Analytics case competition, Inquivista x KOED Learnings
+period: Nov 2025
+year: '2025'
+role: Modelling approach, model comparison and SHAP explainability
+team: Team Tac Tic Toe
+summary: A retention copilot that pairs an interpretable risk score with SHAP explanations and manager-ready actions, built on a noisy HR dataset.
+problem: Leadership could see who left last quarter but had no way to sense who might leave next, or what to do about it.
+tools: [Python, Logistic Regression, Random Forest, XGBoost, SMOTE, SHAP]
+tags: [People analytics, Machine learning, Explainability]
+award: Finalist
+metrics:
+  - { value: 36.8, decimals: 1, suffix: '%', label: 'test recall, best of five models' }
+  - { value: 33.7, decimals: 1, suffix: '%', label: 'higher attrition in the flagged at-risk group' }
+  - { value: 18.9, decimals: 1, suffix: '%', label: 'baseline attrition across 1,000 employees' }
+cover: ../../assets/work/quantum-trial/shap-summary.png
+coverAlt: SHAP summary plot of attrition drivers
+---
+
+import Figure from '@/components/case/Figure.astro';
+import Flow from '@/components/case/Flow.astro';
+import Bars from '@/components/case/Bars.astro';
+import Columns from '@/components/case/Columns.astro';
+import Dumbbell from '@/components/case/Dumbbell.astro';
+import DataTable from '@/components/case/DataTable.astro';
+import Callout from '@/components/case/Callout.astro';
+import Stats from '@/components/case/Stats.astro';
+import Tiers from '@/components/case/Tiers.astro';
+
+## The case
+
+**Velorium Technologies** is a fictional 4,500-person IT services firm in Pune. Its dashboards were green, yet voluntary attrition was climbing in Sales, Marketing and a few delivery squads, and a major client renewal was coming up. The CEO's question framed the competition:
+
+<Callout label="The leadership question">We can see who left last quarter. Can we sense who might leave next, and what to do before it happens?</Callout>
+
+The brief was not another dashboard. Teams had to build a manager's **retention copilot** from the HR dataset alone: predict each employee's risk, explain why, and turn that into humane, specific action. Our team, Tac Tic Toe, reached the final.
+
+## A hard dataset
+
+We started with 1,000 employee records across 26 columns: demographics, pay, tenure, performance, satisfaction, hours and overtime.
+
+<Stats
+  items={[
+    { value: 1000, label: 'employees in the dataset' },
+    { value: 18.9, decimals: 1, suffix: '%', label: 'attrition rate, 189 leavers' },
+    { display: '0.01-0.05', label: 'typical correlation of any feature with attrition' },
+  ]}
+/>
+
+No single variable explained attrition. Behavioural signals such as absenteeism, long weeks and poor work-life balance showed subtle, consistent patterns; gender, department and marital status barely separated leavers from stayers. It was a **high-noise, low-signal** problem, which shaped every decision after it.
+
+## Modelling approach
+
+<Figure title="How we built the prediction engine">
+  <Flow
+    steps={[
+      { title: 'Engineer features', detail: 'Engagement score, work pressure, stability index, promotion gap, absenteeism ratio' },
+      { title: 'Train five models', detail: 'L1 logistic regression, Random Forest and XGBoost, each with and without SMOTE' },
+      { title: 'Judge on recall', detail: 'Stratified train-test split; catching at-risk people matters more than accuracy' },
+      { title: 'Explain', detail: 'Global and per-employee SHAP values', emphasis: true },
+    ]}
+  />
+</Figure>
+
+## What we tried and what worked
+
+The tree models looked excellent in training and collapsed on unseen data. Random Forest caught 73% of leavers in training and 5% in test. That gap is overfitting, the models memorising noise in a dataset without much signal.
+
+<Figure title="Recall in training vs on unseen data" note="Share of actual leavers each model caught. The distance between the dots is the overfit.">
+  <Dumbbell
+    aLabel="Train recall"
+    bLabel="Test recall"
+    max={100}
+    suffix="%"
+    labelWidth="11rem"
+    rows={[
+      { label: 'L1 logistic regression', a: 58.3, b: 36.8, highlight: true },
+      { label: 'Random Forest', a: 72.9, b: 5.3 },
+      { label: 'Random Forest + SMOTE', a: 23.2, b: 2.6 },
+      { label: 'XGBoost', a: 82.8, b: 23.7 },
+      { label: 'XGBoost + SMOTE', a: 5.3, b: 0.0 },
+    ]}
+  />
+</Figure>
+
+**L1 logistic regression** was the most stable and generalisable model, had the highest test recall at **36.8%**, and its coefficients agreed with the SHAP explanations. It became the engine behind the copilot.
+
+<DataTable
+  caption="Full model comparison on the test set"
+  head={['Model', 'Accuracy', 'Precision', 'Recall', 'F1', 'ROC-AUC']}
+  numeric={[1, 2, 3, 4, 5]}
+  highlightRow={0}
+  rows={[
+    ['L1 logistic regression', '0.505', '0.157', '0.368', '0.221', '0.447'],
+    ['Random Forest', '0.700', '0.077', '0.053', '0.063', '0.392'],
+    ['Random Forest + SMOTE', '0.745', '0.067', '0.026', '0.038', '0.491'],
+    ['XGBoost', '0.530', '0.122', '0.237', '0.161', '0.381'],
+    ['XGBoost + SMOTE', '0.800', '0.000', '0.000', '0.000', '0.458'],
+  ]}
+/>
+
+The table also shows the honest limit of the data: no model's test ROC-AUC cleared 0.5. That is why the copilot does not hand managers a black-box probability. It uses the model and SHAP to find **which signals matter**, then scores people transparently on those signals.
+
+## What drives attrition
+
+<Figure title="Top drivers by SHAP" note="Mean absolute SHAP value; values read from the team's chart." source="Team SHAP analysis">
+  <Bars
+    decimals={2}
+    labelWidth="12rem"
+    items={[
+      { label: 'Absenteeism', value: 0.48, highlight: true },
+      { label: 'Absenteeism ratio', value: 0.35, highlight: true },
+      { label: 'Work-life balance', value: 0.24 },
+      { label: 'Engagement', value: 0.23 },
+      { label: 'Work pressure', value: 0.16 },
+      { label: 'Stability index', value: 0.16 },
+      { label: 'Years since last promotion', value: 0.15 },
+      { label: 'Job involvement', value: 0.15 },
+      { label: 'Project count', value: 0.15 },
+    ]}
+  />
+</Figure>
+
+<Callout>Attrition here was not demographic. It was behavioural and workload-driven: the signals managers sense but cannot measure consistently.</Callout>
+
+## Turning signals into a score
+
+We converted the strongest SHAP drivers into a simple additive score. Each factor (work hours, absenteeism, work-life balance, engagement, work pressure, promotion gap and stability) scores 1 for low risk to 3 for high risk. No negatives, no cancelling out: a higher total means higher risk, and any manager can see why.
+
+<div class="case-block grid gap-6 lg:grid-cols-2">
+  <Figure title="How scores are spread" note="Employees by total risk score. Average 15.66, median 16.">
+    <Columns
+      suffix=""
+      decimals={0}
+      height="11rem"
+      items={[
+        { label: '10 or less', value: 20 },
+        { label: '11-15', value: 459 },
+        { label: '16-20', value: 490, highlight: true },
+        { label: '21 and up', value: 31, highlight: true },
+      ]}
+    />
+  </Figure>
+  <Figure title="Does the score separate leavers?" note="Attrition rate by risk band.">
+    <Bars
+      suffix="%"
+      decimals={2}
+      labelWidth="8rem"
+      items={[
+        { label: 'At-risk band', value: 21.5, highlight: true, note: '521 people, avg score 17.67' },
+        { label: 'Normal band', value: 16.08, note: '479 people, avg score 13.46' },
+      ]}
+    />
+  </Figure>
+</div>
+
+People in the at-risk band were **33.7% more likely to resign** than everyone else, a meaningful lift for a dataset this noisy, and one a manager can act on without trusting a black box.
+
+## The copilot
+
+<Figure title="Score plus SHAP equals action">
+  <Flow
+    steps={[
+      { title: 'Who', detail: 'The risk score ranks the employees who need attention first' },
+      { title: 'Why', detail: 'Local SHAP shows each person’s drivers: long weeks, no promotion, falling engagement, strained manager relationship' },
+      { title: 'What', detail: 'Personalised interventions, empathetic scripts, 1:1 prompts and policy suggestions', emphasis: true },
+    ]}
+  />
+</Figure>
+
+## Recommendations
+
+<Tiers
+  cols={2}
+  items={[
+    { kicker: 'Team level', title: 'Rebalance workload', body: 'Flag burnout-heavy teams, rotate support and protect critical delivery.' },
+    { kicker: 'Team level', title: 'Growth and promotion', body: 'Flag 3-5 year stagnation, set 90-day development plans and hold transparent promotion talks.' },
+    { kicker: 'Organisation level', title: 'HRBP early-warning dashboard', body: 'Weekly risk alerts, department and tenure heatmaps, and attrition tracked as a KPI.' },
+    { kicker: 'Organisation level', title: 'Work-life balance fixes', body: 'Pilot flexible cadences, diagnose 60+ hour weeks and set healthy workload norms.' },
+  ]}
+/>

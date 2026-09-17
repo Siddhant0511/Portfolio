@@ -1,0 +1,66 @@
+---
+/** Vertical column chart with direct labels and an optional dashed reference line. */
+interface Item {
+  label: string;
+  value: number;
+  display?: string;
+  highlight?: boolean;
+}
+interface Props {
+  items: Item[];
+  max?: number;
+  suffix?: string;
+  decimals?: number;
+  height?: string;
+  reference?: { value: number; label: string };
+  xTitle?: string;
+}
+
+const { items, suffix = '%', decimals = 1, height = '15rem', reference, xTitle } = Astro.props;
+const max = Astro.props.max ?? Math.max(...items.map((i) => i.value), reference?.value ?? 0) * 1.08;
+const pct = (v: number) => (v / max) * 100;
+---
+
+<div>
+  <div class="relative" style={`height:${height}`}>
+    {
+      reference && (
+        <div class="pointer-events-none absolute inset-x-0 border-t border-dashed border-ink/45" style={`bottom:${pct(reference.value)}%`} aria-hidden="true">
+          <span class="label absolute right-0 bottom-1 bg-surface pl-2">{reference.label}</span>
+        </div>
+      )
+    }
+    <div class="flex h-full items-end gap-1.5 sm:gap-3">
+      {
+        items.map((it, k) => (
+          <div class="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1.5">
+            <span class:list={['num text-[11px] whitespace-nowrap sm:text-xs', it.highlight ? 'font-medium text-accent-ink' : 'text-muted']}>
+              {it.display ?? `${it.value.toFixed(decimals)}${suffix}`}
+            </span>
+            <span
+              class:list={['col block w-full origin-bottom', it.highlight ? 'bg-accent' : 'bg-line-strong']}
+              style={`height:${pct(it.value)}%; --k:${k}`}
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+  <div class="mt-2 flex gap-1.5 border-t border-ink/30 pt-2 sm:gap-3">
+    {items.map((it) => <span class="min-w-0 flex-1 text-center text-[11px] leading-tight text-ink-2 sm:text-xs">{it.label}</span>)}
+  </div>
+  {xTitle && <p class="label mt-3 text-center">{xTitle}</p>}
+</div>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) :global([data-reveal]) .col {
+      transform: scaleY(0);
+      transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: calc(150ms + var(--k) * 50ms);
+    }
+    :global(.js) :global([data-reveal].is-in) .col {
+      transform: scaleY(1);
+    }
+  }
+</style>

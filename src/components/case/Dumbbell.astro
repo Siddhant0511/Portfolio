@@ -1,0 +1,86 @@
+---
+/**
+ * Two values per row joined by a line: train vs test, group A vs group B.
+ * The gap is the story, so it is drawn, not just labelled.
+ */
+interface Row {
+  label: string;
+  a: number;
+  b: number;
+  highlight?: boolean;
+  format?: (v: number) => string;
+}
+interface Props {
+  rows: Row[];
+  aLabel: string;
+  bLabel: string;
+  min?: number;
+  max: number;
+  suffix?: string;
+  decimals?: number;
+  labelWidth?: string;
+}
+const { rows, aLabel, bLabel, min = 0, max, suffix = '', decimals = 1, labelWidth = '10rem' } = Astro.props;
+const pos = (v: number) => ((v - min) / (max - min)) * 100;
+const fmt = (v: number) => `${v.toFixed(decimals)}${suffix}`;
+---
+
+<div class="dumbbell">
+  <ul class="mb-5 flex flex-wrap gap-x-5 gap-y-1.5" aria-hidden="true">
+    <li class="flex items-center gap-2 text-xs text-ink-2"><span class="size-2.5 rounded-full border-2 border-ink bg-surface"></span>{aLabel}</li>
+    <li class="flex items-center gap-2 text-xs text-ink-2"><span class="size-2.5 rounded-full bg-accent"></span>{bLabel}</li>
+  </ul>
+  <dl class="grid gap-1" style={`--label-w:${labelWidth}`}>
+    {
+      rows.map((r, k) => {
+        const lo = Math.min(r.a, r.b);
+        const hi = Math.max(r.a, r.b);
+        return (
+          <div class="grid grid-cols-[minmax(6.5rem,var(--label-w))_1fr] items-center gap-3 sm:gap-5">
+            <dt class:list={['text-sm leading-tight', r.highlight ? 'font-medium text-ink' : 'text-ink-2']}>{r.label}</dt>
+            <dd class="relative h-12" style={`--k:${k}`}>
+              <span class="sr-only">
+                {aLabel} {fmt(r.a)}, {bLabel} {fmt(r.b)}
+              </span>
+              <span class="absolute inset-x-0 top-1/2 h-px bg-line" aria-hidden="true" />
+              <span
+                class:list={['gap absolute top-1/2 h-0.5 -translate-y-1/2 origin-left', r.highlight ? 'bg-accent/60' : 'bg-ink/35']}
+                style={`left:${pos(lo)}%; width:${pos(hi) - pos(lo)}%`}
+                aria-hidden="true"
+              />
+              <span class="absolute top-1/2 size-3 -translate-1/2 rounded-full border-2 border-ink bg-surface" style={`left:${pos(r.a)}%`} aria-hidden="true" />
+              <span class="absolute top-1/2 size-3 -translate-1/2 rounded-full bg-accent" style={`left:${pos(r.b)}%`} aria-hidden="true" />
+              <span
+                class="num absolute top-0 -translate-x-1/2 text-[11px] whitespace-nowrap text-muted"
+                style={`left:${pos(r.a)}%`}
+                aria-hidden="true"
+              >
+                {fmt(r.a)}
+              </span>
+              <span
+                class="num absolute bottom-0 -translate-x-1/2 text-[11px] font-medium whitespace-nowrap text-accent-ink"
+                style={`left:${pos(r.b)}%`}
+                aria-hidden="true"
+              >
+                {fmt(r.b)}
+              </span>
+            </dd>
+          </div>
+        );
+      })
+    }
+  </dl>
+</div>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) :global([data-reveal]) .gap {
+      transform: translateY(-50%) scaleX(0);
+      transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: calc(200ms + var(--k) * 80ms);
+    }
+    :global(.js) :global([data-reveal].is-in) .gap {
+      transform: translateY(-50%) scaleX(1);
+    }
+  }
+</style>

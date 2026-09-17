@@ -1,0 +1,25 @@
+---
+import { ArrowUpIcon } from '@phosphor-icons/react';
+import { site } from '@/lib/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-line">
+  <div class="container-x flex flex-col gap-6 py-10 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex flex-col gap-1">
+      <p class="font-display text-lg font-semibold tracking-tight">{site.name}</p>
+      <p class="text-sm text-muted">{site.program}, {site.institute}</p>
+    </div>
+    <div class="flex items-center gap-6 text-sm text-ink-2">
+      <a class="link-underline" href={`mailto:${site.email}`}>Email</a>
+      <a class="link-underline" href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+      <a href="#main" class="inline-flex items-center gap-1.5 text-muted transition-colors hover:text-ink">
+        Back to top <ArrowUpIcon className="size-3.5" aria-hidden="true" />
+      </a>
+    </div>
+  </div>
+  <div class="container-x pb-8">
+    <p class="label">&copy; {year} {site.name}</p>
+  </div>
+</footer>

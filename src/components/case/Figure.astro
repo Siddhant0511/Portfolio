@@ -1,0 +1,25 @@
+---
+/**
+ * Framed figure for charts and diagrams inside a case study.
+ * `bare` drops the surface frame for full-bleed images.
+ */
+interface Props {
+  title: string;
+  note?: string;
+  source?: string;
+  bare?: boolean;
+  class?: string;
+}
+const { title, note, source, bare = false, class: className } = Astro.props;
+---
+
+<figure class:list={['case-block fig', className]} data-reveal>
+  <figcaption class="mb-4 flex flex-col gap-1 sm:mb-5">
+    <span class="font-medium text-ink">{title}</span>
+    {note && <span class="max-w-[70ch] text-sm leading-snug text-muted">{note}</span>}
+  </figcaption>
+  <div class:list={[!bare && 'border border-line bg-surface p-4 sm:p-7']}>
+    <slot />
+  </div>
+  {source && <p class="label mt-3 !normal-case !tracking-normal">Source: {source}</p>}
+</figure>

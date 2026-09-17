@@ -1,0 +1,166 @@
+{
+ "loans": 855969,
+ "defaultRate": 5.43,
+ "avgRate": 13.19,
+ "grade": [
+  {
+   "x": "A",
+   "n": 145665,
+   "rate": 1.83
+  },
+  {
+   "x": "B",
+   "n": 247998,
+   "rate": 3.92
+  },
+  {
+   "x": "C",
+   "n": 236855,
+   "rate": 5.49
+  },
+  {
+   "x": "D",
+   "n": 132802,
+   "rate": 8.13
+  },
+  {
+   "x": "E",
+   "n": 66448,
+   "rate": 9.72
+  },
+  {
+   "x": "F",
+   "n": 21328,
+   "rate": 14.13
+  },
+  {
+   "x": "G",
+   "n": 4873,
+   "rate": 16.7
+  }
+ ],
+ "term": [
+  {
+   "x": "36",
+   "n": 600221,
+   "rate": 4.96
+  },
+  {
+   "x": "60",
+   "n": 255748,
+   "rate": 6.52
+  }
+ ],
+ "purpose": [
+  {
+   "x": "educational",
+   "n": 326,
+   "rate": 17.18,
+   "interest": 11.65
+  },
+  {
+   "x": "small_business",
+   "n": 9785,
+   "rate": 14.21,
+   "interest": 16.15
+  },
+  {
+   "x": "wedding",
+   "n": 2280,
+   "rate": 11.62,
+   "interest": 14.11
+  },
+  {
+   "x": "renewable_energy",
+   "n": 549,
+   "rate": 9.84,
+   "interest": 15.36
+  },
+  {
+   "x": "moving",
+   "n": 5160,
+   "rate": 8.45,
+   "interest": 15.71
+  },
+  {
+   "x": "house",
+   "n": 3513,
+   "rate": 8.34,
+   "interest": 15.93
+  },
+  {
+   "x": "other",
+   "n": 40949,
+   "rate": 7.33,
+   "interest": 14.99
+  },
+  {
+   "x": "medical",
+   "n": 8193,
+   "rate": 7.13,
+   "interest": 14.52
+  },
+  {
+   "x": "vacation",
+   "n": 4542,
+   "rate": 6.12,
+   "interest": 14.31
+  },
+  {
+   "x": "debt_consolidation",
+   "n": 505392,
+   "rate": 5.62,
+   "interest": 13.55
+  },
+  {
+   "x": "major_purchase",
+   "n": 16587,
+   "rate": 5.35,
+   "interest": 12.6
+  },
+  {
+   "x": "car",
+   "n": 8593,
+   "rate": 5.33,
+   "interest": 11.95
+  },
+  {
+   "x": "home_improvement",
+   "n": 49956,
+   "rate": 4.64,
+   "interest": 12.97
+  },
+  {
+   "x": "credit_card",
+   "n": 200144,
+   "rate": 4.03,
+   "interest": 11.74
+  }
+ ],
+ "bucket": [
+  {
+   "x": "0-10k",
+   "n": 264137,
+   "share": 30.86,
+   "rate": 5.65
+  },
+  {
+   "x": "10-20k",
+   "n": 353206,
+   "share": 41.26,
+   "rate": 5.47
+  },
+  {
+   "x": "20-30k",
+   "n": 174191,
+   "share": 20.35,
+   "rate": 5.08
+  },
+  {
+   "x": "30k+",
+   "n": 64435,
+   "share": 7.53,
+   "rate": 5.25
+  }
+ ]
+}

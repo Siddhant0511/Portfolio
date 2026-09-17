@@ -1,0 +1,40 @@
+---
+/** Numbered sequence (protocols, roadmaps, frameworks). A rail on wide screens, a list on phones. */
+interface Props {
+  items: { title: string; body: string; meta?: string }[];
+  numbered?: boolean;
+}
+const { items, numbered = true } = Astro.props;
+const lg = items.length >= 5 ? 'lg:grid-cols-5' : items.length === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3';
+---
+
+<ol class:list={['case-block grid gap-x-6 sm:grid-cols-2', lg]} data-reveal>
+  {
+    items.map((it, i) => (
+      <li class="step relative border-t border-ink/30 pt-4 pb-6" style={`--k:${i}`}>
+        <span class="absolute -top-px left-0 h-px w-10 bg-accent" aria-hidden="true" />
+        {numbered && <span class="font-mono text-xs text-accent-ink">{String(i + 1).padStart(2, '0')}</span>}
+        <p class="mt-2 font-display text-lg leading-tight font-semibold tracking-[-0.02em]">{it.title}</p>
+        <p class="mt-2 text-[15px] leading-relaxed text-ink-2">{it.body}</p>
+        {it.meta && <p class="mt-3 font-mono text-xs text-muted">{it.meta}</p>}
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) :global([data-reveal]) .step {
+      opacity: 0;
+      transform: translateY(8px);
+      transition:
+        opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: calc(120ms + var(--k) * 90ms);
+    }
+    :global(.js) :global([data-reveal].is-in) .step {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

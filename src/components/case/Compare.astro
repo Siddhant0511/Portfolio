@@ -1,0 +1,34 @@
+---
+/** Before and after comparison, one row per dimension. Stacks on phones. */
+interface Props {
+  rows: { k: string; before: string; after: string }[];
+  beforeLabel?: string;
+  afterLabel?: string;
+}
+const { rows, beforeLabel = 'Before', afterLabel = 'After' } = Astro.props;
+---
+
+<div class="case-block compare" data-reveal>
+  <div class="hidden grid-cols-[12rem_1fr_1fr] gap-6 border-b border-ink/30 pb-3 md:grid">
+    <span></span>
+    <span class="label">{beforeLabel}</span>
+    <span class="label !text-accent-ink">{afterLabel}</span>
+  </div>
+  <dl>
+    {
+      rows.map((r) => (
+        <div class="grid gap-2 border-b border-line py-4 md:grid-cols-[12rem_1fr_1fr] md:gap-6">
+          <dt class="text-sm font-medium">{r.k}</dt>
+          <dd class="flex gap-2 text-[15px] leading-snug text-muted">
+            <span class="label shrink-0 pt-0.5 md:hidden">{beforeLabel}</span>
+            {r.before}
+          </dd>
+          <dd class="flex gap-2 text-[15px] leading-snug text-ink">
+            <span class="label shrink-0 pt-0.5 !text-accent-ink md:hidden">{afterLabel}</span>
+            <span class="relative md:pl-4 md:before:absolute md:before:top-[0.6em] md:before:left-0 md:before:h-px md:before:w-2 md:before:bg-accent">{r.after}</span>
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</div>

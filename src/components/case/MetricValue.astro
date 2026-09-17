@@ -1,0 +1,31 @@
+---
+import { NumberTicker } from '@/components/ui/number-ticker';
+
+interface Props {
+  value?: number;
+  display?: string;
+  prefix?: string;
+  suffix?: string;
+  decimals?: number;
+}
+
+const { value, display, prefix = '', suffix = '', decimals = 0 } = Astro.props;
+const final =
+  display ??
+  `${prefix}${new Intl.NumberFormat('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }).format(value ?? 0)}${suffix}`;
+---
+
+{
+  value === undefined || display ? (
+    <span>{final}</span>
+  ) : (
+    <span>
+      <span class="sr-only">{final}</span>
+      <span aria-hidden="true" class="whitespace-nowrap">
+        {prefix}
+        <NumberTicker client:visible value={value} decimalPlaces={decimals} />
+        {suffix && <span class="suffix">{suffix}</span>}
+      </span>
+    </span>
+  )
+}

@@ -1,0 +1,133 @@
+---
+import { site } from '@/lib/site';
+import { url } from '@/lib/utils';
+import { ListIcon, MoonIcon, SunIcon, ArrowRightIcon } from '@phosphor-icons/react';
+
+const nav = [
+  { label: 'Work', href: url('/#work') },
+  { label: 'Experience', href: url('/#experience') },
+  { label: 'About', href: url('/#about') },
+  { label: 'Contact', href: url('/#contact') },
+];
+---
+
+<header
+  class="sticky top-0 z-50 border-b border-line/80 bg-bg/80 backdrop-blur-md supports-[backdrop-filter]:bg-bg/70"
+  transition:persist="site-header"
+>
+  <div class="container-x flex h-16 items-center justify-between gap-6">
+    <a href={url('/')} class="group flex items-center gap-3" aria-label={`${site.name}, home`}>
+      <span
+        class="relative grid size-8 place-items-center bg-ink font-mono text-[11px] font-semibold tracking-tight text-bg transition-colors duration-300 group-hover:bg-accent"
+        aria-hidden="true"
+      >
+        SM
+      </span>
+      <span class="font-display text-[15px] font-semibold tracking-tight [font-variation-settings:'opsz'_24]">
+        {site.name}
+      </span>
+    </a>
+
+    <nav aria-label="Primary" class="hidden md:block">
+      <ul class="flex items-center gap-1">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="rounded-xs px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-surface-2 hover:text-ink"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      {
+        site.resume && (
+          <a
+            href={url(`/${site.resume}`)}
+            class="hidden h-9 items-center border border-line-strong px-3 text-sm transition-colors hover:border-ink sm:inline-flex"
+          >
+            Résumé
+          </a>
+        )
+      }
+      <button
+        type="button"
+        data-theme-toggle
+        class="grid size-9 cursor-pointer place-items-center text-ink-2 transition-colors hover:bg-surface-2 hover:text-ink"
+        aria-label="Toggle dark mode"
+      >
+        <MoonIcon className="size-[18px] dark:hidden" aria-hidden="true" />
+        <SunIcon className="hidden size-[18px] dark:block" aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        data-menu-toggle
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="grid size-9 cursor-pointer place-items-center text-ink-2 hover:bg-surface-2 hover:text-ink md:hidden"
+        aria-label="Open menu"
+      >
+        <ListIcon className="size-5" aria-hidden="true" />
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" data-menu hidden class="border-t border-line md:hidden">
+    <ul class="container-x grid py-2">
+      {
+        nav.map((item) => (
+          <li>
+            <a href={item.href} data-menu-link class="flex items-center justify-between border-b border-line py-4 font-display text-2xl font-semibold tracking-tight last:border-0">
+              {item.label}
+              <ArrowRightIcon className="size-5 text-muted" aria-hidden="true" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</header>
+
+<script>
+  function setupHeader() {
+    const toggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+    if (toggle && !toggle.dataset.bound) {
+      toggle.dataset.bound = 'true';
+      toggle.addEventListener('click', () => {
+        const root = document.documentElement;
+        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try {
+          localStorage.setItem('theme', next);
+        } catch {}
+      });
+    }
+
+    const menuBtn = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+    const menu = document.querySelector<HTMLElement>('[data-menu]');
+    if (menuBtn && menu && !menuBtn.dataset.bound) {
+      menuBtn.dataset.bound = 'true';
+      const setOpen = (open: boolean) => {
+        menu.hidden = !open;
+        menuBtn.setAttribute('aria-expanded', String(open));
+        menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      };
+      menuBtn.addEventListener('click', () => setOpen(menu.hidden));
+      menu.querySelectorAll('[data-menu-link]').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !menu.hidden) {
+          setOpen(false);
+          menuBtn.focus();
+        }
+      });
+      document.addEventListener('astro:after-swap', () => setOpen(false));
+    }
+  }
+  document.addEventListener('astro:page-load', setupHeader);
+</script>

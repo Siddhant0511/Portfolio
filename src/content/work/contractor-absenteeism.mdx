@@ -1,0 +1,262 @@
+---
+title: Contractor Absenteeism Analytics
+fileId: AL-02
+order: 2
+group: internship
+org: Ashok Leyland, Alwar Plant 2004
+context: Summer internship, HR department
+period: Apr - Jun 2026
+year: '2026'
+role: Built the data pipeline, ran the analysis, wrote the retention framework
+team: Individual, reporting to Head HR
+summary: A local-LLM data pipeline over 2,530 vendor files that showed absenteeism predicts attrition, and that the first 90 days decide who stays.
+problem: A 76% contractor attrition rate, with attendance for 8,387 workers scattered across 2,530 inconsistent Excel files from 15+ vendors.
+tools: [Python, Local LLM, Regex, Random Forest, Correlation analysis]
+tags: [Workforce analytics, Data engineering, Machine learning]
+metrics:
+  - { value: 1052714, label: 'attendance rows reconciled into one dataset' }
+  - { value: 54, suffix: '%', label: 'absenteeism in the first 3 months of tenure' }
+  - { value: 87, prefix: '+', suffix: '%', label: 'spike in absence before an employee exits' }
+---
+
+import Figure from '@/components/case/Figure.astro';
+import Flow from '@/components/case/Flow.astro';
+import Columns from '@/components/case/Columns.astro';
+import Bars from '@/components/case/Bars.astro';
+import LineChart from '@/components/case/LineChart.astro';
+import Callout from '@/components/case/Callout.astro';
+import Stats from '@/components/case/Stats.astro';
+import Steps from '@/components/case/Steps.astro';
+import DataTable from '@/components/case/DataTable.astro';
+
+export const payday = (() => {
+  // Points read from the report's day-of-month figure; missing days linearly interpolated.
+  const known = { 1: 25.0, 5: 24.5, 8: 24.8, 10: 25.2, 12: 26.0, 14: 28.5, 15: 27.5, 17: 27.0, 20: 27.7, 21: 29.1, 22: 28.0, 23: 27.3, 24: 25.5, 25: 23.0, 26: 21.5, 27: 22.0, 28: 22.5, 29: 22.0, 30: 21.4, 31: 22.5 };
+  const days = Object.keys(known).map(Number);
+  return Array.from({ length: 31 }, (_, i) => {
+    const d = i + 1;
+    if (known[d] !== undefined) return known[d];
+    const lo = Math.max(...days.filter((k) => k < d));
+    const hi = Math.min(...days.filter((k) => k > d));
+    return known[lo] + ((known[hi] - known[lo]) * (d - lo)) / (hi - lo);
+  });
+})();
+
+## The problem
+
+Workforce stability decides how well an assembly line runs. At the Alwar plant, the contractor workforce had a **76% headline attrition rate**: in effect, the entire contractor base turned over every 16 months.
+
+Nobody could see why, because the data was unusable. Attendance for **8,387 contractor employees** lived in **2,530 Excel files**, kept by more than 15 vendors, each in its own format. Absenteeism was treated as an administrative number to be filed, not as an operational risk to be managed.
+
+The thesis I set out to test: **absenteeism is a leading indicator**. If it rises before people leave, it can warn HR while there is still time to act.
+
+## Building the dataset
+
+Manual consolidation was never realistic. I wrote a Python pipeline to do it, and put a **locally hosted LLM** inside it. That was a practical choice, not an experiment: the files were too many to review by hand, and too confidential to send to any cloud service. Running the model on the laptop meant no employee data left the machine, and the pipeline worked without the plant's internet.
+
+<Figure title="From 2,530 vendor files to one analytical table">
+  <Flow
+    steps={[
+      { title: 'Crawl and normalise', detail: 'Recursive ingestion; department, vendor and month pulled from file paths', meta: '130+ job titles unified' },
+      { title: 'Fix anomalies', detail: 'A vendor system had stamped March 2025 records with the year 2012', meta: '44,121 rows corrected' },
+      { title: 'Reshape', detail: 'Wide 31-day sheets pivoted into long, relational rows', meta: 'One row per worker-day' },
+      { title: 'Merge', detail: 'Joined with the HR demographics master', meta: '1,052,714 valid rows', emphasis: true },
+    ]}
+  />
+</Figure>
+
+Regex rules merged variants like `HELPR`, `HLPR` and `HELPER` into a single designation. The result was a table where tenure, skill level, department and vendor could finally be compared.
+
+<Stats
+  items={[
+    { value: 25.3, decimals: 1, suffix: '%', label: 'plant-wide daily absenteeism' },
+    { value: 86628, label: 'working days lost in FY24-25' },
+    { value: 92706, label: 'working days lost in FY25-26' },
+    { value: -0.46, decimals: 2, label: 'correlation between tenure and absenteeism' },
+  ]}
+/>
+
+## The tenure paradox
+
+Tenure turned out to be the strongest single predictor of absence, with a correlation of **-0.460**. New hires in their first three months were absent **53.96%** of the time, nearly three times the rate of anyone past six months.
+
+<Figure title="Absenteeism by tenure" note="The first 90 days are where the problem lives." source="Attendance FY24-25 and FY25-26, 1,052,714 rows">
+  <Columns
+    reference={{ value: 25.3, label: 'Plant average 25.3%' }}
+    items={[
+      { label: '0-3 months', value: 54.0, highlight: true },
+      { label: '3-6 months', value: 25.5 },
+      { label: '6-12 months', value: 18.9 },
+      { label: '1-2 years', value: 23.2 },
+      { label: '2-5 years', value: 24.4 },
+    ]}
+  />
+</Figure>
+
+Combining variables made the target sharper. Semi-skilled workers in their first three months were absent **58.0%** of the time, and there were **2,836** of them.
+
+<DataTable
+  caption="Absenteeism by tenure and skill cohort"
+  head={['Cohort', 'Tenure', 'Skill', 'Absenteeism']}
+  numeric={[3]}
+  highlightRow={0}
+  rows={[
+    ['Highest risk', '0-3 months', 'Semi-skilled', '58.0%'],
+    ['', '0-3 months', 'Skilled', '43.9%'],
+    ['', '3-6 months', 'Semi-skilled', '29.4%'],
+    ['', '6-12 months', 'Semi-skilled', '22.0%'],
+    ['', '3-6 months', 'Skilled', '20.1%'],
+    ['Most stable', '6-12 months', 'Skilled', '16.5%'],
+  ]}
+/>
+
+A Random Forest confirmed it: once tenure was known, demographics added almost nothing.
+
+<Figure title="What the model relied on" note="Random Forest feature importance.">
+  <Bars
+    suffix="%"
+    items={[
+      { label: 'Tenure (months)', value: 91.7, highlight: true },
+      { label: 'Status (active or exited)', value: 3.8 },
+      { label: 'Skill level', value: 2.7 },
+      { label: 'Age', value: 1.3 },
+      { label: 'Gender', value: 0.5 },
+    ]}
+  />
+</Figure>
+
+## The attrition illusion
+
+HR had treated a resignation as a sudden event. The data said otherwise. In the weeks before leaving, a worker's absenteeism climbed from the active baseline of **20.7%** to **38.5%**, an 87% jump.
+
+<Callout>Resignations are not sudden. Absence climbs 87% first, which makes it a warning signal HR can act on.</Callout>
+
+That turns absenteeism from a lagging admin metric into an early-warning system: a measurable sign of quiet quitting, weeks before the paperwork.
+
+<Figure title="Absenteeism before an exit" note="Active employees compared with the same measure in the period before departure.">
+  <Bars
+    suffix="%"
+    labelWidth="12rem"
+    items={[
+      { label: 'Active employees', value: 20.7 },
+      { label: 'Before departure', value: 38.5, highlight: true, note: '+87% over the active baseline' },
+    ]}
+  />
+</Figure>
+
+## Vendors and paydays
+
+Among vendors with at least 1,000 scheduled days, the riskiest vendor's workers were absent more than twice as often as the steadiest vendor's. That pointed at vendor onboarding practice rather than who the workers were.
+
+<Figure title="Vendor risk index" note="Absenteeism by contractor vendor, minimum 1,000 scheduled days. Vendor names abbreviated.">
+  <Bars
+    suffix="%"
+    labelWidth="5rem"
+    reference={{ value: 25.3, label: 'Plant average' }}
+    items={[
+      { label: 'SRD', value: 51.5, highlight: true },
+      { label: 'USL', value: 41.5 },
+      { label: 'VI', value: 32.7 },
+      { label: 'IE', value: 32.5 },
+      { label: 'QIS', value: 30.6 },
+      { label: 'AOT', value: 29.0 },
+      { label: 'ISS', value: 28.3 },
+      { label: 'ALM', value: 27.8 },
+      { label: 'MH', value: 27.3 },
+      { label: 'AD', value: 23.7 },
+    ]}
+  />
+</Figure>
+
+The day of the month mattered too, in a way that had nothing to do with fatigue. Absence peaked between days 14 and 23, right after contractor payouts, and fell sharply at month-end as workers came back to secure the next cycle's wages.
+
+<Figure title="The payday effect" note="Absenteeism by day of month. Shaded: the payday window, days 14 to 23." source="SIP report figure 2.5; intermediate days interpolated">
+  <LineChart
+    ariaLabel="Absenteeism rises from about 25% early in the month to a peak of 29.1% on day 21, then falls to a low of 21.4% on day 30"
+    series={[{ name: 'Absenteeism', values: payday, tone: 'ink', width: 2.25 }]}
+    yMin={20}
+    yMax={30}
+    yTicks={[20, 22, 24, 26, 28, 30]}
+    ySuffix="%"
+    xLabels={[{ at: 0, label: 'Day 1' }, { at: 9, label: '10' }, { at: 19, label: '20' }, { at: 30, label: '31' }]}
+    bands={[{ from: 13, to: 22, label: 'After payout' }]}
+    refs={[{ y: 25.3, label: 'Avg 25.3%' }]}
+    points={[
+      { x: 20, y: 29.1, label: 'Day 21: 29.1%' },
+      { x: 29, y: 21.4, label: 'Day 30: 21.4%', tone: 'ink', place: 'below' },
+    ]}
+  />
+</Figure>
+
+Most absences were single days (60.3%), but **22.2% came in blocks of three days or more**, the pattern of a migrant workforce travelling home.
+
+<Figure title="How long absences last">
+  <Bars
+    suffix="%"
+    labelWidth="10rem"
+    items={[
+      { label: '1 day', value: 60.3 },
+      { label: '2 days', value: 17.4 },
+      { label: '3-5 days', value: 14.6, highlight: true },
+      { label: '6-10 days', value: 6.1, highlight: true },
+      { label: 'More than 10 days', value: 1.5, highlight: true },
+    ]}
+  />
+</Figure>
+
+## Festivals, harvests and heat
+
+External life shaped attendance more than working conditions did. Eid and Holi drove the biggest spikes, and the Rabi harvest pulled workers back to their fields. Two findings ran against intuition: absence **fell** during Diwali, and it fell during extreme heat above 43°C, which suggests workers preferred the air-cooled plant floor to the outdoors.
+
+<div class="case-block grid gap-6 lg:grid-cols-2">
+  <Figure title="Festivals and seasons" note="Absenteeism rate against the 25.3% baseline.">
+    <Bars
+      suffix="%"
+      decimals={2}
+      labelWidth="7.5rem"
+      reference={{ value: 25.31, label: 'Baseline' }}
+      items={[
+        { label: 'Eid', value: 33.69, highlight: true },
+        { label: 'Holi', value: 29.68 },
+        { label: 'Rabi harvest', value: 28.04 },
+        { label: 'Wedding season', value: 27.29 },
+        { label: 'Diwali', value: 21.23 },
+      ]}
+    />
+  </Figure>
+  <Figure title="Weather" note="Extreme heat did not push absence up.">
+    <Bars
+      suffix="%"
+      decimals={2}
+      labelWidth="7.5rem"
+      reference={{ value: 25.31, label: 'Baseline' }}
+      items={[
+        { label: 'Summer, warm', value: 29.17 },
+        { label: 'Winter, cool', value: 27.0 },
+        { label: 'Above 43°C', value: 25.23, highlight: true },
+        { label: 'Monsoon', value: 23.38 },
+        { label: 'Post-monsoon', value: 23.02 },
+      ]}
+    />
+  </Figure>
+</div>
+
+## What I recommended
+
+The findings pointed to one place to spend effort: the first 90 days, with vendors held accountable for them.
+
+<Steps
+  items={[
+    { title: 'First 90 days gate', body: 'Concentrate engagement on the 0-3 month group. Surviving this window is the best predictor of staying.' },
+    { title: 'Day-12 mentorship', body: 'Track new hires closely. Two absences in the first ten days trigger an immediate mentorship conversation.' },
+    { title: 'Tenure-adjusted vendor SLAs', body: 'Make early-stage absenteeism a contractual KPI so vendors improve screening and onboarding.' },
+    { title: 'Festival and harvest readiness', body: 'Use Eid and Rabi harvest history to adjust manpower buffers four weeks ahead.' },
+    { title: 'Stay-score dashboard', body: 'Flag anyone whose absence climbs toward the 38.5% pre-departure level, while there is time to talk.' },
+  ]}
+/>
+
+## Impact
+
+Contractor absenteeism went from an opaque administrative burden to something HR can predict. The pipeline turned over a million historical records into one dataset, identified the exact high-risk group, and showed that a spike in absence reliably comes before an exit.
+
+The First 90 Days strategy aims straight at the root cause of the 76% attrition rate, with a quantified path to recovering thousands of lost working days and steadier production lines.

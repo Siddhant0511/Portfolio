@@ -1,0 +1,77 @@
+---
+/**
+ * Process or system flow. Horizontal from md up, vertical on phones.
+ * An edge can carry a label and be flagged as a failure point.
+ */
+interface Step {
+  title: string;
+  detail?: string;
+  meta?: string;
+  emphasis?: boolean;
+}
+interface Edge {
+  label?: string;
+  fail?: boolean;
+}
+interface Props {
+  steps: Step[];
+  edges?: Edge[];
+}
+const { steps, edges = [] } = Astro.props;
+const labelled = edges.some((e) => e?.label);
+---
+
+<ol class="flow flex flex-col md:flex-row md:items-stretch">
+  {
+    steps.map((s, i) => {
+      const e = edges[i];
+      return (
+        <>
+          <li
+            class:list={[
+              'step relative flex min-w-0 flex-1 flex-col border p-4 sm:p-5',
+              s.emphasis ? 'border-ink bg-ink text-bg' : 'border-line-strong bg-bg',
+            ]}
+            style={`--k:${i}`}
+          >
+            <span class:list={['font-mono text-[11px]', s.emphasis ? 'text-bg/60' : 'text-muted']}>{String(i + 1).padStart(2, '0')}</span>
+            <span class="mt-2 font-display text-lg leading-tight font-semibold tracking-[-0.02em]">{s.title}</span>
+            {s.detail && <span class:list={['mt-1.5 text-sm leading-snug', s.emphasis ? 'text-bg/75' : 'text-ink-2']}>{s.detail}</span>}
+            {s.meta && <span class:list={['mt-auto pt-3 font-mono text-[11px]', s.emphasis ? 'text-bg/60' : 'text-muted']}>{s.meta}</span>}
+          </li>
+          {i < steps.length - 1 && (
+            <li aria-hidden={e?.label ? undefined : 'true'} class:list={['edge relative flex min-h-10 items-center justify-center md:min-h-0 md:shrink-0', labelled ? 'min-h-12 md:w-20 lg:w-24' : 'md:w-12 lg:w-16']}>
+              <span class:list={['absolute md:inset-x-0 md:top-1/2 md:h-px inset-y-0 left-1/2 w-px md:left-0 md:w-auto', e?.fail ? 'bg-accent' : 'bg-line-strong']} />
+              {e?.fail && <span class="relative size-2.5 rotate-45 bg-accent" />}
+              {!e?.fail && (
+                <span class="relative size-2 rotate-45 border-r border-b border-line-strong bg-bg md:-rotate-45" />
+              )}
+              {e?.label && (
+                <span class:list={['absolute left-1/2 ml-4 text-xs leading-tight whitespace-nowrap md:top-[calc(50%+0.9rem)] md:left-1/2 md:ml-0 md:w-full md:-translate-x-1/2 md:px-1 md:text-center md:whitespace-normal', e.fail ? 'text-accent-ink' : 'text-muted']}>
+                  {e.label}
+                </span>
+              )}
+            </li>
+          )}
+        </>
+      );
+    })
+  }
+</ol>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) :global([data-reveal]) .step {
+      opacity: 0;
+      transform: translateY(8px);
+      transition:
+        opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: calc(150ms + var(--k) * 110ms);
+    }
+    :global(.js) :global([data-reveal].is-in) .step {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

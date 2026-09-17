@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# raw project source material (large, contains private documents)
+Porjects case files/
+RESUME AND OTHER FILES/

@@ -1,0 +1,45 @@
+---
+/** Compact data table. Numeric columns right-align; one row or column can be highlighted. */
+interface Props {
+  head: string[];
+  rows: (string | number)[][];
+  numeric?: number[];
+  highlightRow?: number;
+  caption: string;
+}
+const { head, rows, numeric = [], highlightRow, caption } = Astro.props;
+---
+
+<div class="case-block overflow-x-auto" data-reveal>
+  <table class="w-full min-w-[34rem] border-collapse text-left text-sm">
+    <caption class="sr-only">{caption}</caption>
+    <thead>
+      <tr class="border-b border-ink/30">
+        {
+          head.map((h, i) => (
+            <th scope="col" class:list={['label py-3 pr-4 font-normal', numeric.includes(i) && 'text-right']}>
+              {h}
+            </th>
+          ))
+        }
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((r, ri) => (
+          <tr class:list={['border-b border-line', ri === highlightRow && 'bg-accent-soft']}>
+            {r.map((c, ci) =>
+              ci === 0 ? (
+                <th scope="row" class:list={['py-3 pr-4 font-medium', ri === highlightRow && 'text-accent-ink']}>
+                  {c}
+                </th>
+              ) : (
+                <td class:list={['py-3 pr-4 text-ink-2', numeric.includes(ci) && 'num text-right']}>{c}</td>
+              ),
+            )}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
