@@ -38,7 +38,7 @@ const ogImage = image ? new URL(image, Astro.site) : undefined;
     {ogImage && <meta property="og:image" content={ogImage} />}
     <meta name="twitter:card" content="summary_large_image" />
 
-    <Font cssVariable="--font-bricolage" preload />
+    <Font cssVariable="--font-satoshi" preload />
     <Font cssVariable="--font-geist" preload />
     <Font cssVariable="--font-geist-mono" />
 
@@ -78,7 +78,7 @@ const ogImage = image ? new URL(image, Astro.site) : undefined;
 
     <script>
       function setupReveal() {
-        const items = document.querySelectorAll<HTMLElement>('[data-reveal]:not(.is-in)');
+        const items = document.querySelectorAll<HTMLElement>('[data-reveal]:not(.is-in), [data-mask]:not(.is-in)');
         if (!('IntersectionObserver' in window)) {
           items.forEach((el) => el.classList.add('is-in'));
           return;

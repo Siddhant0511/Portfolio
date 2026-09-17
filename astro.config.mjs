@@ -27,21 +27,14 @@ export default defineConfig({
   },
   fonts: [
     {
-      provider: fontProviders.local(),
-      name: 'Bricolage Grotesque',
-      cssVariable: '--font-bricolage',
+      provider: fontProviders.fontshare(),
+      name: 'Satoshi',
+      cssVariable: '--font-satoshi',
+      // Fontshare serves discrete weights, not a variable range
+      weights: ['400', '500', '700', '900'],
+      styles: ['normal'],
+      subsets: ['latin'],
       fallbacks: ['ui-sans-serif', 'system-ui', 'sans-serif'],
-      options: {
-        variants: [
-          {
-            // "standard" carries both the wght and opsz axes
-            src: ['./node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-standard-normal.woff2'],
-            weight: '200 800',
-            style: 'normal',
-            display: 'swap',
-          },
-        ],
-      },
     },
     {
       provider: fontProviders.local(),

@@ -10,6 +10,14 @@ Handoff context for the v2 redesign (September 2026). Design system: `DESIGN.md`
 - Charts are drawn from the source data (NLDC SCADA, StreamMax, credit dataset) or from figures stated in the reports. Several v1 numbers that did not appear in the SIP report were removed.
 - TezCredit and VitalChain prototypes are hosted in `public/demos/`, with screenshots captured from the running apps.
 
+## Post-launch revisions (18 September 2026)
+- Display face changed from Bricolage Grotesque to **Satoshi** (Fontshare provider, discrete weights). Bricolage package removed.
+- Hero: tighter portrait crop, full institute name, job title now "Summer Intern, Analytics & Operations" (HR dropped).
+- The four-number proof strip under the hero was removed; the hero now flows straight into the work section.
+- Academic record table is centre-aligned.
+- Added a motion layer: masked heading reveals, portrait wipe, timeline node fills, nav and row underline wipes, sliding contents marker, self-drawing case section rules, hover zoom on zoomable artefacts.
+- CI fix: TypeScript pinned to 6.x, because `@astrojs/check` peers on ^5 || ^6 and the 7.x install broke `npm ci` in the Pages workflow.
+
 ## Case files
 | ID | Slug | Source material |
 |---|---|---|

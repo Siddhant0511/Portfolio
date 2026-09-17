@@ -46,11 +46,11 @@ Charts are monochrome plus the accent: neutral marks in `line-strong`, the point
 ### Type
 | Role | Face | Notes |
 |---|---|---|
-| Display | **Bricolage Grotesque** (variable, `opsz` 96) | Headlines, names, big numbers. Tracking -0.03 to -0.04em |
+| Display | **Satoshi** (weights 400, 500, 700, 900) | Headlines, name, big numbers. Tracking -0.03 to -0.04em; the name sits at 700 |
 | Body | **Geist** | Running text 16-17px, line-height 1.6-1.75 |
 | Data / labels | **Geist Mono** | Metrics, file IDs, axis labels, `.label` (uppercase, 0.08em tracking) |
 
-Fonts are self-hosted through Astro's font API (`local` provider pointing at the installed Fontsource files) with preloads and metric-matched fallbacks.
+Fonts are self-hosted through Astro's font API with preloads and metric-matched fallbacks: Satoshi via the `fontshare` provider (discrete weights only, a variable range returns nothing), Geist and Geist Mono via the `local` provider pointing at the installed Fontsource files.
 
 ### Shape and space
 - Corners are square. Containers, buttons and chips use no rounding.
@@ -64,13 +64,12 @@ Fonts are self-hosted through Astro's font API (`local` provider pointing at the
 
 ### Home (`src/pages/index.astro`)
 1. **Hero**: eyebrow, name in display type with an accent full stop, 19-word lead, two CTAs (magnetic primary). Portrait inside a "drawing sheet" frame with registration marks and a four-cell title block.
-2. **Proof strip**: four animated numbers (rows engineered, loans profiled, plant systems, case files).
-3. **Four systems for one truck plant**: bento of the Ashok Leyland case files, each tile with a different real visual (phone screens, tenure chart, sync timeline, tyre photos).
-4. **More case files**: filterable index (All / Case competitions / Academic). On desktop a preview card follows the cursor with the project's headline metric.
-5. **Experience**: sticky heading, scroll-drawn timeline, internship entry links to its four case files.
-6. **About**: editorial statement, capabilities, academic record, the page's only marquee (tools).
-7. **Beyond the classroom**: awards and leadership ledger.
-8. **Contact**: dark closing band, large email with copy button, LinkedIn.
+2. **Four systems for one truck plant**: bento of the Ashok Leyland case files, each tile with a different real visual (phone screens, tenure chart, sync timeline, tyre photos).
+3. **More case files**: filterable index (All / Case competitions / Academic). On desktop a preview card follows the cursor with the project's headline metric.
+4. **Experience**: sticky heading, scroll-drawn timeline, internship entry links to its four case files.
+5. **About**: editorial statement, capabilities, centred academic record, the page's only marquee (tools).
+6. **Beyond the classroom**: awards and leadership ledger.
+7. **Contact**: dark closing band, large email with copy button, LinkedIn.
 
 ### Case file (`src/pages/work/[slug].astro`)
 Header (file ID, group, title, summary, role / context / team / when) → key-numbers band → two columns: sticky "On this page" contents with tools and live links on the left, the MDX body on the right → previous / next.
@@ -86,15 +85,22 @@ Case bodies follow a narrative: problem → approach → what the data showed �
 Two tiers, all disabled or reduced under `prefers-reduced-motion`.
 
 **Ambient**
-- Hero lines rise from a mask on load (CSS), supporting elements fade up in sequence.
+- Hero: name lines rise from a mask, the portrait uncovers itself with a `clip-path` wipe and settles out of a slow push-in, supporting elements fade up in sequence.
+- Section headings rise from behind their own edge once, on first view (`[data-mask]`, staggered per line).
 - `[data-reveal]` elements fade and rise 14px once when they enter the viewport (IntersectionObserver).
 - Bars, columns and dumbbell gaps grow from zero on reveal; line charts draw left to right via `clip-path`.
 - Number tickers count up once when visible.
+- Experience: the timeline rule draws itself (scroll-driven), and each role's node scales up and fills with the accent as it arrives.
+- Case studies: each section rule draws itself on scroll (`animation-timeline: view()`), and a 2px progress bar tracks reading.
 
 **Interactive**
 - Magnetic primary CTA, bento tiles lift on hover, tyre photos go from grayscale to colour with a scan line.
-- Work index: filter pill slides between options (`layoutId`), rows re-flow, cursor-following preview.
+- Nav links and work-index rows wipe an accent underline in from the left; the theme-toggle icon eases through a rotation.
+- Work index: filter pill slides between options (`layoutId`), rows re-flow, cursor-following preview card.
+- Case contents: the sidebar marker slides to the section being read; zoomable artefacts scale slightly under the cursor.
 - Astro view transitions morph a case title from its tile into the case page header.
+
+Every one of these is gated behind `prefers-reduced-motion: no-preference`, and the masked reveals only apply once JS has added `.js`, so text is never stuck invisible.
 
 ---
 

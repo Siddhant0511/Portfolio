@@ -23,7 +23,7 @@ const nav = [
       >
         SM
       </span>
-      <span class="font-display text-[15px] font-semibold tracking-tight [font-variation-settings:'opsz'_24]">
+      <span class="font-display text-[15px] font-semibold tracking-tight">
         {site.name}
       </span>
     </a>
@@ -35,9 +35,13 @@ const nav = [
             <li>
               <a
                 href={item.href}
-                class="rounded-xs px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-surface-2 hover:text-ink"
+                class="group relative px-3 py-2 text-sm text-ink-2 transition-colors hover:text-ink"
               >
                 {item.label}
+                <span
+                  aria-hidden="true"
+                  class="absolute inset-x-3 bottom-1 h-px origin-left scale-x-0 bg-accent transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100 group-focus-visible:scale-x-100 motion-reduce:transition-none"
+                />
               </a>
             </li>
           ))
@@ -59,7 +63,7 @@ const nav = [
       <button
         type="button"
         data-theme-toggle
-        class="grid size-9 cursor-pointer place-items-center text-ink-2 transition-colors hover:bg-surface-2 hover:text-ink"
+        class="group grid size-9 cursor-pointer place-items-center text-ink-2 transition-colors hover:bg-surface-2 hover:text-ink [&_svg]:transition-transform [&_svg]:duration-500 [&_svg]:ease-[cubic-bezier(0.16,1,0.3,1)] hover:[&_svg]:-rotate-45 motion-reduce:[&_svg]:transition-none"
         aria-label="Toggle dark mode"
       >
         <MoonIcon className="size-[18px] dark:hidden" aria-hidden="true" />

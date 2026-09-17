@@ -57,7 +57,7 @@
   --color-good: var(--good);
   --color-bad: var(--bad);
 
-  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-satoshi), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 }
@@ -115,7 +115,6 @@
 
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    font-variation-settings: "opsz" 96;
     letter-spacing: -0.025em;
     line-height: 1.05;
     text-wrap: balance;
@@ -229,9 +228,48 @@
   }
   .astro-code span { color: var(--shiki-light); }
   [data-theme="dark"] .astro-code span { color: var(--shiki-dark); }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .case-body > h2:not(:first-child) {
+        border-top-color: transparent;
+        background-image: linear-gradient(var(--line), var(--line));
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        background-size: 0% 1px;
+        animation: rule-draw linear both;
+        animation-timeline: view();
+        animation-range: entry 5% entry 70%;
+      }
+      @keyframes rule-draw {
+        to { background-size: 100% 1px; }
+      }
+    }
+  }
   .case-body > .case-block { margin-top: 2.5rem; }
   .case-body > h2 + .case-block { margin-top: 2rem; }
   .case-body > .case-block + .case-block { margin-top: 3rem; }
+}
+
+/* Masked line reveal: the text slides up from behind its own edge, once, on first view.
+   The block display is unconditional so the layout matches with and without motion. */
+[data-mask] {
+  display: block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-mask] {
+    overflow: hidden;
+    padding-bottom: 0.08em;
+  }
+  .js [data-mask] > * {
+    display: block;
+    transform: translateY(105%);
+    transition: transform 950ms var(--ease-out-expo);
+    transition-delay: calc(var(--mask-i, 0) * 90ms);
+  }
+  .js [data-mask].is-in > * {
+    transform: none;
+  }
 }
 
 /* Reveal-on-scroll: elements start hidden only when JS + motion are available. */

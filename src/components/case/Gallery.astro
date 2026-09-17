@@ -44,7 +44,11 @@ const sizes =
             alt={img.alt}
             widths={widths}
             sizes={sizes}
-            class:list={['w-full', variant === 'phones' && 'aspect-[10/16] border border-line bg-white object-cover object-top']}
+            class:list={[
+              'w-full',
+              variant === 'phones' && 'aspect-[10/16] border border-line bg-white object-cover object-top',
+              zoom && 'transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.02] motion-reduce:transition-none',
+            ]}
           />
           {zoom && (
             <button

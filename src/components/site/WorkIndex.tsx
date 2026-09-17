@@ -128,8 +128,12 @@ export default function WorkIndex({ items }: { items: IndexItem[] }) {
                 onPointerEnter={() => setActive(item.id)}
                 onFocus={() => setActive(item.id)}
                 onBlur={() => setActive(null)}
-                className="group grid grid-cols-[3.75rem_1fr_auto] items-start gap-x-4 gap-y-1 py-5 transition-colors sm:grid-cols-[5rem_1fr_auto] sm:py-6 lg:grid-cols-[6rem_minmax(0,1fr)_minmax(0,20rem)_4rem_2.5rem] lg:items-center"
+                className="group relative grid grid-cols-[3.75rem_1fr_auto] items-start gap-x-4 gap-y-1 py-5 transition-colors sm:grid-cols-[5rem_1fr_auto] sm:py-6 lg:grid-cols-[6rem_minmax(0,1fr)_minmax(0,20rem)_4rem_2.5rem] lg:items-center"
               >
+                <span
+                  aria-hidden="true"
+                  className="absolute -bottom-px left-0 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100 group-focus-visible:scale-x-100 motion-reduce:transition-none"
+                />
                 <span className="pt-1 font-mono text-xs text-muted transition-colors group-hover:text-accent-ink lg:pt-0">
                   {item.fileId}
                 </span>

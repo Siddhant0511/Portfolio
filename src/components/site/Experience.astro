@@ -13,7 +13,7 @@ const titles = Object.fromEntries(work.map((w) => [w.id, w.data]));
   <div class="container-x grid gap-12 lg:grid-cols-12 lg:gap-10">
     <div class="lg:col-span-4">
       <div class="lg:sticky lg:top-28">
-        <h2 id="experience-title" class="text-5xl tracking-[-0.04em] sm:text-6xl" data-reveal>Experience</h2>
+        <h2 id="experience-title" class="text-5xl tracking-[-0.04em] sm:text-6xl" data-mask><span>Experience</span></h2>
         <p class="mt-5 max-w-sm text-ink-2" data-reveal style="--reveal-i:1">
           Two very different rooms: an architecture studio coordinating airport projects, and the HR office of a
           truck plant.
@@ -67,6 +67,22 @@ const titles = Object.fromEntries(work.map((w) => [w.id, w.data]));
 </section>
 
 <style>
+  @media (prefers-reduced-motion: no-preference) {
+    /* Each role's node fills with the accent as the entry scrolls in. */
+    .node {
+      transform: scale(0.7);
+      transition:
+        background-color 500ms var(--ease-out-expo) 250ms,
+        border-color 500ms var(--ease-out-expo) 250ms,
+        transform 500ms var(--ease-out-expo) 250ms;
+    }
+    :global(.js) [data-reveal].is-in .node {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      transform: scale(1);
+    }
+  }
+
   .timeline-line {
     position: absolute;
     top: 0.5rem;

@@ -99,7 +99,7 @@ const meta = [
               style={`--reveal-i:${i}`}
               class:list={['flex flex-col gap-3 py-8 sm:py-10', i > 0 && 'border-t border-line sm:border-t-0 sm:border-l sm:pl-6 lg:pl-8']}
             >
-              <dd class="order-1 font-display text-[clamp(2.25rem,4.5vw,3.75rem)] leading-none font-semibold tracking-[-0.045em] [font-variation-settings:'opsz'_96]">
+              <dd class="order-1 font-display text-[clamp(2.25rem,4.5vw,3.75rem)] leading-none font-semibold tracking-[-0.045em]">
                 <MetricValue {...m} />
               </dd>
               <dt class="order-2 max-w-[28ch] text-sm leading-snug text-ink-2">{m.label}</dt>
@@ -113,14 +113,15 @@ const meta = [
       <aside class="hidden lg:col-span-3 lg:block">
         <nav aria-label="On this page" class="sticky top-28">
           <p class="label">On this page</p>
-          <ol class="toc mt-4 border-l border-line">
+          <ol class="toc relative mt-4 border-l border-line">
+            <span data-toc-indicator aria-hidden="true" class="absolute -left-px w-[2px] bg-accent opacity-0"></span>
             {
               toc.map((h) => (
                 <li>
                   <a
                     href={`#${h.slug}`}
                     data-toc={h.slug}
-                    class="-ml-px block border-l border-transparent py-1.5 pl-4 text-sm text-muted transition-colors hover:text-ink"
+                    class="block py-1.5 pl-4 text-sm text-muted transition-colors hover:text-ink"
                   >
                     {h.text}
                   </a>
@@ -230,7 +231,19 @@ const meta = [
 
   .toc a[aria-current='true'] {
     color: var(--ink);
-    border-left-color: var(--accent);
+  }
+
+  /* The contents marker slides to the section you are reading. */
+  [data-toc-indicator] {
+    transition:
+      transform 450ms var(--ease-out-expo),
+      height 450ms var(--ease-out-expo),
+      opacity 250ms ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-toc-indicator] {
+      transition: none;
+    }
   }
 </style>
 
@@ -241,8 +254,16 @@ const meta = [
     const targets = [...links]
       .map((l) => document.getElementById(l.dataset.toc!))
       .filter((el): el is HTMLElement => !!el);
-    const setActive = (id: string) =>
+    const indicator = document.querySelector<HTMLElement>('[data-toc-indicator]');
+    const setActive = (id: string) => {
       links.forEach((l) => l.setAttribute('aria-current', String(l.dataset.toc === id)));
+      const current = [...links].find((l) => l.dataset.toc === id);
+      if (current && indicator) {
+        indicator.style.height = `${current.offsetHeight}px`;
+        indicator.style.transform = `translateY(${current.offsetTop}px)`;
+        indicator.style.opacity = '1';
+      }
+    };
     const io = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
