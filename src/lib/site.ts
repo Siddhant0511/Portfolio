@@ -27,7 +27,7 @@ export type ExperienceEntry = {
 
 export const experience: ExperienceEntry[] = [
   {
-    role: 'Summer Intern, HR Analytics & Operations',
+    role: 'Summer Intern, Analytics & Operations',
     org: 'Ashok Leyland',
     place: 'Alwar Plant 2004, Rajasthan',
     period: 'Apr 2026 - Jun 2026',
