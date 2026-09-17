@@ -43,29 +43,30 @@ import { capabilities, education, tools } from '@/lib/site';
             ))
           }
         </dl>
-
-        <div class="mt-10" data-reveal>
-          <h3 class="text-center font-sans text-sm font-medium tracking-normal text-muted">Academic record</h3>
-          <table class="mt-3 w-full text-center text-sm">
-            <caption class="sr-only">Degrees, institutes, scores and years</caption>
-            <thead class="sr-only">
-              <tr><th scope="col">Qualification</th><th scope="col">Institute</th><th scope="col">Score</th><th scope="col">Year</th></tr>
-            </thead>
-            <tbody>
-              {
-                education.map((e) => (
-                  <tr class="border-t border-line">
-                    <th scope="row" class="px-2 py-3 text-center align-middle font-medium">{e.degree}</th>
-                    <td class="hidden px-2 py-3 text-center align-middle text-ink-2 sm:table-cell">{e.school}</td>
-                    <td class="num px-2 py-3 text-center align-middle whitespace-nowrap text-ink-2">{e.score}</td>
-                    <td class="num px-2 py-3 text-center align-middle text-muted">{e.year}</td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          </table>
-        </div>
       </div>
+    </div>
+
+    <!-- Its own full-width row: inside a half column the degree and institute both wrapped. -->
+    <div class="mx-auto mt-16 max-w-5xl lg:mt-24" data-reveal>
+      <h3 class="text-center font-sans text-sm font-medium tracking-normal text-muted">Academic record</h3>
+      <table class="mt-4 w-full text-center text-sm">
+        <caption class="sr-only">Degrees, institutes, scores and years</caption>
+        <thead class="sr-only">
+          <tr><th scope="col">Qualification</th><th scope="col">Institute</th><th scope="col">Score</th><th scope="col">Year</th></tr>
+        </thead>
+        <tbody>
+          {
+            education.map((e) => (
+              <tr class="border-t border-line">
+                <th scope="row" class="px-3 py-4 text-center align-middle font-medium sm:whitespace-nowrap">{e.degree}</th>
+                <td class="hidden px-3 py-4 text-center align-middle text-ink-2 sm:table-cell">{e.school}</td>
+                <td class="num px-3 py-4 text-center align-middle whitespace-nowrap text-ink-2">{e.score}</td>
+                <td class="num px-3 py-4 text-center align-middle text-muted">{e.year}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
     </div>
   </div>
 
