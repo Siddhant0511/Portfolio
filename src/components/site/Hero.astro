@@ -105,10 +105,13 @@ const titleBlock = [
     border-bottom: 1.5px solid;
   }
 
+  /* The reveal mask needs room for descenders at this tight leading, so the box is
+     padded and the padding is pulled back out again to keep the leading unchanged. */
   .hero-line {
     display: block;
     overflow: hidden;
-    padding-bottom: 0.06em;
+    padding-bottom: 0.24em;
+    margin-bottom: -0.24em;
   }
   .hero-line > span {
     display: inline-block;
@@ -134,7 +137,7 @@ const titleBlock = [
   }
 
   @keyframes rise {
-    from { transform: translateY(105%); }
+    from { transform: translateY(calc(100% + 0.28em)); }
     to { transform: translateY(0); }
   }
   @keyframes fade-up {

@@ -1,7 +1,7 @@
 ---
 import { site } from '@/lib/site';
 import { url } from '@/lib/utils';
-import { ListIcon, MoonIcon, SunIcon, ArrowRightIcon } from '@phosphor-icons/react';
+import { ListIcon, ArrowRightIcon } from '@phosphor-icons/react';
 
 const nav = [
   { label: 'Work', href: url('/#work') },
@@ -62,15 +62,6 @@ const nav = [
       }
       <button
         type="button"
-        data-theme-toggle
-        class="group grid size-9 cursor-pointer place-items-center text-ink-2 transition-colors hover:bg-surface-2 hover:text-ink [&_svg]:transition-transform [&_svg]:duration-500 [&_svg]:ease-[cubic-bezier(0.16,1,0.3,1)] hover:[&_svg]:-rotate-45 motion-reduce:[&_svg]:transition-none"
-        aria-label="Toggle dark mode"
-      >
-        <MoonIcon className="size-[18px] dark:hidden" aria-hidden="true" />
-        <SunIcon className="hidden size-[18px] dark:block" aria-hidden="true" />
-      </button>
-      <button
-        type="button"
         data-menu-toggle
         aria-expanded="false"
         aria-controls="mobile-menu"
@@ -100,19 +91,6 @@ const nav = [
 
 <script>
   function setupHeader() {
-    const toggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
-    if (toggle && !toggle.dataset.bound) {
-      toggle.dataset.bound = 'true';
-      toggle.addEventListener('click', () => {
-        const root = document.documentElement;
-        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        root.setAttribute('data-theme', next);
-        try {
-          localStorage.setItem('theme', next);
-        } catch {}
-      });
-    }
-
     const menuBtn = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
     const menu = document.querySelector<HTMLElement>('[data-menu]');
     if (menuBtn && menu && !menuBtn.dataset.bound) {

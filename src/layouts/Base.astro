@@ -20,7 +20,7 @@ const ogImage = image ? new URL(image, Astro.site) : undefined;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -29,8 +29,7 @@ const ogImage = image ? new URL(image, Astro.site) : undefined;
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
     <link rel="sitemap" href={url('/sitemap-index.xml')} />
-    <meta name="theme-color" content="#f4f4f1" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0e0f11" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f4f4f1" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
@@ -42,17 +41,11 @@ const ogImage = image ? new URL(image, Astro.site) : undefined;
     <Font cssVariable="--font-geist" preload />
     <Font cssVariable="--font-geist-mono" />
 
+    <!-- Marks the document as scripted before first paint, so reveal animations can
+         start hidden. Without JS the class never lands and all content stays visible. -->
     <script is:inline>
       (function () {
-        var root = document.documentElement;
-        function resolve() {
-          var stored = null;
-          try { stored = localStorage.getItem('theme'); } catch (e) {}
-          if (stored === 'light' || stored === 'dark') return stored;
-          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
         function apply(doc) {
-          doc.documentElement.setAttribute('data-theme', resolve());
           doc.documentElement.classList.add('js');
         }
         apply(document);

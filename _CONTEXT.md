@@ -4,7 +4,7 @@ Handoff context for the v2 redesign (September 2026). Design system: `DESIGN.md`
 
 ## What changed from v1
 - Rebuilt from a single hand-written `index.html` (now in `legacy/`) into Astro 7 + React islands + Tailwind v4 + Motion.
-- New visual language: drawing-sheet details, Bricolage Grotesque / Geist / Geist Mono, signal-orange accent, light and dark themes.
+- New visual language: drawing-sheet details, Satoshi / Geist / Geist Mono, signal-orange accent, a light palette with one inverted closing panel.
 - Case files moved from modal dossiers to dedicated pages, one per project, written in MDX.
 - Expanded from 4 internship projects to 13 case files: 4 Ashok Leyland workstreams, 3 case competitions, 6 academic projects.
 - Charts are drawn from the source data (NLDC SCADA, StreamMax, credit dataset) or from figures stated in the reports. Several v1 numbers that did not appear in the SIP report were removed.
@@ -17,6 +17,8 @@ Handoff context for the v2 redesign (September 2026). Design system: `DESIGN.md`
 - Academic record table is centre-aligned.
 - Added a motion layer: masked heading reveals, portrait wipe, timeline node fills, nav and row underline wipes, sliding contents marker, self-drawing case section rules, hover zoom on zoomable artefacts.
 - CI fix: TypeScript pinned to 6.x, because `@astrojs/check` peers on ^5 || ^6 and the 7.x install broke `npm ci` in the Pages workflow.
+- **Light only.** The theme toggle, the `localStorage` preference and the `prefers-color-scheme` resolver are gone; `<html>` is hard-set to `data-theme="light"`. The dark token block stays in `global.css` because the contact band uses it to invert, so do not delete it. The pre-paint inline script now only adds the `js` class, which reveal animations still depend on.
+- Fixed descender clipping in the reveal masks: `.hero-line` and `[data-mask]` pad the mask box and pull the same amount back with a negative margin, so glyphs like the `y` in "Morye" are no longer cut off at tight leading.
 
 ## Case files
 | ID | Slug | Source material |

@@ -24,10 +24,10 @@ Rules that hold everywhere:
 
 ## 2. Tokens
 
-Defined as CSS variables in `src/styles/global.css` and exposed to Tailwind through `@theme inline`, so every utility (`bg-surface`, `text-muted`, `border-line`) switches with the theme.
+Defined as CSS variables in `src/styles/global.css` and exposed to Tailwind through `@theme inline`, so every utility (`bg-surface`, `text-muted`, `border-line`) resolves from one place.
 
 ### Colour
-| Token | Light | Dark | Use |
+| Token | Light (site) | Inverted panel | Use |
 |---|---|---|---|
 | `bg` | `#f4f4f1` | `#0e0f11` | Page background |
 | `surface` | `#fbfbf9` | `#15161a` | Cards, figures, bands |
@@ -39,7 +39,7 @@ Defined as CSS variables in `src/styles/global.css` and exposed to Tailwind thro
 | `accent` | `#e4561b` | `#ff6a2c` | Signal orange: highlights, key bars, markers |
 | `accent-ink` | `#b0400b` | `#ff8a57` | Accent for small text (contrast safe) |
 
-Theme: follows `prefers-color-scheme`, with a manual toggle saved to `localStorage`. The contact band pins `data-theme="dark"` so it stays a dark closing panel in both modes.
+The site is light only: `<html>` carries `data-theme="light"` and there is no switcher. The second column is not a dark theme, it is the palette for sections that deliberately invert. A section opts in with `data-theme="dark"`, which also turns on the `dark:` variant inside it. The contact band is the only one that does.
 
 Charts are monochrome plus the accent: neutral marks in `line-strong`, the point of the chart in `accent`.
 
@@ -95,7 +95,7 @@ Two tiers, all disabled or reduced under `prefers-reduced-motion`.
 
 **Interactive**
 - Magnetic primary CTA, bento tiles lift on hover, tyre photos go from grayscale to colour with a scan line.
-- Nav links and work-index rows wipe an accent underline in from the left; the theme-toggle icon eases through a rotation.
+- Nav links and work-index rows wipe an accent underline in from the left.
 - Work index: filter pill slides between options (`layoutId`), rows re-flow, cursor-following preview card.
 - Case contents: the sidebar marker slides to the section being read; zoomable artefacts scale slightly under the cursor.
 - Astro view transitions morph a case title from its tile into the case page header.

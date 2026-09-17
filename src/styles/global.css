@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
-/* Theme is driven by [data-theme] on <html>; an inline script resolves it
-   from localStorage or prefers-color-scheme before first paint. */
+/* The site is light only: <html> carries data-theme="light" and there is no switcher.
+   The dark token set below is not a theme any more, it is the palette for sections that
+   deliberately invert (the contact panel), which opt in with data-theme="dark". */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 :root {
@@ -23,6 +24,7 @@
   --shadow-tint: 18 19 21;
 }
 
+/* Inverted sections, not a site-wide theme. */
 [data-theme="dark"] {
   color-scheme: dark;
   --bg: #0e0f11;
@@ -257,13 +259,16 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  /* Padding gives descenders room inside the mask; the negative margin takes the
+     same space back so masked and unmasked headings have identical leading. */
   .js [data-mask] {
     overflow: hidden;
-    padding-bottom: 0.08em;
+    padding-bottom: 0.2em;
+    margin-bottom: -0.2em;
   }
   .js [data-mask] > * {
     display: block;
-    transform: translateY(105%);
+    transform: translateY(calc(100% + 0.24em));
     transition: transform 950ms var(--ease-out-expo);
     transition-delay: calc(var(--mask-i, 0) * 90ms);
   }
