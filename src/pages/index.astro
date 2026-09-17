@@ -1,7 +1,6 @@
 ---
 import Base from '@/layouts/Base.astro';
 import Hero from '@/components/site/Hero.astro';
-import ProofStrip from '@/components/site/ProofStrip.astro';
 import FeaturedWork from '@/components/site/FeaturedWork.astro';
 import WorkIndex, { type IndexItem } from '@/components/site/WorkIndex';
 import Experience from '@/components/site/Experience.astro';
@@ -39,7 +38,6 @@ const indexItems: IndexItem[] = others.map((w) => ({
 
 <Base>
   <Hero />
-  <ProofStrip caseCount={work.length} />
 
   <section id="work" class="py-20 sm:py-28" aria-labelledby="work-title">
     <div class="container-x">
