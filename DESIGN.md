@@ -94,7 +94,7 @@ Two tiers, all disabled or reduced under `prefers-reduced-motion`.
 - Section headings rise from behind their own edge once, on first view (`[data-mask]`, staggered per line).
 - `[data-reveal]` elements fade and rise 14px once when they enter the viewport (IntersectionObserver).
 - Bars, columns and dumbbell gaps grow from zero on reveal; line charts draw left to right via `clip-path`.
-- Number tickers count up once when visible.
+- Number tickers count up once when visible, over a fixed 900ms tween. Not a spring: a spring is asymptotic, and the previous one (damping 60, stiffness 100, a damping ratio of 3) took over five seconds to settle on its last digits.
 - Experience: the timeline rule draws itself (scroll-driven), and each role's node scales up and fills with the accent as it arrives.
 - Case studies: each section rule draws itself on scroll (`animation-timeline: view()`), and a 2px progress bar tracks reading.
 
