@@ -16,6 +16,8 @@ export type IndexItem = {
   metric: { value: string; label: string };
   award?: string;
   tags: string[];
+  /** Generated from the case file's own data, see scripts/gen-thumbs.py. */
+  thumb: string;
 };
 
 type Filter = 'all' | 'competition' | 'academic';
@@ -92,12 +94,21 @@ export default function WorkIndex({ items }: { items: IndexItem[] }) {
               animate={{ opacity: 1, y: 0 }}
               exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.97 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="h-full"
             >
-              <a href={item.href} className="tile group block">
-                {/* The specimen: the case file's headline number, which stays legible at
-                    thumbnail size in a way a shrunken dashboard screenshot never does. */}
-                <div className="tile-plate relative flex aspect-[5/4] flex-col overflow-hidden border border-line bg-surface p-5">
-                  <div className="flex items-start justify-between gap-2">
+              {/* Fills the stretched grid cell so the metric rules line up across a row. */}
+              <a href={item.href} className="tile group flex h-full flex-col">
+                <div className="tile-plate relative aspect-[5/4] overflow-hidden border border-line bg-surface">
+                  {/* Drawn from this project's own numbers, in the site palette. */}
+                  <img
+                    src={item.thumb}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    className="tile-img size-full object-cover"
+                  />
+
+                  <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between gap-2 p-4">
                     <span className="flex min-w-0 items-center gap-2">
                       <span className="font-mono text-[11px] tracking-[0.08em] text-accent-ink uppercase">
                         {item.fileId}
@@ -112,20 +123,13 @@ export default function WorkIndex({ items }: { items: IndexItem[] }) {
                     <span className="font-mono text-[11px] tracking-[0.08em] text-muted uppercase">{item.year}</span>
                   </div>
 
-                  <div className="mt-6">
-                    <p className="font-display text-[clamp(2rem,3.2vw,2.75rem)] leading-none font-semibold tracking-[-0.045em]">
-                      {item.metric.value}
-                    </p>
-                    <p className="mt-2 line-clamp-2 text-[13px] leading-snug text-ink-2">{item.metric.label}</p>
-                  </div>
-
                   {/* Anchored inside the tile, so it can never be clipped by the viewport the
                       way the old cursor-following card was at the bottom of the list. */}
                   <div
                     aria-hidden="true"
-                    className="tile-pop absolute inset-x-0 bottom-0 border-t border-line bg-surface-2 px-5 py-4"
+                    className="tile-pop absolute inset-x-0 bottom-0 border-t border-line bg-surface-2 px-4 py-3.5"
                   >
-                    <p className="line-clamp-3 text-[13px] leading-snug text-ink-2">{item.problem}</p>
+                    <p className="line-clamp-3 text-[12.5px] leading-snug text-ink-2">{item.problem}</p>
                   </div>
 
                   <span
@@ -134,7 +138,7 @@ export default function WorkIndex({ items }: { items: IndexItem[] }) {
                   />
                 </div>
 
-                <div className="mt-4 flex items-start justify-between gap-3">
+                <div className="mt-4 mb-3 flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <h3 className="font-display text-lg leading-tight font-semibold tracking-[-0.025em] text-balance">
                       {item.title}
@@ -147,6 +151,13 @@ export default function WorkIndex({ items }: { items: IndexItem[] }) {
                     <ArrowUpRightIcon className="size-4" aria-hidden="true" />
                   </span>
                 </div>
+
+                <p className="mt-auto flex items-baseline gap-2 border-t border-line pt-3">
+                  <span className="font-display text-xl leading-none font-semibold tracking-[-0.03em]">
+                    {item.metric.value}
+                  </span>
+                  <span className="min-w-0 flex-1 text-[12.5px] leading-snug text-muted">{item.metric.label}</span>
+                </p>
               </a>
             </motion.li>
           ))}

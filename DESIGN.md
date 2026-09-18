@@ -67,7 +67,7 @@ Fonts are self-hosted through Astro's font API with preloads and metric-matched 
 ### Home (`src/pages/index.astro`)
 1. **Hero**: eyebrow, name in display type with an accent full stop, 19-word lead, two CTAs (magnetic primary). Portrait inside a "drawing sheet" frame with registration marks and a four-cell title block.
 2. **Four systems for one truck plant**: bento of the Ashok Leyland case files, each tile with a different real visual (phone screens, tenure chart, sync timeline, tyre photos).
-3. **More case files**: filterable grid (All / Case competitions / Academic), four tiles per row at xl, stepping down to one on mobile. Each tile is a specimen plate carrying the case file's headline number, because a shrunken dashboard screenshot is illegible at 317px and the source artefacts sit in palettes that fight the one-accent lock. Hovering slides the problem statement up from inside the tile.
+3. **More case files**: filterable grid (All / Case competitions / Academic), four tiles per row at xl, stepping down to one on mobile. Each tile carries a generated thumbnail, its title and its headline number, and the metric rule is pinned to the bottom of the cell so the rules line up across a row. Hovering slides the problem statement up from inside the tile.
 4. **Experience**: sticky heading, scroll-drawn timeline, internship entry links to its four case files.
 5. **About**: editorial statement, capabilities in an asymmetric 1 + 2 tile split (never three equal cards), full-width centred academic record, the page's only marquee (tools).
 6. **Beyond the classroom**: awards and leadership ledger.
@@ -126,6 +126,8 @@ Every one of these is gated behind `prefers-reduced-motion: no-preference`, and 
 | `DataTable`, `Matrix`, `Callout` | Tables, 2x2 positioning, one key insight |
 | `Gallery` | Real screenshots and photos, phone layout, click-to-zoom dialog |
 | `Tabs` | Accessible tabs (arrow keys), all panels visible without JS |
+
+Case-file thumbnails are generated, not screenshotted: `scripts/gen-thumbs.py` renders one SVG per case file into `public/thumbs/` from that project's own data (grid SCADA series, default-rate matrix, fatigue rates, Kraljic coordinates), in the site palette with a single accent on the point of the chart. The source artefacts are Power BI and matplotlib exports in purple, magenta and green, which break the one-accent lock and turn to mush at 317px. Re-run the script after changing a case file's numbers. The whole set is about 20KB.
 
 `src/components/ui/` holds components pulled from Magic UI and motion-primitives (the libraries 21st.dev lists), adapted to the tokens and reduced motion: `number-ticker` (all animated metrics), `marquee` (tools band), `magnetic` (hero CTA). `text-effect` is installed but not yet used.
 

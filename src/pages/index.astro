@@ -8,6 +8,7 @@ import About from '@/components/site/About.astro';
 import Recognition from '@/components/site/Recognition.astro';
 import Contact from '@/components/site/Contact.astro';
 import { getWork, workHref } from '@/lib/work';
+import { url } from '@/lib/utils';
 
 const work = await getWork();
 const internship = work.filter((w) => w.data.group === 'internship');
@@ -33,6 +34,7 @@ const indexItems: IndexItem[] = others.map((w) => ({
   metric: { value: fmt(w.data.metrics[0]), label: w.data.metrics[0].label },
   award: w.data.award,
   tags: w.data.tags,
+  thumb: url(`/thumbs/${w.id}.svg`),
 }));
 ---
 
