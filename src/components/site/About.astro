@@ -27,13 +27,15 @@ import { capabilities, education, tools } from '@/lib/site';
       </div>
 
       <div class="lg:col-span-6 lg:col-start-7">
-        <dl class="grid gap-px border border-line bg-line sm:grid-cols-3">
+        {/* Asymmetric 1 + 2: the lead capability takes the full row, the other two share the
+            one below. Three equal side-by-side cards read as a template. */}
+        <dl class="grid gap-px border border-line bg-line sm:grid-cols-2">
           {
             capabilities.map((c, i) => (
-              <div class="bg-surface p-5" data-reveal style={`--reveal-i:${i}`}>
+              <div class:list={['bg-surface p-5', i === 0 && 'sm:col-span-2']} data-reveal style={`--reveal-i:${i}`}>
                 <dt class="label !text-ink">{c.name}</dt>
                 <dd class="mt-4">
-                  <ul class="grid gap-2 text-sm leading-snug text-ink-2">
+                  <ul class:list={['grid gap-2 text-sm leading-snug text-ink-2', i === 0 && 'sm:grid-cols-2 sm:gap-x-6']}>
                     {c.items.map((it) => (
                       <li>{it}</li>
                     ))}

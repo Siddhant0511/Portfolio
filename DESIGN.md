@@ -37,7 +37,9 @@ Defined as CSS variables in `src/styles/global.css` and exposed to Tailwind thro
 | `muted` | `#62666d` | `#8f939a` | Captions, labels |
 | `line` / `line-strong` | `#dcdcd6` / `#bdbdb6` | `#25272b` / `#3a3d42` | Hairlines, neutral chart marks |
 | `accent` | `#e4561b` | `#ff6a2c` | Signal orange: highlights, key bars, markers |
-| `accent-ink` | `#b0400b` | `#ff8a57` | Accent for small text (contrast safe) |
+| `accent-ink` | `#b0400b` | `#ff8a57` | Accent for small text, and for any accent fill sitting under light text |
+
+`accent` is bright enough to fail WCAG AA behind light text: `bg` on `accent` is only 3.38:1. Any button that fills with the accent and keeps light text uses `accent-ink` instead, which is 5.32:1. `accent` stays the fill for icon-only targets and graphic marks, where the 3:1 bar for non-text applies.
 
 The site is light only: `<html>` carries `data-theme="light"` and there is no switcher. The second column is not a dark theme, it is the palette for sections that deliberately invert. A section opts in with `data-theme="dark"`, which also turns on the `dark:` variant inside it. The contact band is the only one that does.
 
@@ -67,7 +69,7 @@ Fonts are self-hosted through Astro's font API with preloads and metric-matched 
 2. **Four systems for one truck plant**: bento of the Ashok Leyland case files, each tile with a different real visual (phone screens, tenure chart, sync timeline, tyre photos).
 3. **More case files**: filterable index (All / Case competitions / Academic). On desktop a preview card follows the cursor with the project's headline metric.
 4. **Experience**: sticky heading, scroll-drawn timeline, internship entry links to its four case files.
-5. **About**: editorial statement, capabilities, centred academic record, the page's only marquee (tools).
+5. **About**: editorial statement, capabilities in an asymmetric 1 + 2 tile split (never three equal cards), full-width centred academic record, the page's only marquee (tools).
 6. **Beyond the classroom**: awards and leadership ledger.
 7. **Contact**: dark closing band, large email with copy button, LinkedIn.
 
