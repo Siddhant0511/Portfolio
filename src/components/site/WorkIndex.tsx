@@ -15,7 +15,6 @@ export type IndexItem = {
   problem: string;
   metric: { value: string; label: string };
   award?: string;
-  tags: string[];
   /** Generated from the case file's own data, see scripts/gen-thumbs.py. */
   thumb: string;
 };

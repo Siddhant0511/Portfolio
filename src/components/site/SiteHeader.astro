@@ -100,7 +100,8 @@ const nav = [
         menuBtn.setAttribute('aria-expanded', String(open));
         menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
       };
-      menuBtn.addEventListener('click', () => setOpen(menu.hidden));
+      // `hidden` widened to boolean | string in newer lib.dom (hidden="until-found").
+      menuBtn.addEventListener('click', () => setOpen(!!menu.hidden));
       menu.querySelectorAll('[data-menu-link]').forEach((a) => a.addEventListener('click', () => setOpen(false)));
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && !menu.hidden) {

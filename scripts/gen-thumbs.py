@@ -8,6 +8,10 @@ import io, json, os
 
 W, H = 800, 640
 PAD = 76
+# The tile prints the file ID and year over the top of the thumbnail, so the
+# drawing keeps clear of this band. 165/640 of the height is ~65px at 317px wide,
+# comfortably past the 50px the overlay occupies.
+TOP = 165
 BG = "#fbfbf9"
 LINE = "#dcdcd6"
 LINE_STRONG = "#bdbdb6"
@@ -43,10 +47,10 @@ def quantum_trial():
     ]
     x0, x1 = PAD, W - PAD
     span = x1 - x0
-    step = (H - 2 * PAD) / (len(rows) - 1)
+    step = (H - TOP - PAD) / (len(rows) - 1)
     s = []
     for i, (_, a, b, hl) in enumerate(rows):
-        y = PAD + i * step
+        y = TOP + i * step
         ax, bx = x0 + span * (a / 100), x0 + span * (b / 100)
         col = ACCENT if hl else LINE_STRONG
         s.append(f'<line x1="{x0}" y1="{y}" x2="{x1}" y2="{y}" stroke="{LINE}" stroke-width="1.5"/>')
@@ -62,7 +66,7 @@ def vguard():
     total, solar = d["total"], d["solar"]
     n = len(total)
     x0, x1 = PAD, W - PAD
-    y0, y1 = PAD, H - PAD
+    y0, y1 = TOP, H - PAD
     ymax = 260.0
 
     def pt(i, v):
@@ -93,14 +97,14 @@ def finception():
         [4.39, 4.29, 5.4, 6.25], [4.21, 4.1, 3.69, 3.43],
     ]
     rows, cols, thr, mx = len(vals), 4, 14.0, 37.5
-    gw, gh = W - 2 * PAD, H - 2 * PAD
+    gw, gh = W - 2 * PAD, H - TOP - PAD
     cw, ch = gw / cols, gh / rows
     gap = 2.5
     s = []
     for r in range(rows):
         for c in range(cols):
             v = vals[r][c]
-            x, y = PAD + c * cw, PAD + r * ch
+            x, y = PAD + c * cw, TOP + r * ch
             if v is None:
                 s.append(f'<rect x="{x+gap:.1f}" y="{y+gap:.1f}" width="{cw-2*gap:.1f}" '
                          f'height="{ch-2*gap:.1f}" fill="none" stroke="{LINE}" stroke-width="1"/>')
@@ -118,7 +122,7 @@ def finception():
 # --- 4. StreamMax: fatigue rate against days since the last session -----------
 def streammax():
     d = json.load(open("src/data/streammax.json"))["daysSince"]
-    x0, x1, y0, y1 = PAD, W - PAD, PAD, H - PAD
+    x0, x1, y0, y1 = PAD, W - PAD, TOP, H - PAD
     n = len(d)
     slot = (x1 - x0) / n
     bw = slot * 0.62
@@ -139,7 +143,7 @@ def streammax():
 # --- 5. TezCredit: the six-step borrower journey ------------------------------
 def tezcredit():
     n = 6
-    x0, y0, y1 = PAD, PAD, H - PAD
+    x0, y0, y1 = PAD, TOP, H - PAD
     step = (y1 - y0) / (n - 1)
     bw, bh = 300, 52
     s = []
@@ -191,7 +195,7 @@ def vitalchain():
 
 # --- 7. Butterfly valves: Kraljic positioning --------------------------------
 def butterfly():
-    x0, x1, y0, y1 = PAD, W - PAD, PAD, H - PAD
+    x0, x1, y0, y1 = PAD, W - PAD, TOP, H - PAD
     mx, my = (x0 + x1) / 2, (y0 + y1) / 2
     s = [f'<rect x="{x0}" y="{y0}" width="{x1-x0}" height="{y1-y0}" fill="none" stroke="{LINE_STRONG}" stroke-width="2"/>']
     s.append(f'<line x1="{mx}" y1="{y0}" x2="{mx}" y2="{y1}" stroke="{LINE}" stroke-width="1.5"/>')
