@@ -56,7 +56,7 @@ Fonts are self-hosted through Astro's font API with preloads and metric-matched 
 
 ### Shape and space
 - Corners are square. Containers, buttons and chips use no rounding.
-- Hairline borders separate content; shadows only on floating elements (hover preview, phone screenshots).
+- Hairline borders separate content; shadows only on lifted elements (grid tiles on hover, phone screenshots).
 - Container: `max-w-88rem`, gutters 16 / 24 / 40px. Sections breathe at 80-112px vertically.
 - A fixed, non-interactive film-grain layer adds texture at 3.5-5% opacity.
 
@@ -67,7 +67,7 @@ Fonts are self-hosted through Astro's font API with preloads and metric-matched 
 ### Home (`src/pages/index.astro`)
 1. **Hero**: eyebrow, name in display type with an accent full stop, 19-word lead, two CTAs (magnetic primary). Portrait inside a "drawing sheet" frame with registration marks and a four-cell title block.
 2. **Four systems for one truck plant**: bento of the Ashok Leyland case files, each tile with a different real visual (phone screens, tenure chart, sync timeline, tyre photos).
-3. **More case files**: filterable index (All / Case competitions / Academic). On desktop a preview card follows the cursor with the project's headline metric.
+3. **More case files**: filterable grid (All / Case competitions / Academic), four tiles per row at xl, stepping down to one on mobile. Each tile is a specimen plate carrying the case file's headline number, because a shrunken dashboard screenshot is illegible at 317px and the source artefacts sit in palettes that fight the one-accent lock. Hovering slides the problem statement up from inside the tile.
 4. **Experience**: sticky heading, scroll-drawn timeline, internship entry links to its four case files.
 5. **About**: editorial statement, capabilities in an asymmetric 1 + 2 tile split (never three equal cards), full-width centred academic record, the page's only marquee (tools).
 6. **Beyond the classroom**: awards and leadership ledger.
@@ -97,8 +97,8 @@ Two tiers, all disabled or reduced under `prefers-reduced-motion`.
 
 **Interactive**
 - Magnetic primary CTA, bento tiles lift on hover, tyre photos go from grayscale to colour with a scan line.
-- Nav links and work-index rows wipe an accent underline in from the left.
-- Work index: filter pill slides between options (`layoutId`), rows re-flow, cursor-following preview card.
+- Nav links wipe an accent underline in from the left.
+- Work grid: filter pill slides between options (`layoutId`), tiles re-flow on filter. On hover a tile lifts, its accent rule wipes in, the arrow fills and the problem statement slides up from the bottom edge. Every affordance is anchored inside the tile, so nothing tracks the cursor and nothing can be clipped at the viewport edge.
 - Case contents: the sidebar marker slides to the section being read; zoomable artefacts scale slightly under the cursor.
 - Astro view transitions morph a case title from its tile into the case page header.
 

@@ -247,6 +247,53 @@
       }
     }
   }
+  /* Case-file grid tiles. Every hover affordance is anchored inside the tile, so nothing
+     tracks the cursor and nothing can be clipped by the edge of the viewport. */
+  .tile-plate {
+    transition:
+      transform 500ms var(--ease-out-expo),
+      border-color 300ms ease,
+      box-shadow 500ms var(--ease-out-expo);
+  }
+  .tile-pop {
+    transform: translateY(100%);
+    transition: transform 450ms var(--ease-out-expo);
+  }
+  .tile-rule {
+    transform: scaleX(0);
+    transition: transform 500ms var(--ease-out-expo);
+  }
+  .tile-arrow {
+    transition:
+      background-color 300ms ease,
+      border-color 300ms ease,
+      color 300ms ease;
+  }
+
+  .tile:hover .tile-plate,
+  .tile:focus-visible .tile-plate {
+    transform: translateY(-4px);
+    border-color: var(--line-strong);
+    box-shadow: 0 24px 48px -28px rgb(var(--shadow-tint) / 0.45);
+  }
+  .tile:hover .tile-pop,
+  .tile:focus-visible .tile-pop { transform: none; }
+  .tile:hover .tile-rule,
+  .tile:focus-visible .tile-rule { transform: scaleX(1); }
+  .tile:hover .tile-arrow,
+  .tile:focus-visible .tile-arrow {
+    background: var(--accent-ink);
+    border-color: var(--accent-ink);
+    color: var(--bg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tile-plate,
+    .tile-pop,
+    .tile-rule,
+    .tile-arrow { transition: none; }
+  }
+
   .case-body > .case-block { margin-top: 2.5rem; }
   .case-body > h2 + .case-block { margin-top: 2rem; }
   .case-body > .case-block + .case-block { margin-top: 3rem; }

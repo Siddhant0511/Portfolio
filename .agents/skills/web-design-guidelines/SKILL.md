@@ -32,7 +32,7 @@ Reference: https://vercel.com/design
 
 ## Typography Rules
 
-- Bricolage Grotesque for display headlines and large numbers
+- Satoshi for display headlines and large numbers
 - Geist for body text (16-17px, 1.6-1.75 line-height)
 - Geist Mono for data and labels (`.label`: uppercase, 0.08em letter-spacing)
 - Never mix more than 2 typefaces in one component
