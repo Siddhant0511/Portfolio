@@ -155,7 +155,9 @@ export default function WorkIndex({ items }: { items: IndexItem[] }) {
                   <span className="font-display text-xl leading-none font-semibold tracking-[-0.03em]">
                     {item.metric.value}
                   </span>
-                  <span className="min-w-0 flex-1 text-[12.5px] leading-snug text-muted">{item.metric.label}</span>
+                  <span className="tile-metric-label min-w-0 flex-1 text-[12.5px] leading-snug text-muted">
+                    {item.metric.label}
+                  </span>
                 </p>
               </a>
             </motion.li>

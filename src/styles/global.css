@@ -272,6 +272,13 @@
   .tile-img {
     transition: transform 600ms var(--ease-out-expo);
   }
+  /* Two lines are always reserved for the metric label. The rule sits on top of that
+     block, so a one-line label would drop it a line below its neighbours in the row.
+     The px value is the fallback for browsers without the lh unit. */
+  .tile-metric-label {
+    min-height: 34px;
+    min-height: 2lh;
+  }
 
   .tile:hover .tile-plate,
   .tile:focus-visible .tile-plate {
