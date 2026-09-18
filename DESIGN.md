@@ -74,7 +74,7 @@ Header: the nav sits in the middle column of a `1fr auto 1fr` grid, so it is cen
 4. **Experience**: sticky heading, scroll-drawn timeline, internship entry links to its four case files.
 5. **About**: editorial statement, capabilities in an asymmetric 1 + 2 tile split (never three equal cards), full-width centred academic record, the page's only marquee (tools).
 6. **Beyond the classroom**: awards and leadership ledger.
-7. **Contact**: dark closing band, large email with copy button, LinkedIn.
+7. **Contact**: dark closing band, large email with copy button, LinkedIn. The "process?" line carries a 0.0156em indent, because Satoshi gives lowercase p a smaller left side bearing than H and L and its stem otherwise sits left of the lines around it. Round letters that should overhang, like the S of "Siddhant", are left alone.
 
 ### Case file (`src/pages/work/[slug].astro`)
 Header (file ID, group, title, summary, role / context / team / when) → key-numbers band → two columns: sticky "On this page" contents with tools and live links on the left, the MDX body on the right → previous / next.

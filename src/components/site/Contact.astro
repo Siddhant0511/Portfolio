@@ -12,7 +12,7 @@ import { url } from '@/lib/utils';
       class="mt-6 max-w-[16ch] font-display text-[clamp(3rem,9vw,7.5rem)] leading-[0.95] font-bold tracking-[-0.035em]"
     >
       <span data-mask><span>Have a messy</span></span>
-      <span data-mask><span style="--mask-i:1">process?</span></span>
+      <span data-mask class="optical-p"><span style="--mask-i:1">process?</span></span>
       <span data-mask><span class="text-accent" style="--mask-i:2">Let’s talk.</span></span>
     </h2>
 
@@ -88,3 +88,12 @@ import { url } from '@/lib/utils';
   }
   document.addEventListener('astro:page-load', setupCopy);
 </script>
+
+<style>
+  /* Satoshi gives lowercase p a smaller left side bearing than H and L, so the stem of
+     "process?" sat about 2px left of the lines above and below it at the display size.
+     0.0156em is the measured difference, so it scales with the clamped font size. */
+  .optical-p {
+    text-indent: 0.0156em;
+  }
+</style>
