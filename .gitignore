@@ -26,3 +26,7 @@ pnpm-debug.log*
 # raw project source material (large, contains private documents)
 Porjects case files/
 RESUME AND OTHER FILES/
+
+# `npx skills add` keeps the skill itself in .agents/skills (committed) and drops a
+# symlink here pointing at an absolute local path, which is machine-specific.
+.claude/skills/design-taste-frontend
