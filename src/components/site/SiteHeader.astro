@@ -15,8 +15,10 @@ const nav = [
   class="sticky top-0 z-50 border-b border-line/80 bg-bg/80 backdrop-blur-md supports-[backdrop-filter]:bg-bg/70"
   transition:persist="site-header"
 >
-  <div class="container-x flex h-16 items-center justify-between gap-6">
-    <a href={url('/')} class="group flex items-center gap-3" aria-label={`${site.name}, home`}>
+  <!-- Equal side columns, so the nav is centred on the page rather than centred on
+       whatever space is left between the wordmark and the buttons. -->
+  <div class="container-x grid h-16 grid-cols-[1fr_auto_1fr] items-center gap-6">
+    <a href={url('/')} class="group flex items-center gap-3 justify-self-start" aria-label={`${site.name}, home`}>
       <span
         class="relative grid size-8 place-items-center bg-ink font-mono text-[11px] font-semibold tracking-tight text-bg transition-colors duration-300 group-hover:bg-accent-ink"
         aria-hidden="true"
@@ -28,7 +30,7 @@ const nav = [
       </span>
     </a>
 
-    <nav aria-label="Primary" class="hidden md:block">
+    <nav aria-label="Primary" class="hidden justify-self-center md:block">
       <ul class="flex items-center gap-1">
         {
           nav.map((item) => (
@@ -49,7 +51,7 @@ const nav = [
       </ul>
     </nav>
 
-    <div class="flex items-center gap-2">
+    <div class="col-start-3 flex items-center gap-2 justify-self-end">
       {
         site.resume && (
           <a

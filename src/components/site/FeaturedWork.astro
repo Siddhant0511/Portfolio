@@ -47,7 +47,7 @@ const syncSteps = ['ZKTeco', 'WDMS', 'Firewall', 'CLMS'];
           data-reveal
           style={`--reveal-i:${i}`}
           class:list={[
-            'group relative flex flex-col overflow-hidden border border-line bg-surface transition-[border-color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-line-strong',
+            'feat group relative flex flex-col overflow-hidden border border-line bg-surface transition-[border-color,transform,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:border-line-strong',
             layout[id],
           ]}
         >
@@ -57,7 +57,7 @@ const syncSteps = ['ZKTeco', 'WDMS', 'Firewall', 'CLMS'];
                 <span class="text-accent-ink">{w.data.fileId}</span>
               </p>
               <h3
-                class="mt-3 text-2xl tracking-[-0.03em] sm:text-[1.75rem]"
+                class="mt-3 text-2xl tracking-[-0.03em] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1 motion-reduce:transition-none sm:text-[1.75rem]"
                 transition:name={`title-${w.id}`}
               >
                 {w.data.title}
@@ -78,8 +78,9 @@ const syncSteps = ['ZKTeco', 'WDMS', 'Firewall', 'CLMS'];
                     alt=""
                     widths={[200, 360]}
                     sizes="(min-width: 1024px) 11rem, 28vw"
+                    style={`--p:${k}; --r:${(k - 1) * 2.5}deg`}
                     class:list={[
-                      'h-auto w-[28%] max-w-[11rem] self-start border border-line bg-white shadow-[0_24px_48px_-24px_rgb(var(--shadow-tint)/0.4)] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-2',
+                      'phone h-auto w-[28%] max-w-[11rem] self-start border border-line bg-white shadow-[0_24px_48px_-24px_rgb(var(--shadow-tint)/0.4)]',
                       k === 1 ? 'mt-5' : 'mt-10',
                     ]}
                   />
@@ -169,6 +170,8 @@ const syncSteps = ['ZKTeco', 'WDMS', 'Firewall', 'CLMS'];
             </span>
             <span class="text-sm text-muted">{m.label}</span>
           </div>
+
+          <span aria-hidden="true" class="feat-rule absolute inset-x-0 bottom-0 h-[2px] bg-accent" />
         </a>
       );
     })
@@ -196,6 +199,37 @@ const syncSteps = ['ZKTeco', 'WDMS', 'Firewall', 'CLMS'];
     a:hover .scan {
       opacity: 1;
       animation: scan 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    }
+
+    /* The tile settles forward on hover: it lifts onto a tinted shadow, an accent rule
+       draws along the bottom edge, and the phone screens fan out one after another. */
+    .feat:hover,
+    .feat:focus-visible {
+      box-shadow: 0 32px 64px -34px rgb(var(--shadow-tint) / 0.5);
+    }
+    .feat-rule {
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 650ms var(--ease-out-expo);
+    }
+    .feat:hover .feat-rule,
+    .feat:focus-visible .feat-rule {
+      transform: scaleX(1);
+    }
+    .phone {
+      transition: transform 750ms var(--ease-out-expo);
+      transition-delay: calc(var(--p, 0) * 80ms);
+    }
+    .feat:hover .phone,
+    .feat:focus-visible .phone {
+      transform: translateY(-14px) rotate(var(--r, 0deg));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .feat-rule,
+    .phone {
+      transition: none;
     }
   }
   @keyframes scan {

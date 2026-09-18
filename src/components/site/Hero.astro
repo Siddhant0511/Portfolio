@@ -28,7 +28,7 @@ const titleBlock = [
         <span class="hero-line"><span style="--d: 160ms">Morye<span class="text-accent">.</span></span></span>
       </h1>
 
-      <p class="hero-in mt-8 max-w-[34ch] text-xl leading-snug text-ink-2 md:text-2xl" style="--d: 320ms">
+      <p class="hero-in mt-8 max-w-[34ch] text-lg leading-snug text-ink-2 md:text-xl" style="--d: 320ms">
         Architect turned analyst. I build data pipelines, dashboards and shop-floor tools that turn messy operations
         into systems people use.
       </p>
@@ -53,9 +53,11 @@ const titleBlock = [
       </div>
     </div>
 
-    <figure class="hero-in relative mx-auto w-full max-w-md lg:col-span-5 lg:max-w-none" style="--d: 200ms">
-      <div class="sheet relative border border-line bg-surface p-2.5 sm:p-3">
-        <div class="photo-wipe relative overflow-hidden bg-surface-2">
+    <!-- From lg up the sheet fills the grid row, and the portrait takes whatever height is
+         left once the title block is placed, so the two columns end on the same line. -->
+    <figure class="hero-in relative mx-auto flex w-full max-w-md flex-col lg:col-span-5 lg:max-w-none" style="--d: 200ms">
+      <div class="sheet relative flex flex-1 flex-col border border-line bg-surface p-2.5 sm:p-3">
+        <div class="photo-wipe relative aspect-[4/5] overflow-hidden bg-surface-2 lg:aspect-auto lg:min-h-0 lg:flex-1">
           <Image
             src={portrait}
             alt="Portrait of Siddhant Morye in a dark suit, standing outside a glass-fronted building"
@@ -63,7 +65,7 @@ const titleBlock = [
             sizes="(min-width: 1024px) 38vw, (min-width: 640px) 28rem, 92vw"
             loading="eager"
             fetchpriority="high"
-            class="aspect-[4/5] w-full object-cover object-[50%_18%] lg:aspect-auto lg:h-[min(62dvh,640px)]"
+            class="h-full w-full object-cover object-[50%_18%]"
           />
         </div>
         <dl class="mt-2.5 grid grid-cols-2 border-t border-line sm:mt-3">
