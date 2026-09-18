@@ -252,7 +252,6 @@
   .tile-plate {
     transition:
       transform 500ms var(--ease-out-expo),
-      border-color 300ms ease,
       box-shadow 500ms var(--ease-out-expo);
   }
   .tile-pop {
@@ -283,7 +282,6 @@
   .tile:hover .tile-plate,
   .tile:focus-visible .tile-plate {
     transform: translateY(-4px);
-    border-color: var(--line-strong);
     box-shadow: 0 24px 48px -28px rgb(var(--shadow-tint) / 0.45);
   }
   .tile:hover .tile-pop,

@@ -97,7 +97,7 @@ export default function WorkIndex({ items }: { items: IndexItem[] }) {
             >
               {/* Fills the stretched grid cell so the metric rules line up across a row. */}
               <a href={item.href} className="tile group flex h-full flex-col">
-                <div className="tile-plate relative aspect-[5/4] overflow-hidden border border-line bg-surface">
+                <div className="tile-plate relative aspect-[5/4] overflow-hidden border border-line-strong bg-surface">
                   {/* Drawn from this project's own numbers, in the site palette. */}
                   <img
                     src={item.thumb}

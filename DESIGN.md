@@ -57,6 +57,7 @@ Fonts are self-hosted through Astro's font API with preloads and metric-matched 
 ### Shape and space
 - Corners are square. Containers, buttons and chips use no rounding.
 - Hairline borders separate content; shadows only on lifted elements (grid tiles on hover, phone screenshots).
+- Tile containers (the case-file grid and the Ashok Leyland bento) carry `line-strong`, not `line`. Their surface sits lighter than the page, so a `line` hairline left them floating without an edge. Dividers inside a tile stay on `line`.
 - Container: `max-w-88rem`, gutters 16 / 24 / 40px. Sections breathe at 80-112px vertically.
 - A fixed, non-interactive film-grain layer adds texture at 3.5-5% opacity.
 
