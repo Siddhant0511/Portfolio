@@ -58,7 +58,7 @@ export default function WorkIndex({ items }: { items: IndexItem[] }) {
                   aria-pressed={selected}
                   onClick={() => setFilter(f.key)}
                   className={cn(
-                    'relative flex h-9 cursor-pointer items-center gap-2 px-3 text-sm transition-colors',
+                    'relative flex h-11 cursor-pointer items-center gap-2 px-3 text-sm transition-colors sm:h-9',
                     selected ? 'text-bg' : 'text-ink-2 hover:text-ink',
                   )}
                 >

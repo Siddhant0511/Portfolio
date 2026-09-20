@@ -18,7 +18,7 @@ const { rows, cols, values, max, suffix = '%', decimals = 1, caption, rowHeader 
 const tint = (v: number) => Math.round(Math.min(1, v / max) * 72);
 ---
 
-<div class="case-block overflow-x-auto" data-reveal>
+<div class="case-block scroll-x overflow-x-auto" data-reveal>
   <table class="w-full min-w-[34rem] border-separate border-spacing-[3px] text-sm">
     <caption class="sr-only">{caption}</caption>
     <thead>

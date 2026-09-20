@@ -307,6 +307,43 @@
     .tile:focus-visible .tile-img { transform: none; }
   }
 
+  /* Expands a small control's touch area to 44px on touch devices without changing
+     the size it occupies on the page, so underlines and spacing stay put. */
+  @media (pointer: coarse) {
+    .tap-44 {
+      position: relative;
+    }
+    .tap-44::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      translate: -50% -50%;
+      width: max(100%, 44px);
+      height: max(100%, 44px);
+    }
+  }
+
+  /* Scroll shadows for the tables and heatmaps that are wider than a phone. The
+     shadow shows on whichever side still has content and clears at the ends, so a
+     reader can tell there is more without a label. Background-attachment does the
+     work, no JS and nothing to keep in sync. */
+  .scroll-x {
+    /* The fade has to match whatever the table sits on, or it shows as a pale band at
+       the edge. A framed figure sets --scroll-fade to surface; everywhere else the
+       var() fallback picks up the page. The default must NOT be declared here: a
+       declaration on this element would outrank the value inherited from the figure. */
+    background-image:
+      linear-gradient(to right, var(--scroll-fade, var(--bg)), transparent),
+      linear-gradient(to left, var(--scroll-fade, var(--bg)), transparent),
+      linear-gradient(to right, rgb(var(--shadow-tint) / 0.14), transparent),
+      linear-gradient(to left, rgb(var(--shadow-tint) / 0.14), transparent);
+    background-position: left center, right center, left center, right center;
+    background-repeat: no-repeat;
+    background-size: 28px 100%, 28px 100%, 12px 100%, 12px 100%;
+    background-attachment: local, local, scroll, scroll;
+  }
+
   .case-body > .case-block { margin-top: 2.5rem; }
   .case-body > h2 + .case-block { margin-top: 2rem; }
   .case-body > .case-block + .case-block { margin-top: 3rem; }

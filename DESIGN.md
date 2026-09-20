@@ -61,6 +61,11 @@ Fonts are self-hosted through Astro's font API with preloads and metric-matched 
 - Container: `max-w-88rem`, gutters 16 / 24 / 40px. Sections breathe at 80-112px vertically.
 - A fixed, non-interactive film-grain layer adds texture at 3.5-5% opacity.
 
+### Touch
+The site is read on a phone first, so every control clears 44px on a coarse pointer. Controls with room to grow take it (`h-11 sm:h-9` on the work filters and case tabs, `size-11` on the menu button). Small inline links keep their size and get `.tap-44`, which expands the hit area with a pseudo-element so underlines and spacing do not move.
+
+Tables wider than a phone (`DataTable` past two columns, `Heatmap`) scroll inside `.scroll-x`, which paints a shadow on whichever side still has content and clears it at the ends, so there is an affordance without a label. The fade must match what the table sits on: a framed `Figure` sets `--scroll-fade` to surface, and everywhere else the `var()` fallback picks up the page. The default is deliberately not declared on `.scroll-x` itself, since a declaration there would outrank the inherited value.
+
 ---
 
 ## 3. Page structure

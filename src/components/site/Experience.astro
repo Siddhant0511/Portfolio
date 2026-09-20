@@ -49,7 +49,7 @@ const titles = Object.fromEntries(work.map((w) => [w.id, w.data]));
                     titles[id] ? (
                       <a
                         href={workHref(id)}
-                        class="group inline-flex items-center gap-2 border border-line bg-surface px-3 py-2 text-sm transition-colors hover:border-ink"
+                        class="group inline-flex min-h-11 items-center gap-2 border border-line bg-surface px-3 py-2 text-sm transition-colors hover:border-ink sm:min-h-0"
                       >
                         <span class="font-mono text-[11px] text-accent-ink">{titles[id].fileId}</span>
                         {titles[id].title}
