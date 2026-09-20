@@ -57,7 +57,9 @@ const titleBlock = [
          left once the title block is placed, so the two columns end on the same line. -->
     <figure class="hero-in relative mx-auto flex w-full max-w-md flex-col lg:col-span-5 lg:max-w-none" style="--d: 200ms">
       <div class="sheet relative flex flex-1 flex-col border border-line bg-surface p-2.5 sm:p-3">
-        <div class="photo-wipe relative aspect-[4/5] overflow-hidden bg-surface-2 lg:aspect-auto lg:min-h-0 lg:flex-1">
+        <!-- 5:4 below lg gives the same head and shoulders framing the flex-filled well
+             lands on from lg up. A 4:5 portrait here ran all the way down to the hands. -->
+        <div class="photo-wipe relative aspect-[5/4] overflow-hidden bg-surface-2 lg:aspect-auto lg:min-h-0 lg:flex-1">
           <Image
             src={portrait}
             alt="Portrait of Siddhant Morye in a dark suit, standing outside a glass-fronted building"
